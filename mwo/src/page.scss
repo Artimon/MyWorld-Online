@@ -1,0 +1,17 @@
+@import "sass/_variables";
+@import "sass/_form";
+
+* {
+	padding: 0px;
+	margin: 0px;
+
+	color: $colorDefaultText;
+	font-size: 11px;
+	font-family: arial;
+}
+
+body > div {
+	margin: 0 auto;
+	width: 998px;
+	height: 100%;
+}

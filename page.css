@@ -1,0 +1,107 @@
+@import url(http://weloveiconfonts.com/api/?family=entypo);
+html {
+  background-image: url("images/background_pattern.png");
+  background-position: top center;
+  background-repeat: repeat-y;
+  background-color: #cedcc3; }
+
+body {
+  min-width: 1080px;
+  height: 100%; }
+
+#AdBlockTest {
+  display: none; }
+
+#background {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 749px;
+  background-image: url("images/background.jpg");
+  background-position: top center;
+  background-repeat: no-repeat; }
+
+.ringmenu {
+  width: 500px;
+  height: 200px;
+  background-color: rgba(255, 255, 0, 0.25);
+  -webkit-perspective: 1000px; }
+  .ringmenu div {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    margin-top: 20px;
+    padding: 0;
+    list-style: none;
+    -webkit-transform: translateZ(-200px) rotateY(0deg);
+    -webkit-transform-style: preserve-3d;
+    -webkit-transition: -webkit-transform 1s; }
+    .ringmenu div figure {
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: block;
+      float: left;
+      width: 75px;
+      height: 75px;
+      line-height: 75px;
+      font-size: 50px;
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 8px; }
+
+.contextMenu {
+  position: relative;
+  margin-left: 200px;
+  margin-top: 200px; }
+  .contextMenu .circle {
+    position: absolute;
+    left: -50px;
+    top: -50px;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    border-radius: 100px;
+    border: 8px solid rgba(255, 255, 255, 0.5);
+    transition: left 0.5s, top 0.5s, width 0.5s, height 0.5s, line-height 0.5s, border-radius 0.5s; }
+    .contextMenu .circle:hover {
+      left: -100px;
+      top: -100px;
+      width: 200px;
+      height: 200px;
+      line-height: 200px;
+      border-radius: 200px; }
+  .contextMenu .item {
+    position: absolute;
+    display: block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 24px;
+    color: #7a8092;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 -1px dimgrey;
+    background: #c9c9c9;
+    border-radius: 50%;
+    box-shadow: 0 0 3px 1px white;
+    opacity: .56;
+    transition: .5s; }
+    .contextMenu .item:hover {
+      opacity: 1; }
+    .contextMenu .item.i1 {
+      left: -10px;
+      top: -110px; }
+    .contextMenu .item.i2 {
+      left: 60px;
+      top: 60px; }
+    .contextMenu .item.i3 {
+      left: -80px;
+      top: 60px; }
+
+/* entypo */
+[class*="entypo-"]:before {
+  font-family: 'entypo', sans-serif; }

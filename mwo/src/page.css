@@ -1,0 +1,28 @@
+form .validate {
+  display: inline-block; }
+  form .validate * {
+    background-color: #544327; }
+  form .validate input {
+    width: 128px;
+    margin-bottom: 0;
+    border: 1px solid gray; }
+  form .validate > div {
+    padding: 5px 8px;
+    color: #f9541c;
+    font-weight: bold;
+    border: 1px solid gray;
+    border-top: none;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px; }
+
+* {
+  padding: 0px;
+  margin: 0px;
+  color: #473921;
+  font-size: 11px;
+  font-family: arial; }
+
+body > div {
+  margin: 0 auto;
+  width: 998px;
+  height: 100%; }
