@@ -1,1 +1,0 @@
-document.write('<div id="AdBlockTest">This is an advertisement.</div>');

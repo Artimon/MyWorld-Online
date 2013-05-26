@@ -20,8 +20,8 @@ class Router {
 	 * @param string $error
 	 */
 	public function __construct($default, $error) {
-		$request = array_key_exists('route', $_REQUEST)
-			? $_REQUEST['route']
+		$request = array_key_exists('r', $_REQUEST)
+			? $_REQUEST['r']
 			: '';
 
 		$parts = explode('/', $request);
@@ -60,11 +60,12 @@ class Router {
 	}
 }
 
-$router = new Router('login', 'notFound');
+$router = new Router('login', 'pageNotFound');
 
 
 $baseDir = __DIR__;
 
+require_once $baseDir . '/source/i18n.php';
 require_once $baseDir . '/ext/valkyrie/valkyrie/Autoloader.php';
 
 $autoloader = Valkyrie_Autoloader::create();

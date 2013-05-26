@@ -1,0 +1,54 @@
+
+//<div class='ringmenu'>
+//	<div>
+//		<figure class='entypo-address' title='Map' style='-webkit-transform: rotateY(0deg) translateZ(200px);'></figure>
+//		<figure class='entypo-list' title='Ranks' style='-webkit-transform: rotateY(72deg) translateZ(200px);'></figure>
+//		<figure class='entypo-feather' title='Messages' style='-webkit-transform: rotateY(144deg) translateZ(200px);'></figure>
+//		<figure class='entypo-tools' title='Settings' style='-webkit-transform: rotateY(216deg) translateZ(200px);'></figure>
+//		<figure class='entypo-logout' title='Logout' style='-webkit-transform: rotateY(288deg) translateZ(200px);'></figure>
+//	</div>
+//</div>
+.ringmenu {
+	width: 500px;
+	height: 200px;
+
+	background-color: rgba(yellow, 0.25);
+
+	-webkit-perspective: 1000px;
+
+	div {
+		position: relative;
+
+		width: 100%;
+		height: 100%;
+
+		margin: 0;
+		margin-top: 20px;
+		padding: 0;
+
+		list-style: none;
+
+		-webkit-transform: translateZ(-200px) rotateY(0deg);
+		-webkit-transform-style: preserve-3d;
+		-webkit-transition: -webkit-transform 1s;
+
+		figure {
+			position: absolute;
+			left: 0;
+			top: 0;
+
+			display: block;
+			float: left;
+
+			width: 75px;
+			height: 75px;
+			line-height: 75px;
+
+			font-size: 50px;
+			text-align: center;
+
+			background-color: rgba(white, 0.5);
+			border-radius: 8px;
+		}
+	}
+}

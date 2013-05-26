@@ -1,0 +1,43 @@
+@import "variables";
+
+@mixin borderDefault {
+	border: 1px solid $colorBorderBottomDefault {
+		top-color: $colorBorderTopDefault;
+		right-color: $colorBorderLeftDefault;
+		left-color: $colorBorderRightDefault;
+	}
+}
+
+@mixin borderRadius($radius) {
+	border-radius: $radius;
+	-moz-border-radius: $radius;
+	-webkit-border-radius: $radius;
+}
+
+@mixin edgedBorderRadius($topLeft, $topRight, $bottomLeft, $bottomRight) {
+	border-radius: $topLeft $topRight $bottomLeft $bottomRight;
+	-moz-border-radius: $topLeft $topRight $bottomLeft $bottomRight;
+	-webkit-border-radius: $topLeft $topRight $bottomLeft $bottomRight;
+}
+
+@mixin boxShadow($radius, $color) {
+	$list: 0px 0px $radius $color;
+
+	box-shadow: $list;
+	-webkit-box-shadow: $list;
+	-moz-box-shadow: $list;
+}
+
+@mixin inset($radius, $color, $hOffset: 0px, $vOffset: 0px) {
+	$list: inset $hOffset $vOffset $radius $color;
+	box-shadow: $list;
+	-webkit-box-shadow: $list;
+	-moz-box-shadow: $list;
+}
+
+@mixin inset($radius, $color, $hOffset: 0, $vOffset: 0) {
+	$list: inset $hOffset $vOffset $radius $color;
+	box-shadow: $list;
+	-webkit-box-shadow: $list;
+	-moz-box-shadow: $list;
+}

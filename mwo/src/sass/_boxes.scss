@@ -1,0 +1,160 @@
+@import "variables";
+@import "mixins";
+
+@mixin header($color1, $color2, $color3, $color4) {
+	background: $color1; /* Old browsers */
+	background: -moz-linear-gradient(top,  $color1 0%, $color2 50%, $color3 51%, $color4 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, $color1), color-stop(50%, $color2), color-stop(51%, $color3), color-stop(100%, $color4)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  $color1 0%, $color2 50%, $color3 51%, $color4 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  $color1 0%, $color2 50%, $color3 51%, $color4 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  $color1 0%, $color2 50%, $color3 51%, $color4 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  $color1 0%, $color2 50%, $color3 51%, $color4 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$color1}', endColorstr='#{$color4}',GradientType=0 ); /* IE6-9 */
+}
+
+@mixin body($color1, $color2)  {
+	background: $color1; /* Old browsers */
+	background: -moz-linear-gradient(top,  $color1 0%, $color2 35%, $color2 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, $color1), color-stop(35%, $color2), color-stop(100%, $color2)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  $color1 0%, $color2 35%, $color2 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  $color1 0%, $color2 35%, $color2 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  $color1 0%, $color2 35%, $color2 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  $color1 0%, $color2 35%, $color2 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$color1}', endColorstr='#{$color2}',GradientType=0 ); /* IE6-9 */
+}
+
+#title {
+	position: absolute;
+	top: 54px;
+	left: 350px;
+	right: 350px;
+
+	z-index: 1;
+
+	padding: 5px;
+
+	color: $colorTextDark;
+	font-size: 12px;
+	text-align: center;
+
+	@include header(#f2e6c2, #e5c35c, #ccad52, #f2d479);
+	@include borderDefault;
+	@include borderRadius(10px);
+	@include boxShadow(4px, black);
+
+	h1 {
+		color: $colorTextDark;
+		font: {
+			size: 20px;
+			weight: bold;
+		}
+
+		text-shadow: 1px 1px 1px rgba($colorTextLight, 0.5);
+	}
+}
+
+div.box {
+	$radiusNarrow: 5px;
+	$radiusWide: 10px;
+
+	position: relative;
+
+	//border: 1px solid #1E2935 {
+	//	right-color: #272319;
+	//	bottom-color: #040301;
+	//	left-color: #6C665E;
+
+	@include borderDefault;
+	@include edgedBorderRadius($radiusNarrow, $radiusNarrow, 0, 0);
+
+	@include boxShadow(4px, black);
+
+	> h3.head {
+		height: 24px;
+		line-height: 24px;
+
+		padding: 0 10px;
+
+		color: $colorTextDefault;
+
+		// 1st color: saturation -40%; light +20%
+		// 2nd color: light +10%
+		// 3rd color: base color
+		// 4th color: saturation -10%; light +15%
+		@include header(#494743, #413C2E, #322E23, #4D493E);
+		@include edgedBorderRadius($radiusNarrow, $radiusNarrow, 0, 0);
+
+		&.attention {
+			color: black;
+
+			//@include header(#f6eacf, #dab35c, #c7a455, #eacc79);
+			// 3rd Color is base color: hsl(45deg, 60%, 80%)
+			@include header(#f2e6c2, #e5c35c, #ccad52, #f2d479);
+
+			a {
+				color: $colorTextDark;
+
+				&:hover {
+					text-shadow: 0 0 2px black;
+				}
+			}
+		}
+
+		//&.info {
+		//	//color: black;
+		//
+		//	//@include header(#f6eacf, #dab35c, #c7a455, #eacc79);
+		//	// 3rd Color is base color: hsl(45deg, 60%, 80%)
+		//	// Looks good but doesn't fit well.
+		//	@include header(#A7B3DC, #4F6BD3, #4963C3, #7E92DD);
+		//
+		//	a {
+		//		//color: black;
+		//
+		//		&:hover {
+		//			text-shadow: 0 0 2px black;
+		//		}
+		//	}
+		//}
+
+		a {
+			display: block;
+			width: 20px;
+			height: 20px;
+			line-height: 20px;
+
+			position: absolute;
+			right: 5px;
+			top: 2px;
+
+			color: $colorTextDefault;
+			font-size: 16px;
+
+			text: {
+				align: center;
+				decoration: none;
+			}
+
+			cursor: pointer;
+
+			&:hover {
+				text-shadow: 0 0 2px $colorTextDefault;
+			}
+		}
+	}
+
+	> div.body {
+		padding: 10px;
+
+		color: $colorTextDefault;
+
+		background-color: rgba(#322E23, 0.80);
+
+		@include inset(2px, black);
+	}
+
+	> div.actions {
+		padding: 10px;
+		background-color: rgba(#4D493E, 0.80);
+	}
+}

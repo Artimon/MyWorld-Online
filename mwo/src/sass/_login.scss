@@ -1,0 +1,31 @@
+#login {
+	position: relative;
+	padding-top: 32px;
+
+	background: {
+		image: url("../../mwo/img/tmp/bg.jpg");
+		size: 100%;
+	}
+
+	.titleBox {
+		margin: 40px 15px 300px 15px;
+	}
+
+	.register {
+		float: left;
+		width: 250px;
+
+		margin-left: 15px;
+	}
+
+	.news {
+		margin: 0 280px;
+	}
+
+	.login {
+		float: right;
+		width: 250px;
+
+		margin-right: 15px;
+	}
+}

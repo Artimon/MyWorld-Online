@@ -1,17 +1,53 @@
-@import "sass/_variables";
-@import "sass/_form";
+@import "sass/variables";
+@import "sass/form";
+@import "sass/ui";
+@import "sass/boxes";
+
+@import "sass/products";
+@import "sass/login";
 
 * {
 	padding: 0px;
 	margin: 0px;
 
-	color: $colorDefaultText;
+	color: $colorTextDefault;
 	font-size: 11px;
 	font-family: arial;
 }
 
-body > div {
-	margin: 0 auto;
-	width: 998px;
+html {
+	background: {
+		image: url("../img/background_pattern.png");
+		position: top center;
+		repeat: repeat-y;
+		color: $colorPageBackground;
+	}
+}
+
+
+body {
+	min-width: 1080px;
 	height: 100%;
+
+	> .content {
+		margin: 0 auto;
+		width: 998px;
+		height: 100%;
+	}
+}
+
+.clear {
+	clear: both;
+}
+
+.null {
+	display: none;
+}
+
+
+@import url(http://weloveiconfonts.com/api/?family=entypo);
+
+/* entypo */
+[class*="entypo-"]:before {
+  font-family: 'entypo', sans-serif;
 }
