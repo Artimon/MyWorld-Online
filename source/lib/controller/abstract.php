@@ -19,6 +19,13 @@ abstract class Controller_Abstract implements Controller_Interface {
 	abstract protected function pageData();
 
 	/**
+	 * @return Leviathan_Request
+	 */
+	public function request() {
+		return Leviathan_Request::getInstance();
+	}
+
+	/**
 	 * @param string $url
 	 * @throws ShutdownException
 	 */
