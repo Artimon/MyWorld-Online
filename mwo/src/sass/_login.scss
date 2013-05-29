@@ -9,6 +9,22 @@
 
 	.titleBox {
 		margin: 40px 15px 300px 15px;
+
+		.head div {
+			padding-top: 3px;
+		}
+	}
+
+	.login {
+		position: absolute;
+		top: 160px;
+		right: 15px;
+
+		form div {
+			margin: 5px 0;
+
+			text-align: right;
+		}
 	}
 
 	.register {
@@ -22,7 +38,7 @@
 		margin: 0 280px;
 	}
 
-	.login {
+	.info {
 		float: right;
 		width: 250px;
 

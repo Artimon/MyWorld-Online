@@ -1,6 +1,6 @@
 <?php
 
-abstract class ControllerAbstract implements ControllerInterface {
+abstract class Controller_Abstract implements Controller_Interface {
 	/**
 	 * @var array
 	 */
@@ -17,6 +17,31 @@ abstract class ControllerAbstract implements ControllerInterface {
 	 * @return array ['title', 'template']
 	 */
 	abstract protected function pageData();
+
+	/**
+	 * @param string $url
+	 * @throws ShutdownException
+	 */
+	public function redirect($url) {
+		$url = html_entity_decode($url);
+		header('location: ' . $url);
+
+		throw new ShutdownException();
+	}
+
+	protected function assertOnline() {
+		if (!Game::getInstance()->isOnline()) {
+			$url = Router::build(array('login'));
+			$this->redirect($url);
+		}
+	}
+
+	protected function assertOffline() {
+		if (Game::getInstance()->isOnline()) {
+			$url = Router::build(array('city'));
+			$this->redirect($url);
+		}
+	}
 
 	/**
 	 * @param Leviathan_Template $template

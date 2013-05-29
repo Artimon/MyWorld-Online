@@ -30,4 +30,31 @@
 			}
 		});
 	};
+
+	$.fn.loginBox = function () {
+		var $this = this,
+			$link = $this.find('.showLogin'),
+			$box = $this.find('.loginBox'),
+			$close = $box.find('.close');
+
+		// @TODO Check for known user cookie and instant-show login box.
+
+		$link.click(function () {
+			$link.fadeOut(
+				'fast',
+				function () {
+					$box.fadeIn();
+				}
+			);
+		});
+
+		$close.click(function () {
+			$box.fadeOut(
+				'fast',
+				function () {
+					$link.fadeIn();
+				}
+			);
+		});
+	};
 }(jQuery));

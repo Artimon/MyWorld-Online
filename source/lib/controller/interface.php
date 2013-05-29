@@ -1,5 +1,5 @@
 <?php
 
-interface ControllerInterface {
+interface Controller_Interface {
 	public function index();
 }

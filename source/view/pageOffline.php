@@ -23,6 +23,8 @@ $gameBox = "
 
 $gameBox = ViewHelper_ContentBox::create('Browsergames', $gameBox)->get();
 
+$bindings = JavaScript::getInstance()->bindings();
+
 $products = "
 	<div id='products'>
 		<div class='content'>
@@ -61,7 +63,7 @@ echo "
 	<script type='text/javascript' src='mwo/src/adframe.js'></script>
 	<script type='text/javascript' src='mwo/src/page.js'></script>
 	<script type='text/javascript'>
-		$('.moreGames').moreGames();
+		{$bindings}
 	</script>
 </body>
 </html>";

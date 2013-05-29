@@ -1,4 +1,5 @@
 @import "variables";
+@import "mixins";
 
 form {
 	.validate {
@@ -30,5 +31,34 @@ form {
 				right-radius: 5px;
 			}
 		}
+	}
+}
+
+input[type=text],
+input[type=password],
+select,
+textarea {
+	color: $colorTextDark;
+	width: 120px;
+	height: 18px;
+	line-height: 18px;
+
+	padding: 0 3px;
+
+	background: MintCream url(http://board-schlacht-um-kyoto.de/img_suk/candy_input.png) repeat-x;
+	//border: 1px solid #A0A4B8;
+	//border-top: 1px solid #6F778A;
+	//border-radius: 3px;
+
+	@include borderDefault;
+	@include borderRadius(3px);
+
+	&:focus {
+		border: 1px solid #91BAD5;
+		border-top: 1px solid #6796AE;
+
+		-webkit-box-shadow: 0 0 2px #6796AE, inset 0 0 2px #6796AE; /* webkit browser*/
+		-moz-box-shadow: 0 0 2px #6796AE, inset 0 0 2px #6796AE; /* firefox */
+		box-shadow: 0 0 2px #6796AE, inset 0 0 2px #6796AE;
 	}
 }

@@ -2,6 +2,11 @@
 @import "mixins";
 
 @mixin header($color1, $color2, $color3, $color4) {
+	$color1: rgba($color1, .95);
+	$color2: rgba($color2, .95);
+	$color3: rgba($color3, .95);
+	$color4: rgba($color4, .95);
+
 	background: $color1; /* Old browsers */
 	background: -moz-linear-gradient(top,  $color1 0%, $color2 50%, $color3 51%, $color4 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, $color1), color-stop(50%, $color2), color-stop(51%, $color3), color-stop(100%, $color4)); /* Chrome,Safari4+ */
@@ -10,17 +15,6 @@
 	background: -ms-linear-gradient(top,  $color1 0%, $color2 50%, $color3 51%, $color4 100%); /* IE10+ */
 	background: linear-gradient(to bottom,  $color1 0%, $color2 50%, $color3 51%, $color4 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$color1}', endColorstr='#{$color4}',GradientType=0 ); /* IE6-9 */
-}
-
-@mixin body($color1, $color2)  {
-	background: $color1; /* Old browsers */
-	background: -moz-linear-gradient(top,  $color1 0%, $color2 35%, $color2 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, $color1), color-stop(35%, $color2), color-stop(100%, $color2)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  $color1 0%, $color2 35%, $color2 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  $color1 0%, $color2 35%, $color2 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  $color1 0%, $color2 35%, $color2 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  $color1 0%, $color2 35%, $color2 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$color1}', endColorstr='#{$color2}',GradientType=0 ); /* IE6-9 */
 }
 
 #title {
@@ -33,11 +27,9 @@
 
 	padding: 5px;
 
-	color: $colorTextDark;
-	font-size: 12px;
 	text-align: center;
 
-	@include header(#f2e6c2, #e5c35c, #ccad52, #f2d479);
+	@include header($colorTitleAttention1, $colorTitleAttention2, $colorTitleAttention3, $colorTitleAttention4);
 	@include borderDefault;
 	@include borderRadius(10px);
 	@include boxShadow(4px, black);
@@ -50,6 +42,11 @@
 		}
 
 		text-shadow: 1px 1px 1px rgba($colorTextLight, 0.5);
+	}
+
+	h2 {
+		color: $colorTextDark;
+		font-size: 12px;
 	}
 }
 
@@ -81,7 +78,7 @@ div.box {
 		// 2nd color: light +10%
 		// 3rd color: base color
 		// 4th color: saturation -10%; light +15%
-		@include header(#494743, #413C2E, #322E23, #4D493E);
+		@include header($colorTitleDefault1, $colorTitleDefault2, $colorTitleDefault3, $colorTitleDefault4);
 		@include edgedBorderRadius($radiusNarrow, $radiusNarrow, 0, 0);
 
 		&.attention {
@@ -89,7 +86,7 @@ div.box {
 
 			//@include header(#f6eacf, #dab35c, #c7a455, #eacc79);
 			// 3rd Color is base color: hsl(45deg, 60%, 80%)
-			@include header(#f2e6c2, #e5c35c, #ccad52, #f2d479);
+			@include header($colorTitleAttention1, $colorTitleAttention2, $colorTitleAttention3, $colorTitleAttention4);
 
 			a {
 				color: $colorTextDark;

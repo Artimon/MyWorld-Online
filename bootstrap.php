@@ -44,7 +44,7 @@ class Router {
 	}
 
 	/**
-	 * @return ControllerInterface
+	 * @return Controller_Interface
 	 */
 	public function controller() {
 		$controller = $this->route['controller'];
@@ -58,7 +58,18 @@ class Router {
 	public function route() {
 		return $this->route;
 	}
+
+	/**
+	 * @param array $parameters
+	 * @return string
+	 */
+	public static function build(array $parameters) {
+		return '?r=' . implode('/', $parameters);
+	}
 }
+
+
+session_start();
 
 $router = new Router('login', 'pageNotFound');
 
@@ -78,5 +89,14 @@ $autoloader
 	->lowerCasePaths()
 	->start(false);
 
-$controller = $router->controller();
-$controller->index();
+// @TODO Database connect.
+
+try {
+	$controller = $router->controller();
+	$controller->index();
+}
+catch (ShutdownException $e) {
+	// Allow proper application shutdown.
+}
+
+// @TODO Database disconnect.

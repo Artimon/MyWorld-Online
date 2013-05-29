@@ -8,9 +8,18 @@ $colorTextError: #f9541c;
 $colorBackgroundDefault: #e3cb8f;
 $colorPageBackground: #cedcc3;
 
-$colorBoxBackground: #302a1a; // #544327;
-$colorBoxBorder: #d0a489;
+$colorBoxBackground: #322e23; // #302a1a, #544327;
 $colorBoxHighlight: #b9d274;
+
+$colorTitleDefault1: #494743;
+$colorTitleDefault2: #413c2e;
+$colorTitleDefault3: #322e23;
+$colorTitleDefault4: #4d493e;
+
+$colorTitleAttention1: #f2e6c2;
+$colorTitleAttention2: #e5c35c;
+$colorTitleAttention3: #ccad52;
+$colorTitleAttention4: #f2d479;
 
 $colorBorderBottomDefault: #6C665E;
 $colorBorderTopDefault: darken($colorBorderBottomDefault, 20%);

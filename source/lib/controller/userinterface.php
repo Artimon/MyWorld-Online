@@ -1,6 +1,6 @@
 <?php
 
-class ControllerUserInterface extends ControllerAbstract {
+class Controller_UserInterface extends Controller_Abstract {
 	public function index() {
 		$template = new Leviathan_Template();
 
@@ -12,7 +12,7 @@ class ControllerUserInterface extends ControllerAbstract {
 	 */
 	protected function pageData() {
 		return array(
-			'title' => 'MyWorld-Online - User Interface Demo',
+			'title' => Game::getInstance()->name() . ' - User Interface Demo',
 			'template' => 'pageOnline'
 		);
 	}

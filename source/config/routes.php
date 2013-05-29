@@ -2,12 +2,18 @@
 
 return array(
 	'login' => array(
-		'controller' => 'ControllerLogin'
+		'controller' => 'Controller_Login'
+	),
+	'logout' => array(
+		'controller' => 'Controller_Logout'
+	),
+	'city' => array(
+		'controller' => 'Controller_City'
 	),
 	'ui' => array(
-		'controller' => 'ControllerUserInterface'
+		'controller' => 'Controller_UserInterface'
 	),
 	'pageNotFound' => array(
-		'controller' => 'ControllerPageNotFound'
+		'controller' => 'Controller_PageNotFound'
 	)
 );

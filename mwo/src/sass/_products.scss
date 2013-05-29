@@ -24,7 +24,7 @@
 
 	> .content {
 		position: relative;
-		width: 940px;
+		width: 950px;
 		height: 32px;
 		line-height: 32px;
 
@@ -59,6 +59,8 @@
 
 				@include borderDefault;
 				@include borderRadius(3px);
+
+				background-color: black;
 
 				font-size: 11px;
 

@@ -1,0 +1,106 @@
+@import "variables";
+
+.button {
+	display: inline-block;
+	background: url(../img/buttons.png) no-repeat 0px 0px;
+	border: none;
+
+	width: 95px;
+	height: 27px;
+
+	color: $colorTextDefault !important;
+	text-decoration: none !important;
+	text-align: center;
+	text-shadow: 0px 0px 2px #000;
+	cursor: pointer;
+	line-height: 27px;
+	white-space: nowrap;
+
+	&:hover {
+		background-position: 0px -27px;
+		text-shadow: 0px 0px 2px $colorTextDefault;
+	}
+
+	&.button:active,
+	&.button.pressed {
+		background-position: 0px -54px;
+	}
+
+	&.small {
+		background-position: -95px 0px;
+		width: 60px;
+
+		&:hover {
+			background-position: -95px -27px;
+		}
+
+		&:active,
+		&.pressed {
+			background-position: -95px -54px;
+		}
+
+		&.disabled,
+		&.disabled:hover,
+		&.disabled:active {
+			background-position:-95px -81px;
+		}
+	}
+
+	&.large {
+		font-weight:bold;
+		background-position: -155px 0px;
+		width:200px;
+
+		&:hover {
+			background-position: -155px -27px;
+		}
+
+		&:active {
+			background-position: -155px -54px;
+		}
+
+		&.disabled,
+		&.disabled:hover,
+		&.disabled:active {
+			background-position: -155px -81px;
+		}
+	}
+
+	&.disabled,
+	&.disabled:hover,
+	&.disabled:active {
+		background-position: 0 -81px;
+		color: #2f4f4f !important;
+		cursor: default;
+		text-shadow: none;
+	}
+
+	&.important {
+		font-weight:bold;
+		background-position: 0px -108px;
+
+		&:hover {
+			background-position: 0px -135px;
+		}
+
+		&:active {
+			background-position: 0px -162px;
+		}
+
+		&.small {
+			background-position: -95px -108px;
+
+			&:hover {
+				background-position:-95px -135px;
+			}
+
+			&:active {
+				background-position:-95px -162px;
+			}
+		}
+	}
+}
+
+input.button {
+	padding-bottom: 2px;
+}

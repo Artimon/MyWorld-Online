@@ -1,7 +1,7 @@
 <?php
 
 $contentBox = ViewHelper_ContentBox::create('Default content box', 'Content box content.')
-	->setActions("<button>Action</button>")
+	->setActions("<a href='#' class='button'>Button</a>")
 	->get();
 
 $attentionBox = ViewHelper_ContentBox::create('Attention content box', 'Content box content.')
@@ -29,14 +29,18 @@ echo "
 	{$attentionBox}
 </p>
 
-<h3>Context Menu</h3>
+<h3>Buttons</h3>
 <p>
-	<div class='contextMenu'>
-		<div class='circle'>Label</div>
-		<a class='item i1 entypo-feather'></a>
-		<a class='item i2 entypo-cog'></a>
-		<a class='item i3 entypo-star'></a>
-	</div>
+	<a href='#' class='button'>Button</a>
+	<a href='#' class='button small'>Small</a>
+	<a href='#' class='button large'>Large</a>
+	<br>
+	<a href='#' class='button important'>Button</a>
+	<a href='#' class='button important small'>Small</a>
+	<br>
+	<a href='#' class='button disabled'>Button</a>
+	<a href='#' class='button disabled small'>Small</a>
+	<a href='#' class='button disabled large'>Large</a>
 </p>
 
 <h3>Form Elements</h3>
@@ -47,4 +51,14 @@ echo "
 			<div>Error Message</div>
 		</div>
 	</form>
+</p>
+
+<h3>Context Menu</h3>
+<p>
+	<div class='contextMenu'>
+		<div class='circle'>Label</div>
+		<a class='item i1 entypo-feather'></a>
+		<a class='item i2 entypo-cog'></a>
+		<a class='item i3 entypo-star'></a>
+	</div>
 </p>";
