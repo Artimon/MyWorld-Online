@@ -2,6 +2,13 @@
 
 class Building_Mine extends Building_Abstract {
 	/**
+	 * @return string
+	 */
+	public function key() {
+		return Buildings::BUILDING_MINE;
+	}
+
+	/**
 	 * @return Resource_Interface[]
 	 */
 	public function goods() {

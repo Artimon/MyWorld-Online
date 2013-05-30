@@ -6,6 +6,9 @@ class Controller_City extends Controller_Abstract {
 		$url = Router::build(array('logout'));
 		$template->assignValue('logoutUrl', $url);
 
+		$city = new City(1);
+		$template->assignValue('buildings', $city->tempList());
+
 		$this->render($template, 'city');
 	}
 

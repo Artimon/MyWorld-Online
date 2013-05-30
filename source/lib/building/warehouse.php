@@ -1,19 +1,17 @@
 <?php
 
-class Building_Logger extends Building_Abstract {
+class Building_Warehouse extends Building_Abstract {
 	/**
 	 * @return string
 	 */
 	public function key() {
-		return Buildings::BUILDING_LOGGER;
+		return Buildings::BUILDING_WAREHOUSE;
 	}
 
 	/**
 	 * @return Resource_Interface[]
 	 */
 	public function goods() {
-		return array(
-			new Resource_Wood()
-		);
+		return array();
 	}
 }

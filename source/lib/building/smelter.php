@@ -2,6 +2,13 @@
 
 class Building_Smelter extends Building_Abstract {
 	/**
+	 * @return string
+	 */
+	public function key() {
+		return Buildings::BUILDING_SMELTER;
+	}
+
+	/**
 	 * @return Resource_Interface[]
 	 */
 	public function goods() {
