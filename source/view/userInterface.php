@@ -53,6 +53,10 @@ echo "
 	</form>
 </p>
 
+<p>
+	<a href='#' class='round entypo-users'></a>
+</p>
+
 <h3>Context Menu</h3>
 <p>
 	<div class='contextMenu'>

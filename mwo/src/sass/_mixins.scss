@@ -20,8 +20,8 @@
 	-webkit-border-radius: $topLeft $topRight $bottomLeft $bottomRight;
 }
 
-@mixin boxShadow($radius, $color) {
-	$list: 0px 0px $radius $color;
+@mixin boxShadow($radius, $color, $hOffset: 0px, $vOffset: 0px) {
+	$list: $hOffset $vOffset $radius $color;
 
 	box-shadow: $list;
 	-webkit-box-shadow: $list;
@@ -29,13 +29,6 @@
 }
 
 @mixin inset($radius, $color, $hOffset: 0px, $vOffset: 0px) {
-	$list: inset $hOffset $vOffset $radius $color;
-	box-shadow: $list;
-	-webkit-box-shadow: $list;
-	-moz-box-shadow: $list;
-}
-
-@mixin inset($radius, $color, $hOffset: 0, $vOffset: 0) {
 	$list: inset $hOffset $vOffset $radius $color;
 	box-shadow: $list;
 	-webkit-box-shadow: $list;

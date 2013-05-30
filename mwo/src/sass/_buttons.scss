@@ -1,4 +1,5 @@
 @import "variables";
+@import "mixins";
 
 .button {
 	display: inline-block;
@@ -103,4 +104,80 @@
 
 input.button {
 	padding-bottom: 2px;
+}
+
+@mixin simpleGradient($colorStart, $colorEnd) {
+	background: $colorStart; /* Old browsers */
+	background: -moz-linear-gradient(top,  $colorStart 0%, $colorEnd 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, $colorStart), color-stop(100%, $colorEnd)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  $colorStart 0%, $colorEnd 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  $colorStart 0%, $colorEnd 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  $colorStart 0%, $colorEnd 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  $colorStart 0%, $colorEnd 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$colorStart}', endColorstr='#{$colorEnd}',GradientType=0 ); /* IE6-9 */
+}
+
+a.round {
+	display: inline-block;
+	width: 48px;
+	height: 48px;
+	line-height: 48px;
+
+	color: $colorTextDark;
+	font-size: 22px;
+	text: {
+		align: center;
+		decoration: none;
+		shadow: 0px 0px 2px $colorShadowDark;
+	}
+
+	background: {
+		image: url('../img/round.png');
+		repeat: no-repeat;
+	}
+
+	&:hover {
+		color: $colorTextHover;
+		background-position: -48px 0;
+	}
+}
+
+a.niceButton {
+	display: block;
+	width: 44px;
+	height: 44px;
+
+	border: 3px solid white;
+
+	@include borderRadius(25px);
+	@include boxShadow(1px, black);
+	@include simpleGradient(#D6D6D6, white);
+
+	> span {
+		display: inline-block;
+		width: 36px;
+		height: 36px;
+
+		margin: 4px;
+
+		@include borderRadius(18px);
+		@include boxShadow(5px, rgba(black, .7), 0px, 4px);
+		@include simpleGradient(#F2F0F1, #B3AFA4);
+
+		> span {
+			display: inline-block;
+			width: 24px;
+			height: 24px;
+			line-height: 24px;
+
+			margin: 6px;
+
+			@include borderRadius(12px);
+
+			background-color: #D3CFC4;
+			color: black;
+
+			text-align: center;
+		}
+	}
 }
