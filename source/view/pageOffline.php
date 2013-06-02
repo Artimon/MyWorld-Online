@@ -31,7 +31,7 @@ $products = "
 			<div class='company'>
 				<a href='http://www.pad-soft.de' target='_blank'>
 					<span class='entypo-compass'></span>
-					PAD-Soft Game Development
+					PAD-Soft Game Development by Artimus
 				</a>
 			</div>
 			<div class='moreGames'>

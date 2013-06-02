@@ -29,6 +29,14 @@ class City extends Lisbeth_Entity {
 		return $data[$index];
 	}
 
+	/**
+	 * @param Account $account
+	 * @return bool
+	 */
+	public function isOwner(Account $account) {
+		return true; // @TODO Add check.
+	}
+
 	public function tempList() {
 		$buildings = new Buildings();
 

@@ -1,11 +1,13 @@
 <?php
 
 class Building_TaxCollector extends Building_Abstract {
+	const KEY = 'taxCollector';
+
 	/**
 	 * @return string
 	 */
 	public function key() {
-		return Buildings::BUILDING_TAX_COLLECTOR;
+		return self::KEY;
 	}
 
 	/**

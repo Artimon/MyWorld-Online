@@ -38,8 +38,7 @@ class Game {
 	 */
 	public function account() {
 		if ($this->isOnline()) {
-			return Lisbeth_ObjectPool::get(
-				'Account',
+			return Account::get(
 				$this->accountId()
 			);
 		}

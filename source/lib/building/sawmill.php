@@ -1,11 +1,13 @@
 <?php
 
 class Building_Sawmill extends Building_Abstract {
+	const KEY = 'sawmill';
+
 	/**
 	 * @return string
 	 */
 	public function key() {
-		return Buildings::BUILDING_SAWMILL;
+		return self::KEY;
 	}
 
 	/**

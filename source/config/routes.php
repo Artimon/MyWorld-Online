@@ -10,6 +10,9 @@ return array(
 	'city' => array(
 		'controller' => 'Controller_City'
 	),
+	'building_mine' => array(
+		'controller' => 'Controller_Building_Mine'
+	),
 	'ui' => array(
 		'controller' => 'Controller_UserInterface'
 	),

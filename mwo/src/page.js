@@ -57,4 +57,57 @@
 			);
 		});
 	};
+
+	$.fn.showBuilding = function () {
+		this.click(function (event) {
+			var $link = $(this);
+
+			event.preventDefault();
+
+			$.get($link.attr('href'))
+				.success(function (html) {
+					$('#buildingBox').html(html).fadeIn('fast');
+				});
+		})
+	};
+
+	$.fn.buildingBox = function () {
+		var $buildingBox = $(this),
+			$close = $buildingBox.find('.close');
+
+		$close.click(function () {
+			$.bindings.clear('buildingBox');
+			$buildingBox.fadeOut('fast');
+		});
+
+		$.bindings.create('buildingBox');
+		$.bindings.add('buildingBox', $close);
+	};
+
+
+	$.bindings = {
+		list: {}
+	};
+
+	$.bindings.clear = function (namespace) {
+		if (!$.bindings.list[namespace]) {
+			return;
+		}
+
+		$.each($.bindings.list[namespace], function (key, $binding) {
+			$binding.unbind();
+		});
+
+		delete $.bindings.list[namespace];
+	};
+
+	$.bindings.create = function (namespace) {
+		$.bindings.clear(namespace);
+
+		$.bindings.list[namespace] = [];
+	};
+
+	$.bindings.add = function (namespace, $binding) {
+		$.bindings.list[namespace].push($binding);
+	};
 }(jQuery));

@@ -5,6 +5,14 @@
  * @var string $body
  */
 
+$city = Theme::getInstance()->resolve('city');
+$cityUrl = Router::build(array('city'));
+
+$logout = i18n('logout');
+$logoutUrl = Router::build(array('logout'));
+
+$bindings = JavaScript::getInstance()->bindings();
+
 echo "
 <!DOCTYPE html>
 <html>
@@ -17,15 +25,18 @@ echo "
 	<div class='content'>{$body}</div>
 
 	<div class='navigation'>
-		<a href='#' class='round entypo-home'></a>
+		<a href='{$cityUrl}' class='round entypo-home' title='{$city}'></a>
 		<a href='#' class='round entypo-users'></a>
 		<a href='#' class='round entypo-star-empty'></a>
 		<a href='#' class='round entypo-feather'></a>
 		<a href='#' class='round entypo-cog'></a>
+		<a href='{$logoutUrl}' class='round entypo-logout' title='{$logout}'></a>
 	</div>
 
 	<script type='text/javascript' src='ext/jQuery/jquery-1.8.0.min.js'></script>
-	<script type='text/javascript' src='adframe.js'></script>
-	<script type='text/javascript' src='default.js'></script>
+	<script type='text/javascript' src='mwo/src/page.js'></script>
+	<script type='text/javascript'>
+		{$bindings}
+	</script>
 </body>
 </html>";

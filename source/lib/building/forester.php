@@ -1,11 +1,13 @@
 <?php
 
 class Building_Forester extends Building_Abstract {
+	const KEY = 'forester';
+
 	/**
 	 * @return string
 	 */
 	public function key() {
-		return Buildings::BUILDING_FORESTER;
+		return self::KEY;
 	}
 
 	/**

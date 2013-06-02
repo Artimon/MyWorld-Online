@@ -26,6 +26,18 @@ abstract class Controller_Abstract implements Controller_Interface {
 	}
 
 	/**
+	 * @param int $number
+	 * @return null|string
+	 */
+	public function argument($number) {
+		if (array_key_exists($number, $this->params)) {
+			return $this->params[$number];
+		}
+
+		return null;
+	}
+
+	/**
 	 * @param string $url
 	 * @throws ShutdownException
 	 */
@@ -65,6 +77,14 @@ abstract class Controller_Abstract implements Controller_Interface {
 
 		// @TODO Check for online/offline page theme, or move to implementation.
 		echo $page->render("source/view/{$data['template']}.php");
+	}
+
+	/**
+	 * @param Leviathan_Template $template
+	 * @param string $path
+	 */
+	public function partial(Leviathan_Template $template, $path) {
+		echo $template->render("source/view/{$path}.php");
 	}
 
 	public function json(Leviathan_Template $template) {

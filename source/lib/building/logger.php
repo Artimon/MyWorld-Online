@@ -1,11 +1,13 @@
 <?php
 
 class Building_Logger extends Building_Abstract {
+	const KEY = 'logger';
+
 	/**
 	 * @return string
 	 */
 	public function key() {
-		return Buildings::BUILDING_LOGGER;
+		return self::KEY;
 	}
 
 	/**

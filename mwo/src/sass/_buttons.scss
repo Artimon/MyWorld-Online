@@ -123,7 +123,7 @@ a.round {
 	height: 48px;
 	line-height: 48px;
 
-	color: $colorTextDark;
+	color: rgba($colorTextDark, .95);
 	font-size: 22px;
 	text: {
 		align: center;

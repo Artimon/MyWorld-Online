@@ -6,11 +6,13 @@
  * Null object pattern for empty building places or undefined buildings.
  */
 class Building_Null extends Building_Abstract {
+	const KEY = '';
+
 	/**
 	 * @return string
 	 */
 	public function key() {
-		return '';
+		return self::KEY;
 	}
 
 	/**
@@ -18,5 +20,12 @@ class Building_Null extends Building_Abstract {
 	 */
 	public function goods() {
 		return array();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function valid() {
+		return false;
 	}
 }

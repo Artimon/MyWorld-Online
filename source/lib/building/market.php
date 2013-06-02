@@ -1,11 +1,13 @@
 <?php
 
 class Building_Market extends Building_Abstract {
+	const KEY = 'market';
+
 	/**
 	 * @return string
 	 */
 	public function key() {
-		return Buildings::BUILDING_MARKET;
+		return self::KEY;
 	}
 
 	/**

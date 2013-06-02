@@ -1,11 +1,13 @@
 <?php
 
 class Building_Stable extends Building_Abstract {
+	const KEY = 'stable';
+
 	/**
 	 * @return string
 	 */
 	public function key() {
-		return Buildings::BUILDING_STABLE;
+		return self::KEY;
 	}
 
 	/**

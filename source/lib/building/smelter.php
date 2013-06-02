@@ -1,11 +1,13 @@
 <?php
 
 class Building_Smelter extends Building_Abstract {
+	const KEY = 'smelter';
+
 	/**
 	 * @return string
 	 */
 	public function key() {
-		return Buildings::BUILDING_SMELTER;
+		return self::KEY;
 	}
 
 	/**

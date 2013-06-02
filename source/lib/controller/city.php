@@ -2,11 +2,8 @@
 
 class Controller_City extends Controller_Abstract {
 	public function index() {
-		$template = new Leviathan_Template();
-		$url = Router::build(array('logout'));
-		$template->assignValue('logoutUrl', $url);
-
 		$city = new City(1);
+		$template = new Leviathan_Template();
 		$template->assignValue('buildings', $city->tempList());
 
 		$this->render($template, 'city');
