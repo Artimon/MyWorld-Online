@@ -1,32 +1,72 @@
 <?php
 
 class City extends Lisbeth_Entity {
+	protected $table = 'cities';
+
 	/**
 	 * @const int
 	 */
-	const BUILDING_SLOTS = 3;
+	const BUILDING_SLOTS = 6;
 
 	/**
-	 * Mock
-	 * @param int $id
+	 * @var Buildings
 	 */
-	public function __construct($id) {
+	private $buildings;
+
+	/**
+	 * @throws InvalidArgumentException
+	 */
+	public function assertOnlineOwner() {
+		$isOwner = $this->isOwner(
+			Game::getInstance()->account()
+		);
+
+		if (!$isOwner) {
+			throw new InvalidArgumentException("Foreign city.");
+		}
 	}
 
 	/**
-	 * DB Mock override.
-	 *
-	 * @param string $index
-	 * @return string
+	 * @return Buildings
 	 */
-	public function value($index) {
-		$data = array(
-			'building1' => '1:council',
-			'building2' => '',
-			'building3' => '2:mine'
-		);
+	public function buildings() {
+		if (!$this->buildings) {
+			$this->buildings = new Buildings($this);
+		}
 
-		return $data[$index];
+		return $this->buildings;
+	}
+
+	/**
+	 * @param int|null $position
+	 * @return Building_Interface|City
+	 */
+	public function currentBuilding($position = null) {
+		static $current;
+
+		if ($position) {
+			$current = $this->buildings()->building($position);
+
+			return $this;
+		}
+
+		return $current;
+	}
+
+	/**
+	 * @return Account
+	 */
+	public function owner() {
+		return Account::get(
+			$this->value('ownerId')
+		);
+	}
+
+	/**
+	 * @return City_WorkTasks
+	 */
+	public function workTasks() {
+		return Lisbeth_ObjectPool::get('City_WorkTasks', $this->id());
 	}
 
 	/**
@@ -34,14 +74,14 @@ class City extends Lisbeth_Entity {
 	 * @return bool
 	 */
 	public function isOwner(Account $account) {
-		return true; // @TODO Add check.
+		return $this->owner()->isSame($account);
 	}
 
 	public function tempList() {
-		$buildings = new Buildings();
+		$buildings = $this->buildings();
 
 		for ($i = 1; $i <= self::BUILDING_SLOTS; ++$i) {
-			$buildings->add($this, 'building' . $i);
+			$buildings->building($i);
 		}
 
 		return $buildings->get();

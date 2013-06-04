@@ -240,6 +240,13 @@ button {
       left: -80px;
       top: 60px; }
 
+#loader {
+  position: absolute;
+  display: block;
+  width: 31px;
+  height: 31px;
+  background-image: url("../img/ajax-loader.gif"); }
+
 #title {
   position: absolute;
   top: 54px;
@@ -475,6 +482,9 @@ div.box {
     width: 250px;
     margin-right: 15px; }
 
+#buildingBox .box {
+  width: 450px; }
+
 * {
   padding: 0px;
   margin: 0px;
@@ -483,6 +493,8 @@ div.box {
   font-family: arial; }
 
 html {
+  width: 100%;
+  height: 100%;
   background-image: url("../img/background_pattern.png");
   background-position: top center;
   background-repeat: repeat-y;

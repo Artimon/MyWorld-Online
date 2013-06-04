@@ -7,11 +7,51 @@ class Buildings {
 	private $list = array();
 
 	/**
-	 * @param City $city
-	 * @param string $position
+	 * @var City
 	 */
-	public function add(City $city, $position) {
-		$data = $city->value($position);
+	private $city;
+
+	/**
+	 * @param City $city
+	 */
+	public function __construct(City $city) {
+		$this->city = $city;
+	}
+
+	/**
+	 * @param Building_Interface $building
+	 * @return bool
+	 */
+	public function has(Building_Interface $building) {
+		return $this->building($building->position())->valid();
+	}
+
+	/**
+	 * @param string $position
+	 * @return Building_Interface
+	 */
+	public function building($position) {
+		$position = (int)$position;
+
+		if (!array_key_exists($position, $this->list)) {
+			$this->add($position);
+		}
+
+		return $this->list[$position];
+	}
+
+	/**
+	 * @param int $position
+	 * @throws InvalidArgumentException
+	 */
+	public function add($position) {
+		$position = (int)$position;
+
+		if ($position < 0 || $position > City::BUILDING_SLOTS) {
+			throw new InvalidArgumentException("Position '{$position}' invalid.");
+		}
+
+		$data = $this->city->value('building' . $position);
 
 		$this->list[$position] = null;
 		$target = &$this->list[$position];
@@ -31,9 +71,8 @@ class Buildings {
 
 		$target = Building::get($data[1]);
 		if ($target->valid()) {
-			$target->level(
-				(int)$data[0]
-			);
+			$target->level((int)$data[0]);
+			$target->position($position);
 		}
 	}
 

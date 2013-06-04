@@ -1,6 +1,6 @@
 <?php
 
-class Controller_Building_Mine extends Controller_Building_Producer {
+class Controller_Building_Farm extends Controller_Building_Producer {
 	public function index() {
 		$this->assertOnline();
 

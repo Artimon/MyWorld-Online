@@ -87,7 +87,12 @@ abstract class Controller_Abstract implements Controller_Interface {
 		echo $template->render("source/view/{$path}.php");
 	}
 
+	/**
+	 * @param Leviathan_Template $template
+	 */
 	public function json(Leviathan_Template $template) {
-		// @TODO Return json header and template data.
+		header('Content-type: application/json');
+
+		echo $template->json();
 	}
 }

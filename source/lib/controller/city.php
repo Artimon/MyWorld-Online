@@ -2,9 +2,14 @@
 
 class Controller_City extends Controller_Abstract {
 	public function index() {
+		$this->assertOnline();
+
 		$city = new City(1);
 		$template = new Leviathan_Template();
-		$template->assignValue('buildings', $city->tempList());
+		$template->assignArray(array(
+			'city' => $city,
+			'buildings' => $city->tempList()
+		));
 
 		$this->render($template, 'city');
 	}

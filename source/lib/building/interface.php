@@ -18,6 +18,12 @@ interface Building_Interface {
 	public function level($level = null);
 
 	/**
+	 * @param int|null $position
+	 * @return int
+	 */
+	public function position($position = null);
+
+	/**
 	 * @param string $key
 	 * @return bool
 	 */
@@ -27,6 +33,12 @@ interface Building_Interface {
 	 * @return Resource_Interface[]
 	 */
 	public function goods();
+
+	/**
+	 * @param Resource_Interface $resource
+	 * @return bool
+	 */
+	public function produces(Resource_Interface $resource);
 
 	/**
 	 * @return bool

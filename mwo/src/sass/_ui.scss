@@ -86,3 +86,13 @@ button {
 		}
 	}
 }
+
+#loader {
+	position: absolute;
+
+	display: block;
+	width: 31px;
+	height: 31px;
+
+	background-image: url('../img/ajax-loader.gif');
+}

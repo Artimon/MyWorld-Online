@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * @var City $city
  * @var Building_Interface[] $buildings
  */
 
@@ -8,10 +9,14 @@ JavaScript::getInstance()->bind("$('.showBuilding').showBuilding();");
 
 echo "Hellooo beautiful!";
 foreach ($buildings as $building) {
+	if (!$building->valid()) {
+		continue;
+	}
+
 	$url = Router::build(array(
 		'building_' . $building->key(),
-		1,
-		'position1'
+		$city->id(),
+		$building->position()
 	));
 
 	echo "

@@ -7,9 +7,25 @@ interface Resource_Interface {
 	public function key();
 
 	/**
+	 * @return string
+	 */
+	public function name();
+
+	/**
+	 * @return string
+	 */
+	public function createName();
+
+	/**
 	 * @return Resource_Interface[]
 	 */
 	public function requires();
+
+	/**
+	 * @param Resource_Interface $resource
+	 * @return bool
+	 */
+	public function equals(Resource_Interface $resource);
 
 	/**
 	 * @param City $city
@@ -31,6 +47,16 @@ interface Resource_Interface {
 	 * @throws Resource_InsufficientException
 	 */
 	public function sub(Lisbeth_Entity $entity, $amount);
+
+	/**
+	 * @return int
+	 */
+	public function createAmount();
+
+	/**
+	 * @return int
+	 */
+	public function createDuration();
 
 	// production price -> money = 0
 }

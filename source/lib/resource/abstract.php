@@ -2,6 +2,22 @@
 
 abstract class Resource_Abstract implements Resource_Interface {
 	/**
+	 * @return string
+	 */
+	public function name() {
+		return Theme::getInstance()->resolve(
+			$this->key()
+		);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function createName() {
+		return Theme::getInstance()->resolve('create');
+	}
+
+	/**
 	 * @param City $city
 	 * @return int
 	 */
@@ -9,6 +25,14 @@ abstract class Resource_Abstract implements Resource_Interface {
 		return (int)$city->value(
 			$this->key()
 		);
+	}
+
+	/**
+	 * @param Resource_Interface $resource
+	 * @return bool
+	 */
+	public function equals(Resource_Interface $resource) {
+		return ($this->key() === $resource->key());
 	}
 
 	/**

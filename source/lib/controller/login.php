@@ -24,10 +24,13 @@ class Controller_Login extends Controller_Abstract {
 //		$database->freeResult();
 
 		$result = md5('1md5 hash');
-
 		if ($result) {
+			$cookie->store('user', $result);
+
+			$accountId = 1;
+
 			$session = new Leviathan_Session();
-			$session->store('userId', $result);
+			$session->store('userId', $accountId);
 
 //			$continue = $this->request()->get('continue');
 //			if (!$continue) {

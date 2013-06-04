@@ -16,4 +16,18 @@ class Resource_GoldOre extends Resource_Abstract {
 			new Resource_Bread()
 		);
 	}
+
+	/**
+	 * @return int
+	 */
+	public function createAmount() {
+		return 1;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function createDuration() {
+		return 3600;
+	}
 }

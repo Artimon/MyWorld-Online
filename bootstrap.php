@@ -77,6 +77,7 @@ $router = new Router('login', 'pageNotFound');
 $baseDir = __DIR__;
 
 require_once $baseDir . '/source/i18n.php';
+require_once $baseDir . '/source/config/base.php';
 require_once $baseDir . '/ext/valkyrie/valkyrie/Autoloader.php';
 
 $autoloader = Valkyrie_Autoloader::create();
@@ -89,7 +90,11 @@ $autoloader
 	->lowerCasePaths()
 	->start(false);
 
-// @TODO Database connect.
+$database = new Lisbeth_Database();
+$database->connect(HOST_FOR_MYSQL, USER_FOR_MYSQL, PASS_FOR_MYSQL) or die('no connection');
+$database->selectDatabase(DATABASE_FOR_MYSQL) or die('no database');
+
+Lisbeth_Memcache::getInstance()->connect('localhost', 11211);
 
 try {
 	$controller = $router->controller();
@@ -99,4 +104,4 @@ catch (ShutdownException $e) {
 	// Allow proper application shutdown.
 }
 
-// @TODO Database disconnect.
+$database->close();

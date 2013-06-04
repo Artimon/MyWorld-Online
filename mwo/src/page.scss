@@ -7,6 +7,7 @@
 
 @import "sass/products";
 @import "sass/login";
+@import "sass/city";
 
 * {
 	padding: 0px;
@@ -18,6 +19,9 @@
 }
 
 html {
+	width: 100%;
+	height: 100%;
+
 	background: {
 		image: url("../img/background_pattern.png");
 		position: top center;
