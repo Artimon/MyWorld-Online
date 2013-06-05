@@ -99,6 +99,8 @@ Lisbeth_Memcache::getInstance()->connect('localhost', 11211);
 try {
 	$controller = $router->controller();
 	$controller->index();
+
+	Game::getInstance()->update();
 }
 catch (ShutdownException $e) {
 	// Allow proper application shutdown.

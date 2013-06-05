@@ -1,11 +1,13 @@
 <?php
 
 class Resource_Shields extends Resource_Abstract {
+	const KEY = 'shields';
+
 	/**
 	 * @return string
 	 */
 	public function key() {
-		return 'shields';
+		return self::KEY;
 	}
 
 	/**
@@ -21,14 +23,14 @@ class Resource_Shields extends Resource_Abstract {
 	/**
 	 * @return int
 	 */
-	public function createAmount() {
+	public function productionAmount() {
 		return 1;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function createDuration() {
+	public function productionDuration() {
 		return 3600;
 	}
 }

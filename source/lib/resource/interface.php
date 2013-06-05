@@ -14,7 +14,15 @@ interface Resource_Interface {
 	/**
 	 * @return string
 	 */
-	public function createName();
+	public function productionTypeName();
+
+	/**
+	 * Amount of this resource required to produce another resource.
+	 * Is set in each resource's requires() method.
+	 *
+	 * @return int
+	 */
+	public function productionRequires();
 
 	/**
 	 * @return Resource_Interface[]
@@ -51,12 +59,19 @@ interface Resource_Interface {
 	/**
 	 * @return int
 	 */
-	public function createAmount();
+	public function productionAmount();
 
 	/**
 	 * @return int
 	 */
-	public function createDuration();
+	public function productionDuration();
+
+	/**
+	 * @param City $city
+	 * @param Building_Interface $building
+	 * @return bool
+	 */
+	public function produce(City $city, Building_Interface $building);
 
 	// production price -> money = 0
 }

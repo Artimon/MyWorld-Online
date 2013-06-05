@@ -14,7 +14,7 @@ foreach ($buildings as $building) {
 	}
 
 	$url = Router::build(array(
-		'building_' . $building->key(),
+		'building_producer',
 		$city->id(),
 		$building->position()
 	));

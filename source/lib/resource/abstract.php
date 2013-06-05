@@ -2,6 +2,18 @@
 
 abstract class Resource_Abstract implements Resource_Interface {
 	/**
+	 * @var int
+	 */
+	private $productionRequires = 1;
+
+	/**
+	 * @param int $productionRequires
+	 */
+	public function __construct($productionRequires = 1) {
+		$this->productionRequires = (int)$productionRequires;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function name() {
@@ -13,8 +25,15 @@ abstract class Resource_Abstract implements Resource_Interface {
 	/**
 	 * @return string
 	 */
-	public function createName() {
+	public function productionTypeName() {
 		return Theme::getInstance()->resolve('create');
+	}
+
+	/**
+	 * @return int
+	 */
+	public function productionRequires() {
+		return $this->productionRequires;
 	}
 
 	/**
@@ -65,5 +84,43 @@ abstract class Resource_Abstract implements Resource_Interface {
 		}
 
 		return $this->add($entity, -$amount);
+	}
+
+	/**
+	 * @param City $city
+	 * @param Building_Interface $building
+	 * @return bool
+	 */
+	public function produce(
+		City $city,
+		Building_Interface $building
+	) {
+		if (!$city->buildings()->has($building)) {
+			return false;
+		}
+
+		if (!$building->produces($this)) {
+			return false;
+		}
+
+		$required = $this->requires();
+		foreach ($required as $resource) {
+			if (!$city->hasResource($resource)) {
+				return false;
+			}
+		}
+
+		foreach ($required as $resource) {
+			$city->decrement(
+				$resource->key(),
+				$resource->productionRequires()
+			);
+		}
+
+		$task		= "produce:{$this->key()}";
+		$completion	= TIME + $this->productionDuration();
+		$amount		= $this->productionAmount();
+
+		return City_WorkTask::insert($city, $building, $task, $completion, $amount);
 	}
 }

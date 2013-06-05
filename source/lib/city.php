@@ -14,6 +14,18 @@ class City extends Lisbeth_Entity {
 	private $buildings;
 
 	/**
+	 * @TODO Remove instant collect and replace with on-click-select.
+	 *
+	 * @param int $id
+	 * @param bool $load
+	 */
+	public function __construct($id, $load = true) {
+		parent::__construct($id, $load);
+
+		$this->workTasks()->complete();
+	}
+
+	/**
 	 * @throws InvalidArgumentException
 	 */
 	public function assertOnlineOwner() {
@@ -24,6 +36,17 @@ class City extends Lisbeth_Entity {
 		if (!$isOwner) {
 			throw new InvalidArgumentException("Foreign city.");
 		}
+	}
+
+	/**
+	 * @param Resource_Interface $resource
+	 * @return bool
+	 */
+	public function hasResource(Resource_Interface $resource) {
+		$available = $resource->amount($this);
+		$required = $resource->productionRequires();
+
+		return ($available >= $required);
 	}
 
 	/**
@@ -66,7 +89,10 @@ class City extends Lisbeth_Entity {
 	 * @return City_WorkTasks
 	 */
 	public function workTasks() {
-		return Lisbeth_ObjectPool::get('City_WorkTasks', $this->id());
+		$workTasks = Lisbeth_ObjectPool::get('City_WorkTasks', $this->id());
+		$workTasks->setCity($this);
+
+		return $workTasks;
 	}
 
 	/**

@@ -27,7 +27,7 @@ class Resource_Produce {
 			$message = i18n('alreadyWorking');
 		}
 		else {
-			City_WorkTask::create($city, $building, $resource);
+			$resource->produce($city, $building, $resource);
 		}
 
 		return $template->assignArray(array(

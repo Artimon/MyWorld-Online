@@ -1,11 +1,13 @@
 <?php
 
 class Resource_IronOre extends Resource_Abstract {
+	const KEY = 'ironOre';
+
 	/**
 	 * @return string
 	 */
 	public function key() {
-		return 'ironOre';
+		return self::KEY;
 	}
 
 	/**
@@ -20,14 +22,14 @@ class Resource_IronOre extends Resource_Abstract {
 	/**
 	 * @return int
 	 */
-	public function createAmount() {
+	public function productionAmount() {
 		return 1;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function createDuration() {
+	public function productionDuration() {
 		return 3600;
 	}
 }

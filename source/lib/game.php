@@ -52,4 +52,24 @@ class Game {
 	public function name() {
 		return 'MyWorld-Online';
 	}
+
+	public function update() {
+		/**
+		 * @param Lisbeth_Entity[] $entities
+		 */
+		$update = function (array $entities) {
+			foreach ($entities as $entity) {
+				if ($entity->valid()) {
+					$entity->update();
+				}
+			}
+		};
+
+		$list = array('Account', 'City');
+		foreach ($list as $className) {
+			$update(
+				Lisbeth_ObjectPool::classes($className)
+			);
+		}
+	}
 }

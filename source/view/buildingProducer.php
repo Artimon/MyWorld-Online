@@ -6,19 +6,28 @@
  * @var int $cityId
  * @var int $position
  * @var bool $isWorking
+ * @var int $remainingTime
  */
 
 $content = '';
+
+if ($isWorking) {
+	// @TODO Translate when doing layout.
+	$duration = Leviathan_Format::duration($remainingTime);
+	$content .= "<p>Remaining: {$duration}</p>";
+}
+
 foreach ($goods as $resource) {
 	$url = Router::build(array(
-		'produce_' . $resource->key(),
+		'resource_produce',
 		$cityId,
-		$position
+		$position,
+		$resource->key()
 	));
 
 	$disabled = $isWorking ? ' disabled' : '';
 
-	$content .= "{$resource->name()} <a href='{$url}' class='produce button{$disabled}'>{$resource->createName()}</a><br>";
+	$content .= "{$resource->name()} <a href='{$url}' class='produce button{$disabled}'>{$resource->productionTypeName()}</a><br>";
 }
 
 $buildingBox = ViewHelper_ContentBox::create($title, $content);

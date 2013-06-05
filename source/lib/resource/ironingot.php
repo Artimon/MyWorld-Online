@@ -1,11 +1,13 @@
 <?php
 
 class Resource_IronIngot extends Resource_Abstract {
+	const KEY = 'ironIngot';
+
 	/**
 	 * @return string
 	 */
 	public function key() {
-		return 'ironIngot';
+		return self::KEY;
 	}
 
 	/**
@@ -21,14 +23,14 @@ class Resource_IronIngot extends Resource_Abstract {
 	/**
 	 * @return int
 	 */
-	public function createAmount() {
+	public function productionAmount() {
 		return 1;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function createDuration() {
+	public function productionDuration() {
 		return 3600;
 	}
 }

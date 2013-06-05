@@ -1,11 +1,13 @@
 <?php
 
 class Resource_Coal extends Resource_Abstract {
+	const KEY = 'coal';
+
 	/**
 	 * @return string
 	 */
 	public function key() {
-		return 'coal';
+		return self::KEY;
 	}
 
 	/**
@@ -20,14 +22,14 @@ class Resource_Coal extends Resource_Abstract {
 	/**
 	 * @return int
 	 */
-	public function createAmount() {
+	public function productionAmount() {
 		return 1;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function createDuration() {
+	public function productionDuration() {
 		return 3600;
 	}
 }
