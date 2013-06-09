@@ -75,7 +75,6 @@ abstract class Controller_Abstract implements Controller_Interface {
 			'body' => $template->render("source/view/{$path}.php")
 		));
 
-		// @TODO Check for online/offline page theme, or move to implementation.
 		echo $page->render("source/view/{$data['template']}.php");
 	}
 

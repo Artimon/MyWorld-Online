@@ -1,7 +1,7 @@
 <?php
 
-class Resource_IronOre extends Resource_Abstract {
-	const KEY = 'ironOre';
+class Resource_Bricks extends Resource_Abstract {
+	const KEY = 'bricks';
 
 	/**
 	 * @return string
@@ -15,7 +15,8 @@ class Resource_IronOre extends Resource_Abstract {
 	 */
 	public function requires() {
 		return array(
-			new Resource_Bread(2)
+			new Resource_Clay(3),
+			new Resource_Wood(1)
 		);
 	}
 

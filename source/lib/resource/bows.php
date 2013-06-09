@@ -15,8 +15,8 @@ class Resource_Bows extends Resource_Abstract {
 	 */
 	public function requires() {
 		return array(
-			new Resource_IronIngot(),
-			new Resource_Wood()
+			new Resource_IronIngot(1),
+			new Resource_Wood(8)
 		);
 	}
 

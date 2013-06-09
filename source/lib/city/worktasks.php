@@ -35,25 +35,14 @@ class City_WorkTasks extends Lisbeth_Collection {
 	}
 
 	/**
+	 * Working buildings can be checked from both sides.
+	 * 1. Pass a building to determine whether or not there is a task.
+	 * 2. Ask work tasks for positions to equal building positions.
+	 *
 	 * @param Building_Interface $building
 	 * @return bool
 	 */
 	public function isWorking(Building_Interface $building) {
 		return ($this->workTask($building) !== null);
-	}
-
-	public function complete() {
-		static $checked = false;
-
-		if ($checked) {
-			return;
-		}
-
-		/** @var City_WorkTask $entity */
-		foreach ($this->entities as $entity) {
-			$entity->convert($this->city, $this);
-		}
-
-		$checked = true;
 	}
 }

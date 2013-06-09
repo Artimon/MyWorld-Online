@@ -7,21 +7,12 @@ class Resource {
 	 * @throws InvalidArgumentException
 	 */
 	public static function get($key) {
-		switch ($key) {
-			case Resource_IronOre::KEY:
-				return new Resource_IronOre();
+		$resources = Resources::all();
 
-			case Resource_GoldOre::KEY:
-				return new Resource_GoldOre();
-
-			case Resource_Coal::KEY:
-				return new Resource_Coal();
-
-			case Resource_Grain::KEY:
-				return new Resource_Grain();
-
-			default:
-				throw new InvalidArgumentException("Resource '{$key}' unknown.");
+		if (array_key_exists($key, $resources)) {
+			return $resources[$key];
 		}
+
+		throw new InvalidArgumentException("Resource '{$key}' unknown.");
 	}
 }

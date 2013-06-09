@@ -28,6 +28,6 @@ class Resource_Wood extends Resource_Abstract {
 	 * @return int
 	 */
 	public function productionDuration() {
-		return 3600;
+		return 90;
 	}
 }

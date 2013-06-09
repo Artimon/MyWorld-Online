@@ -15,8 +15,8 @@ class Resource_Horses extends Resource_Abstract {
 	 */
 	public function requires() {
 		return array(
-			new Resource_Grain(),
-			new Resource_Water()
+			new Resource_Grain(2),
+			new Resource_Water(4)
 		);
 	}
 
@@ -31,6 +31,6 @@ class Resource_Horses extends Resource_Abstract {
 	 * @return int
 	 */
 	public function productionDuration() {
-		return 3600;
+		return 360;
 	}
 }

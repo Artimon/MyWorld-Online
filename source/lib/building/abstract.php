@@ -12,6 +12,11 @@ abstract class Building_Abstract implements Building_Interface {
 	private $position = '';
 
 	/**
+	 * @var City_WorkTask
+	 */
+	private $workTask;
+
+	/**
 	 * @return string
 	 */
 	public function name() {
@@ -46,6 +51,20 @@ abstract class Building_Abstract implements Building_Interface {
 		$this->position = (int)$position;
 
 		return null;
+	}
+
+	/**
+	 * @param City_WorkTask $workTask
+	 */
+	public function setWorkTask($workTask) {
+		$this->workTask = $workTask;
+	}
+
+	/**
+	 * @return City_WorkTask
+	 */
+	public function workTask() {
+		return $this->workTask;
 	}
 
 	/**

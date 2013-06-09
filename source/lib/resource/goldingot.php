@@ -15,8 +15,8 @@ class Resource_GoldIngot extends Resource_Abstract {
 	 */
 	public function requires() {
 		return array(
-			new Resource_GoldOre(),
-			new Resource_Coal()
+			new Resource_GoldOre(2),
+			new Resource_Coal(8)
 		);
 	}
 
@@ -31,6 +31,6 @@ class Resource_GoldIngot extends Resource_Abstract {
 	 * @return int
 	 */
 	public function productionDuration() {
-		return 3600;
+		return 720;
 	}
 }

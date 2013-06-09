@@ -15,7 +15,7 @@ class Resource_Boards extends Resource_Abstract {
 	 */
 	public function requires() {
 		return array(
-			new Resource_Wood()
+			new Resource_Wood(1)
 		);
 	}
 
@@ -30,6 +30,6 @@ class Resource_Boards extends Resource_Abstract {
 	 * @return int
 	 */
 	public function productionDuration() {
-		return 3600;
+		return 180;
 	}
 }

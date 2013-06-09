@@ -5,6 +5,7 @@ class Controller_City extends Controller_Abstract {
 		$this->assertOnline();
 
 		$city = new City(1);
+		$city->assignWorkTasks();
 		$template = new Leviathan_Template();
 		$template->assignArray(array(
 			'city' => $city,

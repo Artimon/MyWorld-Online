@@ -15,8 +15,8 @@ class Resource_Bread extends Resource_Abstract {
 	 */
 	public function requires() {
 		return array(
-			new Resource_Grain(),
-			new Resource_Water()
+			new Resource_Flour(1),
+			new Resource_Water(2)
 		);
 	}
 

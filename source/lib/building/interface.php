@@ -24,6 +24,16 @@ interface Building_Interface {
 	public function position($position = null);
 
 	/**
+	 * @param City_WorkTask $workTask
+	 */
+	public function setWorkTask($workTask);
+
+	/**
+	 * @return City_WorkTask
+	 */
+	public function workTask();
+
+	/**
 	 * @param string $key
 	 * @return bool
 	 */

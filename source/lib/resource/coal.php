@@ -15,7 +15,7 @@ class Resource_Coal extends Resource_Abstract {
 	 */
 	public function requires() {
 		return array(
-			new Resource_Bread()
+			new Resource_Bread(1)
 		);
 	}
 
@@ -30,6 +30,6 @@ class Resource_Coal extends Resource_Abstract {
 	 * @return int
 	 */
 	public function productionDuration() {
-		return 3600;
+		return 90;
 	}
 }

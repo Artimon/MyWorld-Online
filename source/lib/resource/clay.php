@@ -1,7 +1,7 @@
 <?php
 
-class Resource_Stone extends Resource_Abstract {
-	const KEY = 'stone';
+class Resource_Clay extends Resource_Abstract {
+	const KEY = 'clay';
 
 	/**
 	 * @return string
@@ -14,9 +14,7 @@ class Resource_Stone extends Resource_Abstract {
 	 * @return Resource_Interface[]
 	 */
 	public function requires() {
-		return array(
-			new Resource_Bread()
-		);
+		return array();
 	}
 
 	/**
@@ -30,6 +28,6 @@ class Resource_Stone extends Resource_Abstract {
 	 * @return int
 	 */
 	public function productionDuration() {
-		return 3600;
+		return 300;
 	}
 }

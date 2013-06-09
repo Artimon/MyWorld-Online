@@ -16,27 +16,30 @@ class Controller_Building_Producer extends Controller_Abstract {
 		$resolve = new Resolve();
 
 		$city = $resolve->city($this);
-		$cityWorkTasks = $city->workTasks();
+		$workTasks = $city->workTasks();
 		$building = $city->currentBuilding();
 
-		$template = new Leviathan_Template();
-		$workTask = $cityWorkTasks->workTask($building);
-		if ($workTask) {
-			$isWorking = true;
+		$isWorking = $workTasks->isWorking($building);
+		if ($isWorking) {
+			$workTask = $workTasks->workTask($building);
 			$remainingTime = $workTask->remainingTime();
+			$resourceKey = $workTask->resource()->key();
 		}
 		else {
-			$isWorking = false;
 			$remainingTime = 0;
+			$resourceKey = '';
 		}
 
+		$template = new Leviathan_Template();
 		$template->assignArray(array(
+			'buildingKey' => $building->key(),
 			'title' => $building->name(),
 			'goods' => $building->goods(),
 			'position' => $building->position(),
-			'cityId' => $city->id(),
+			'city' => $city,
 			'isWorking' => $isWorking,
-			'remainingTime' => $remainingTime
+			'remainingTime' => $remainingTime,
+			'productionResourceKey' => $resourceKey
 		));
 
 		return $template;

@@ -1,7 +1,7 @@
 <?php
 
-class Building_Mine extends Building_Abstract {
-	const KEY = 'mine';
+class Building_Brickworks extends Building_Abstract {
+	const KEY = 'brickworks';
 
 	/**
 	 * @return string
@@ -15,9 +15,7 @@ class Building_Mine extends Building_Abstract {
 	 */
 	public function goods() {
 		return array(
-			new Resource_Coal(),
-			new Resource_IronOre(),
-			new Resource_GoldOre()
+			new Resource_Bricks()
 		);
 	}
 }

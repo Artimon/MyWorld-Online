@@ -1,6 +1,10 @@
 
 
 (function ($) {
+	$.fn.inDom = function () {
+		return this.is("html *");
+	};
+
 	$.fn.moreGames = function () {
 		var $select = this.find('.selectGames'),
 			$box = this.find('.gamesBoard'),
@@ -58,16 +62,38 @@
 		});
 	};
 
-	$.fn.showBuilding = function () {
+	$.fn.buildingInteract = function () {
 		this.click(function (event) {
-			var $link = $(this);
+			var $link = $(this),
+				$building = $link.parent(),
+				action = $link.data('action'),
+				actions;
 
 			event.preventDefault();
 			$('body').showLoader();
 
-			$.get($link.attr('href'))
-				.success(function (html) {
-					$('#buildingBox').html(html).fadeIn('fast');
+			function enterBuilding(html) {
+				$('#buildingBox').html(html).fadeIn('fast');
+			}
+
+			function collectResources(json) {
+				$.updateResources(json.resources);
+				console.log(json);
+				$building.find('.buildingInteract').data('action', 'enter');
+			}
+
+			actions = {
+				enter: enterBuilding,
+				collect: collectResources
+			};
+
+			$.get($link.data(action))
+				.success(function (data) {
+					$('.buliding').removeClass('active');
+					$building.addClass('active');
+
+					actions[action](data);
+
 					$.removeLoader();
 				});
 		})
@@ -101,10 +127,80 @@
 
 			$.get($link.attr('href'))
 				.success(function (json) {
+					$.updateResources(json.resources);
 					console.log(json);
+					var selector = $link.data('reference'),
+						duration = $link.data('duration'),
+						$building = $('.building.active');
+
+					window.setTimeout(
+						function () {
+							$building.find('.buildingInteract').data('action', 'collect');
+						},
+						duration * 1000
+					);
+
+
+					$(selector).ticker(duration);
+
 					$.removeLoader();
 				})
 		});
+	};
+
+	$.fn.ticker = function (remainingTime, callback) {
+		var $ticker = this,
+			handle;
+
+		handle = window.setInterval(
+			function () {
+				if (--remainingTime <= 0) {
+					window.clearInterval(handle);
+					$ticker.text('-');
+
+					if (callback) {
+						callback();
+					}
+
+					return;
+				}
+
+				if (!$ticker.inDom()) {
+					window.clearInterval(handle);
+
+					console.log('Ticker has been removed...');
+
+					return;
+				}
+
+				var result, hours, minutes, seconds;
+
+				hours = parseInt(remainingTime / 3600, 10);
+				minutes = parseInt((remainingTime - hours * 3600) / 60, 10);
+				seconds = parseInt(remainingTime - hours * 3600 - minutes * 60, 10);
+
+				if (hours > 0) {
+					result = hours + 'h ' + minutes + 'm';
+				}
+				else if (minutes > 0) {
+					result = minutes + 'm ' + seconds + 's';
+				}
+				else {
+					result = seconds + 's';
+				}
+
+				$ticker.text(result);
+			},
+			1000
+		);
+	};
+
+	$.updateResources = function (resources) {
+		for (var key in resources) {
+			if (resources.hasOwnProperty(key)) {
+				$('.resource_' + key).text(resources[key]);
+			}
+		}
 	};
 
 

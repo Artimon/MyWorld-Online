@@ -32,7 +32,8 @@ class Resource_Produce {
 
 		return $template->assignArray(array(
 			'error' => $error,
-			'message' => $message
+			'message' => $message,
+			'resources' => $city->resourceList()
 		));
 	}
 }

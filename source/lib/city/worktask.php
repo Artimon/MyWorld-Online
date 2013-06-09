@@ -4,6 +4,45 @@ class City_WorkTask extends Lisbeth_Entity {
 	protected $table = 'cityWorkTasks';
 
 	/**
+	 * @var string
+	 */
+	protected $type;
+
+	/**
+	 * @var string
+	 */
+	protected $key;
+
+	private function extract() {
+		$parts = explode(':', $this->value('task'));
+
+		$this->type = $parts[0];
+		$this->key = $parts[1];
+	}
+
+	/**
+	 * @return string
+	 */
+	public function type() {
+		if (!$this->type) {
+			$this->extract();
+		}
+
+		return $this->type;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function key() {
+		if (!$this->key) {
+			$this->extract();
+		}
+
+		return $this->key;
+	}
+
+	/**
 	 * @return int
 	 */
 	public function completion() {
@@ -24,19 +63,37 @@ class City_WorkTask extends Lisbeth_Entity {
 		return (TIME >= $this->completion());
 	}
 
+	/**
+	 * @return bool
+	 */
+	public function isProduction() {
+		return ($this->type() === 'produce');
+	}
+
+	/**
+	 * @return Resource_Interface
+	 */
+	public function resource() {
+		return Resource::get(
+			$this->key()
+		);
+	}
+
+	/**
+	 * @param City $city
+	 * @param City_WorkTasks $workTasks
+	 * @return bool
+	 */
 	public function convert(City $city, City_WorkTasks $workTasks) {
 		if (!$this->isCompleted()) {
 			return false;
 		}
 
-		$parts = explode(':', $this->value('task'));
-		switch ($parts[0]) {
-			case 'produce':
-				$resourceKey = $parts[1];
-				$resource = Resource::get($resourceKey);
+		switch (true) {
+			case $this->isProduction():
 				$city->increment(
-					$resourceKey,
-					$resource->productionAmount()
+					$this->key(),
+					$this->resource()->productionAmount()
 				);
 				break;
 

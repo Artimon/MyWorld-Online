@@ -14,6 +14,9 @@ return array(
 		// cityId/position
 		'controller' => 'Controller_Building_Producer'
 	),
+	'building_collect' => array(
+		'controller' => 'Controller_Building_Collect'
+	),
 	'resource_produce' => array(
 		'controller' => 'Controller_Resource_Produce'
 	),

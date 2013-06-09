@@ -14,18 +14,6 @@ class City extends Lisbeth_Entity {
 	private $buildings;
 
 	/**
-	 * @TODO Remove instant collect and replace with on-click-select.
-	 *
-	 * @param int $id
-	 * @param bool $load
-	 */
-	public function __construct($id, $load = true) {
-		parent::__construct($id, $load);
-
-		$this->workTasks()->complete();
-	}
-
-	/**
 	 * @throws InvalidArgumentException
 	 */
 	public function assertOnlineOwner() {
@@ -50,6 +38,21 @@ class City extends Lisbeth_Entity {
 	}
 
 	/**
+	 * @return array
+	 */
+	public function resourceList() {
+		$result = array();
+
+		$resources = Resources::all();
+		foreach ($resources as $resource) {
+			$key = $resource->key();
+			$result[$key] = (int)$this->value($key);
+		}
+
+		return $result;
+	}
+
+	/**
 	 * @return Buildings
 	 */
 	public function buildings() {
@@ -58,6 +61,16 @@ class City extends Lisbeth_Entity {
 		}
 
 		return $this->buildings;
+	}
+
+	public function assignWorkTasks() {
+		$buildings = $this->buildings();
+
+		/** @var City_WorkTask $workTask */
+		foreach ($this->workTasks() as $workTask) {
+			$position = $workTask->value('position');
+			$buildings->building($position)->setWorkTask($workTask);
+		}
 	}
 
 	/**
