@@ -1,11 +1,11 @@
 <?php
 
-class Controller_Building_Producer extends Controller_Abstract {
+class Controller_Building_Enter extends Controller_Abstract {
 	public function index() {
 		$this->assertOnline();
 
 		$template = $this->assignWorkData();
-		$this->partial($template, 'buildingProducer');
+		$this->partial($template, 'building');
 	}
 
 	/**

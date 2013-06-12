@@ -62,92 +62,6 @@
 		});
 	};
 
-	$.fn.buildingInteract = function () {
-		this.click(function (event) {
-			var $link = $(this),
-				$building = $link.parent(),
-				action = $link.data('action'),
-				actions;
-
-			event.preventDefault();
-			$('body').showLoader();
-
-			function enterBuilding(html) {
-				$('#buildingBox').html(html).fadeIn('fast');
-			}
-
-			function collectResources(json) {
-				$.updateResources(json.resources);
-				console.log(json);
-				$building.find('.buildingInteract').data('action', 'enter');
-			}
-
-			actions = {
-				enter: enterBuilding,
-				collect: collectResources
-			};
-
-			$.get($link.data(action))
-				.success(function (data) {
-					$('.buliding').removeClass('active');
-					$building.addClass('active');
-
-					actions[action](data);
-
-					$.removeLoader();
-				});
-		})
-	};
-
-	$.fn.buildingBox = function () {
-		var $buildingBox = $(this),
-			$close = $buildingBox.find('.close');
-
-		$close.click(function () {
-			$.bindings.clear('buildingBox');
-			$buildingBox.fadeOut('fast');
-		});
-
-		$.bindings.create('buildingBox');
-		$.bindings.add('buildingBox', $close);
-	};
-
-	$.fn.produce = function ($container) {
-		var $links = this;
-
-		$.bindings.add('buildingBox', $links);
-
-		$links.click(function (event) {
-			var $link = $(this);
-
-			$links.addClass('disabled');
-
-			event.preventDefault();
-			$container.showLoader();
-
-			$.get($link.attr('href'))
-				.success(function (json) {
-					$.updateResources(json.resources);
-					console.log(json);
-					var selector = $link.data('reference'),
-						duration = $link.data('duration'),
-						$building = $('.building.active');
-
-					window.setTimeout(
-						function () {
-							$building.find('.buildingInteract').data('action', 'collect');
-						},
-						duration * 1000
-					);
-
-
-					$(selector).ticker(duration);
-
-					$.removeLoader();
-				})
-		});
-	};
-
 	$.fn.ticker = function (remainingTime, callback) {
 		var $ticker = this,
 			handle;
@@ -168,7 +82,7 @@
 				if (!$ticker.inDom()) {
 					window.clearInterval(handle);
 
-					console.log('Ticker has been removed...');
+console.log('Ticker has been removed...');
 
 					return;
 				}
@@ -209,7 +123,7 @@
 	};
 
 	$.bindings.clear = function (namespace) {
-		console.log('Clear: ' + namespace);
+console.log('Clear: ' + namespace);
 		if (!$.bindings.list[namespace]) {
 			return;
 		}
@@ -223,7 +137,7 @@
 
 	$.bindings.create = function (namespace) {
 		$.bindings.clear(namespace);
-		console.log('Create: ' + namespace);
+console.log('Create: ' + namespace);
 
 		$.bindings.list[namespace] = [];
 	};
@@ -275,4 +189,113 @@
 			}
 		);
 	}
+}(jQuery));
+
+
+(function ($) {
+	$.fn.cityViewModel = function (cityId) {
+		var $city = this,
+			$buildings = $('.building', $city),
+			buildingBox = {};
+
+		buildingBox.$self = $('#buildingBox');
+		buildingBox.open = function (html) {
+			$.bindings.create('buildingBox');
+			buildingBox.$self.html(html).fadeIn('fast');
+
+			var $close = $('.close', buildingBox.$self);
+
+			this.$self.on('close', function () {
+				$.bindings.clear('buildingBox');
+				buildingBox.$self.fadeOut('fast');
+			});
+
+			$close.click(function (event) {
+				event.preventDefault();
+				buildingBox.$self.trigger('close');
+			});
+
+			$.bindings.add('buildingBox', $close);
+			$.bindings.add('buildingBox', buildingBox.$self);
+		};
+
+		$('.interact', $buildings).live('click', function (event) {
+			var $link = $(this),
+				$building = $link.parent(),
+				action = $link.data('action'),
+				actions,
+				url = '?r=building_' + action + '/' + cityId + '/' + $building.data('position');
+
+			event.preventDefault();
+			$('body').showLoader();
+
+			function enterBuilding(html) {
+				buildingBox.open(html);
+			}
+
+			function collectResources(json) {
+				buildingBox.$self.trigger('close');
+				$.updateResources(json.resources);
+console.log(json);
+				$building.find('.icon > span').removeClass().addClass('entypo-dot-3');
+				$building.find('.interact').data('action', 'enter');
+			}
+
+			actions = {
+				enter: enterBuilding,
+				collect: collectResources
+			};
+
+			$.get(url)
+				.success(function (data) {
+					$buildings.removeClass('active');
+					$building.addClass('active');
+
+					actions[action](data);
+
+					$.removeLoader();
+				});
+		});
+
+		$.fn.produce = function () {
+			var $links = this,
+				$container = buildingBox.$self.find('.body');
+
+			$.bindings.add('buildingBox', $links);
+
+			$links.click(function (event) {
+				var $link = $(this);
+
+				$links.addClass('disabled');
+
+				event.preventDefault();
+				$container.showLoader();
+
+				$.get($link.attr('href'))
+					.success(function (json) {
+						$.updateResources(json.resources);
+console.log(json);
+						var selector = $link.data('reference'),
+							duration = $link.data('duration'),
+							$building = $('.building.active'),
+							$icon = $building.find('.icon > span');
+
+						$icon.removeClass();
+
+						window.setTimeout(
+							function () {
+								$building.find('.icon > span').addClass('entypo-flag');
+								$building.find('.interact').data('action', 'collect');
+							},
+							duration * 1000
+						);
+
+
+						$(selector).ticker(duration);
+
+						$.removeLoader();
+					})
+			});
+		};
+	};
 }(jQuery));

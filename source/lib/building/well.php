@@ -18,4 +18,11 @@ class Building_Well extends Building_Abstract {
 			new Resource_Water()
 		);
 	}
+
+	/**
+	 * @return int
+	 */
+	public function maximumNumber() {
+		return 2;
+	}
 }

@@ -79,12 +79,7 @@ $buildingBox = ViewHelper_ContentBox::create($title, $content);
 echo "
 {$buildingBox}
 <script type='text/javascript'>
-	var \$buildingBox = $('#buildingBox');
-
-	\$buildingBox.buildingBox();
-	$('.produce').produce(
-		\$buildingBox.find('.body')
-	);
+	$('.produce').produce();
 
 	{$js}
 </script>";

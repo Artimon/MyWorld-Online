@@ -18,4 +18,11 @@ class Building_Brewery extends Building_Abstract {
 			new Resource_Beer()
 		);
 	}
+
+	/**
+	 * @return int
+	 */
+	public function maximumNumber() {
+		return 2;
+	}
 }

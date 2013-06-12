@@ -28,4 +28,11 @@ class Building_Null extends Building_Abstract {
 	public function valid() {
 		return false;
 	}
+
+	/**
+	 * @return int
+	 */
+	public function maximumNumber() {
+		return 0;
+	}
 }

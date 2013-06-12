@@ -115,14 +115,4 @@ class City extends Lisbeth_Entity {
 	public function isOwner(Account $account) {
 		return $this->owner()->isSame($account);
 	}
-
-	public function tempList() {
-		$buildings = $this->buildings();
-
-		for ($i = 1; $i <= self::BUILDING_SLOTS; ++$i) {
-			$buildings->building($i);
-		}
-
-		return $buildings->get();
-	}
 }

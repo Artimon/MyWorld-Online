@@ -20,4 +20,11 @@ class Building_Mine extends Building_Abstract {
 			new Resource_GoldOre()
 		);
 	}
+
+	/**
+	 * @return int
+	 */
+	public function maximumNumber() {
+		return 5;
+	}
 }

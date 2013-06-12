@@ -10,9 +10,9 @@ return array(
 	'city' => array(
 		'controller' => 'Controller_City'
 	),
-	'building_producer' => array(
+	'building_enter' => array(
 		// cityId/position
-		'controller' => 'Controller_Building_Producer'
+		'controller' => 'Controller_Building_Enter'
 	),
 	'building_collect' => array(
 		'controller' => 'Controller_Building_Collect'

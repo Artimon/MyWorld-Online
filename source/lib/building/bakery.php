@@ -18,4 +18,11 @@ class Building_Bakery extends Building_Abstract {
 			new Resource_Bread()
 		);
 	}
+
+	/**
+	 * @return int
+	 */
+	public function maximumNumber() {
+		return 3;
+	}
 }

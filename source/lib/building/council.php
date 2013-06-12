@@ -20,4 +20,11 @@ class Building_Council extends Building_Abstract {
 			new Resource_Boards()
 		);
 	}
+
+	/**
+	 * @return int
+	 */
+	public function maximumNumber() {
+		return 1;
+	}
 }

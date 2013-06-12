@@ -18,4 +18,11 @@ class Building_Farm extends Building_Abstract {
 			new Resource_Grain()
 		);
 	}
+
+	/**
+	 * @return int
+	 */
+	public function maximumNumber() {
+		return 5;
+	}
 }

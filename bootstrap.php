@@ -90,6 +90,8 @@ $autoloader
 	->lowerCasePaths()
 	->start(false);
 
+Lisbeth_KeyGenerator::setCacheSpace(DATABASE_FOR_MYSQL);
+
 $database = new Lisbeth_Database();
 $database->connect(HOST_FOR_MYSQL, USER_FOR_MYSQL, PASS_FOR_MYSQL) or die('no connection');
 $database->selectDatabase(DATABASE_FOR_MYSQL) or die('no database');

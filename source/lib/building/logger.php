@@ -18,4 +18,11 @@ class Building_Logger extends Building_Abstract {
 			new Resource_Wood()
 		);
 	}
+
+	/**
+	 * @return int
+	 */
+	public function maximumNumber() {
+		return 5;
+	}
 }

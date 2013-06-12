@@ -18,4 +18,11 @@ class Building_Brickworks extends Building_Abstract {
 			new Resource_Bricks()
 		);
 	}
+
+	/**
+	 * @return int
+	 */
+	public function maximumNumber() {
+		return 2;
+	}
 }

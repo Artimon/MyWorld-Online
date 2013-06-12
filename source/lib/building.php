@@ -25,9 +25,6 @@ class Building {
 			case Building_TaxCollector::KEY:
 				return new Building_TaxCollector();
 
-			case Building_Forester::KEY:
-				return new Building_Forester();
-
 			case Building_Mill::KEY:
 				return new Building_Mill();
 
@@ -67,5 +64,31 @@ class Building {
 			default:
 				return new Building_Null();
 		}
+	}
+
+	/**
+	 * @return Building_Interface[]
+	 */
+	public static function keys() {
+		return array(
+			Building_Council::KEY => new Building_Council(),
+			Building_Mine::KEY => new Building_Mine(),
+			Building_Logger::KEY => new Building_Logger(),
+			Building_Farm::KEY => new Building_Farm(),
+			Building_Well::KEY => new Building_Well(),
+			Building_TaxCollector::KEY => new Building_TaxCollector(),
+			Building_Mill::KEY => new Building_Mill(),
+			Building_Smelter::KEY => new Building_Smelter(),
+			Building_Sawmill::KEY => new Building_Sawmill(),
+			Building_Bakery::KEY => new Building_Bakery(),
+			Building_Brewery::KEY => new Building_Brewery(),
+			Building_Stable::KEY => new Building_Stable(),
+			Building_Forge::KEY => new Building_Forge(),
+			Building_Metalworks::KEY => new Building_Metalworks(),
+			Building_Warehouse::KEY => new Building_Warehouse(),
+			Building_Market::KEY => new Building_Market(),
+			Building_Barracks::KEY => new Building_Barracks(),
+			Building_Castle::KEY => new Building_Castle()
+		);
 	}
 }

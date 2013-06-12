@@ -18,4 +18,11 @@ class Building_Sawmill extends Building_Abstract {
 			new Resource_Boards()
 		);
 	}
+
+	/**
+	 * @return int
+	 */
+	public function maximumNumber() {
+		return 3;
+	}
 }

@@ -51,6 +51,11 @@ interface Building_Interface {
 	public function produces(Resource_Interface $resource);
 
 	/**
+	 * @return int
+	 */
+	public function maximumNumber();
+
+	/**
 	 * @return bool
 	 */
 	public function valid();

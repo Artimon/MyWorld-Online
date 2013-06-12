@@ -76,28 +76,48 @@ class Buildings {
 		}
 	}
 
-	public function get() {
+	/**
+	 * @return Building_Interface[]
+	 */
+	public function all() {
+		for ($i = 1; $i <= City::BUILDING_SLOTS; ++$i) {
+			$this->building($i);
+		}
+
+		ksort($this->list);
+
 		return $this->list;
-//		return array(
-//			new Building_Council(),
-//			new Building_Mine(),
-//			new Building_Logger(),
-//			new Building_Farm(),
-//			new Building_Well(),
-//			new Building_TaxCollector(),
-//			new Building_Forester(),
-//			new Building_Mill(),
-//			new Building_Smelter(),
-//			new Building_Sawmill(),
-//			new Building_Bakery(),
-//			new Building_Brewery(),
-//			new Building_Stable(),
-//			new Building_Forge(),
-//			new Building_Metalworks(),
-//			new Building_Warehouse(),
-//			new Building_Market(),
-//			new Building_Barracks(),
-//			new Building_Castle()
-//		);
+	}
+
+	/**
+	 * @TODO Add level condition.
+	 *
+	 * @return Building_Interface[]
+	 */
+	public function buildable() {
+		$buildings = Building::keys();
+		$list = $buildings;
+
+		foreach ($list as &$value) {
+			$value = 0;
+		}
+
+		foreach ($this->all() as $building) {
+			if (!$building->valid()) {
+				continue;
+			}
+
+			$key = $building->key();
+			if (!array_key_exists($key, $buildings)) {
+				continue;
+			}
+
+			++$list[$key];
+			if ($list[$key] >= $buildings[$key]->maximumNumber()) {
+				unset($buildings[$key]);
+			}
+		}
+
+		return $buildings;
 	}
 }

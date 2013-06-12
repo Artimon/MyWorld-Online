@@ -18,4 +18,11 @@ class Building_Stable extends Building_Abstract {
 			new Resource_Horses()
 		);
 	}
+
+	/**
+	 * @return int
+	 */
+	public function maximumNumber() {
+		return 2;
+	}
 }

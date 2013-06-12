@@ -1,6 +1,6 @@
 <?php
 
-class ViewHelper_ContentBox {
+class ViewHelper_ContentBox extends ViewHelper_Abstract {
 	/**
 	 * @var string
 	 */
@@ -38,13 +38,6 @@ class ViewHelper_ContentBox {
 	public function __construct($title, $content) {
 		$this->title = (string)$title;
 		$this->content = (string)$content;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function __toString() {
-		return $this->get();
 	}
 
 	/**

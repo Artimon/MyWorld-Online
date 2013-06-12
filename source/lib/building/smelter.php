@@ -19,4 +19,11 @@ class Building_Smelter extends Building_Abstract {
 			new Resource_GoldIngot()
 		);
 	}
+
+	/**
+	 * @return int
+	 */
+	public function maximumNumber() {
+		return 3;
+	}
 }

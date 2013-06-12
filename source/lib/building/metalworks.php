@@ -18,4 +18,11 @@ class Building_Metalworks extends Building_Abstract {
 			new Resource_Tools()
 		);
 	}
+
+	/**
+	 * @return int
+	 */
+	public function maximumNumber() {
+		return 3;
+	}
 }

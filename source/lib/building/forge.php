@@ -21,4 +21,11 @@ class Building_Forge extends Building_Abstract {
 			new Resource_Bows()
 		);
 	}
+
+	/**
+	 * @return int
+	 */
+	public function maximumNumber() {
+		return 3;
+	}
 }

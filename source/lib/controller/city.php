@@ -9,7 +9,7 @@ class Controller_City extends Controller_Abstract {
 		$template = new Leviathan_Template();
 		$template->assignArray(array(
 			'city' => $city,
-			'buildings' => $city->tempList()
+			'buildings' => $city->buildings()->all()
 		));
 
 		$this->render($template, 'city');
