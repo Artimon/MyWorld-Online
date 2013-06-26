@@ -20,6 +20,15 @@ class Building_Sawmill extends Building_Abstract {
 	}
 
 	/**
+	 * @return Resource_Interface[]
+	 */
+	public function requires() {
+		return array(
+			new Resource_Tools(10)
+		);
+	}
+
+	/**
 	 * @return int
 	 */
 	public function maximumNumber() {

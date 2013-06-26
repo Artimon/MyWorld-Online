@@ -3,8 +3,7 @@
 class Controller_Resource_Produce extends Controller_Abstract {
 	public function index() {
 		$template = Resource_Produce::getInstance()->resolved(
-			$this,
-			new Resolve(),
+			new Resolve($this),
 			new Leviathan_Template(),
 			Resource::get($this->argument(3))
 		);

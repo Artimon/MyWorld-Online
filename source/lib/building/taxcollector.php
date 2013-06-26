@@ -18,6 +18,17 @@ class Building_TaxCollector extends Building_Abstract {
 	}
 
 	/**
+	 * @return Resource_Interface[]
+	 */
+	public function requires() {
+		return array(
+			new Resource_Boards(50),
+			new Resource_Bricks(50),
+			new Resource_Tools(40)
+		);
+	}
+
+	/**
 	 * @return int
 	 */
 	public function maximumNumber() {

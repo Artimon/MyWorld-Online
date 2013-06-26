@@ -27,14 +27,40 @@ class City extends Lisbeth_Entity {
 	}
 
 	/**
+	 * @param int $position
+	 * @throws CreationException
+	 */
+	public function assertPosition($position) {
+		$position = (int)$position;
+
+		if ($position < 0 || $position > self::BUILDING_SLOTS) {
+			throw CreationException::invalidPosition();
+		}
+	}
+
+	/**
 	 * @param Resource_Interface $resource
 	 * @return bool
 	 */
 	public function hasResource(Resource_Interface $resource) {
-		$available = $resource->amount($this);
-		$required = $resource->productionRequires();
+		$available = $resource->amountAvailable($this);
+		$required = $resource->amountRequired();
 
 		return ($available >= $required);
+	}
+
+	/**
+	 * @param Resource_Interface[] $resources
+	 * @return bool
+	 */
+	public function hasResources(array $resources) {
+		foreach ($resources as $resource) {
+			if (!$this->hasResource($resource)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -63,13 +89,38 @@ class City extends Lisbeth_Entity {
 		return $this->buildings;
 	}
 
+	/**
+	 * Get a list og buildable buildings.
+	 *
+	 * @return Building_Interface[]
+	 */
+	public function buildingsBuildable() {
+		return $this->buildings()->buildable();
+	}
+
+	/**
+	 * @param string $key
+	 * @param int $position
+	 * @return Building_Interface
+	 */
+	public function buildingBuild($key, $position) {
+		return Building::get($key)->build($this, $position);
+	}
+
+	/**
+	 * @throws Exception
+	 */
+	public function buildingUpgrade() {
+		throw new Exception('@TODO');
+	}
+
 	public function assignWorkTasks() {
 		$buildings = $this->buildings();
 
 		/** @var City_WorkTask $workTask */
 		foreach ($this->workTasks() as $workTask) {
 			$position = $workTask->value('position');
-			$buildings->building($position)->setWorkTask($workTask);
+			$buildings->setWorkTask($workTask, $position);
 		}
 	}
 

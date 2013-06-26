@@ -45,7 +45,7 @@ foreach ($goods as $resource) {
 		$requireHtml[] = "
 			<div>
 				<span class='resource_{$requireResourceKey}'>{$city->value($requireResourceKey)}</span> /
-				{$requireResource->productionRequires()}
+				{$requireResource->amountRequired()}
 				{$requireResource->name()}
 			</div>";
 	}

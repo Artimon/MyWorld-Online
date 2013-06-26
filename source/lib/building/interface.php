@@ -40,9 +40,26 @@ interface Building_Interface {
 	public function is($key);
 
 	/**
+	 * @return bool
+	 */
+	public function isConstructionSite();
+
+	/**
 	 * @return Resource_Interface[]
 	 */
 	public function goods();
+
+	/**
+	 * @return Resource_Interface[]
+	 */
+	public function requires();
+
+	/**
+	 * @param City $city
+	 * @param int $position
+	 * @return Building_Interface
+	 */
+	public function build(City $city, $position);
 
 	/**
 	 * @param Resource_Interface $resource

@@ -22,7 +22,7 @@ interface Resource_Interface {
 	 *
 	 * @return int
 	 */
-	public function productionRequires();
+	public function amountRequired();
 
 	/**
 	 * @return Resource_Interface[]
@@ -39,7 +39,7 @@ interface Resource_Interface {
 	 * @param City $city
 	 * @return int
 	 */
-	public function amount(City $city);
+	public function amountAvailable(City $city);
 
 	/**
 	 * @param Lisbeth_Entity $entity

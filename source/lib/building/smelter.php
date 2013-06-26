@@ -21,6 +21,16 @@ class Building_Smelter extends Building_Abstract {
 	}
 
 	/**
+	 * @return Resource_Interface[]
+	 */
+	public function requires() {
+		return array(
+			new Resource_Boards(15),
+			new Resource_Bricks(15)
+		);
+	}
+
+	/**
 	 * @return int
 	 */
 	public function maximumNumber() {

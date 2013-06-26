@@ -26,6 +26,13 @@ abstract class Building_Abstract implements Building_Interface {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function buildTypeName() {
+		return Theme::getInstance()->resolve('build');
+	}
+
+	/**
 	 * @param int|null $level
 	 * @return int|null
 	 */
@@ -76,6 +83,13 @@ abstract class Building_Abstract implements Building_Interface {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function isConstructionSite() {
+		return false;
+	}
+
+	/**
 	 * @param Resource_Interface $resource
 	 * @return bool
 	 */
@@ -87,6 +101,36 @@ abstract class Building_Abstract implements Building_Interface {
 		}
 
 		return false;
+	}
+
+	/**
+	 * @param City $city
+	 * @param int $position
+	 * @return Building_Interface
+	 * @throws CreationException
+	 * @throws CreationException
+	 */
+	public function build(City $city, $position) {
+		$position = (int)$position;
+		$city->assertPosition($position);
+
+		if (!$this->isConstructionSite()) {
+			throw CreationException::noConstructionSite();
+		}
+
+		if (!$city->hasResources($this->requires())) {
+			throw CreationException::insufficientResources();
+		}
+
+		$city->setValue(
+			'building' . $position,
+			'0:' . $this->key()
+		);
+
+		$this->level(0);
+		$this->position($position);
+
+		return $this;
 	}
 
 	/**

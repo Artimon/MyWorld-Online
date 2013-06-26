@@ -1,7 +1,7 @@
 <?php
 
-class Building_Logger extends Building_Abstract {
-	const KEY = 'logger';
+class Building_ClayPit extends Building_Abstract {
+	const KEY = 'clayPit';
 
 	/**
 	 * @return string
@@ -15,7 +15,7 @@ class Building_Logger extends Building_Abstract {
 	 */
 	public function goods() {
 		return array(
-			new Resource_Wood()
+			new Resource_Clay()
 		);
 	}
 
@@ -24,7 +24,8 @@ class Building_Logger extends Building_Abstract {
 	 */
 	public function requires() {
 		return array(
-			new Resource_Tools(10)
+			new Resource_Boards(10),
+			new Resource_Tools(5)
 		);
 	}
 
@@ -32,6 +33,6 @@ class Building_Logger extends Building_Abstract {
 	 * @return int
 	 */
 	public function maximumNumber() {
-		return 5;
+		return 2;
 	}
 }

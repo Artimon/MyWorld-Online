@@ -4,8 +4,8 @@ class Controller_Building_Collect extends Controller_Abstract {
 	public function index() {
 		$this->assertOnline();
 
-		$resolve = new Resolve();
-		$city = $resolve->city($this);
+		$resolve = new Resolve($this);
+		$city = $resolve->city();
 		$city->assignWorkTasks();
 
 		$success = false;

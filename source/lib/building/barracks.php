@@ -18,6 +18,16 @@ class Building_Barracks extends Building_Abstract {
 	}
 
 	/**
+	 * @return Resource_Interface[]
+	 */
+	public function requires() {
+		return array(
+			new Resource_Boards(20),
+			new Resource_Bricks(30)
+		);
+	}
+
+	/**
 	 * @return int
 	 */
 	public function maximumNumber() {

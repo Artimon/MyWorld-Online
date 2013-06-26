@@ -23,6 +23,20 @@ class Building_Null extends Building_Abstract {
 	}
 
 	/**
+	 * @return Resource_Interface[]
+	 */
+	public function requires() {
+		return array();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isConstructionSite() {
+		return true;
+	}
+
+	/**
 	 * @return bool
 	 */
 	public function valid() {

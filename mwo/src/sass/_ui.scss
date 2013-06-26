@@ -1,3 +1,5 @@
+@import "variables";
+
 button {
 	padding: 3px;
 }
@@ -95,4 +97,9 @@ button {
 	height: 31px;
 
 	background-image: url('../img/ajax-loader.gif');
+}
+
+.insufficient {
+	font-weight: bold;
+	color: $colorTextError;
 }

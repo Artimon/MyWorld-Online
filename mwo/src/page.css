@@ -247,6 +247,10 @@ button {
   height: 31px;
   background-image: url("../img/ajax-loader.gif"); }
 
+.insufficient {
+  font-weight: bold;
+  color: #f9541c; }
+
 #title {
   position: absolute;
   top: 54px;
@@ -381,6 +385,12 @@ div.box {
   width: 350px;
   margin-left: -175px;
   background-color: #e3cb8f; }
+
+.resourceList ul {
+  list-style: none; }
+  .resourceList ul li {
+    float: left;
+    margin-right: 5px; }
 
 #products {
   position: fixed;

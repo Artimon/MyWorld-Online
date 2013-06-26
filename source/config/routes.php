@@ -10,8 +10,12 @@ return array(
 	'city' => array(
 		'controller' => 'Controller_City'
 	),
+	'building_build' => array(
+		// building_create/{cityId}/{position}
+		'controller' => 'Controller_Building_Build'
+	),
 	'building_enter' => array(
-		// cityId/position
+		// building_enter/{cityId}/{position}
 		'controller' => 'Controller_Building_Enter'
 	),
 	'building_collect' => array(

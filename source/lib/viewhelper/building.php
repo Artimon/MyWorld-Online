@@ -26,11 +26,9 @@ class ViewHelper_Building extends ViewHelper_Abstract {
 	 */
 	public function get() {
 		$iconClass = '';
-		$action = 'build';
+		$action = 'enter';
 
 		if ($this->building->valid()) {
-			$action = 'enter';
-
 			$workTask = $this->building->workTask();
 			if ($workTask) {
 				$hasFinishedWork = $workTask->isCompleted();

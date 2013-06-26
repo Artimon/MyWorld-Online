@@ -8,13 +8,18 @@ class Resource_Produce {
 		return new self();
 	}
 
+	/**
+	 * @param Resolve $resolve
+	 * @param Leviathan_Template $template
+	 * @param Resource_Interface $resource
+	 * @return Leviathan_Template
+	 */
 	public function resolved(
-		Controller_Interface $controller,
 		Resolve $resolve,
 		Leviathan_Template $template,
 		Resource_Interface $resource
 	) {
-		$city = $resolve->city($controller);
+		$city = $resolve->city();
 		$building = $city->currentBuilding();
 
 		$cityWorkTasks = $city->workTasks();

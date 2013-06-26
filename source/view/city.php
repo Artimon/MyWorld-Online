@@ -7,7 +7,6 @@
 
 JavaScript::getInstance()->bind("$('#city').cityViewModel({$city->id()});");
 
-$html = '<h2>Hellooo beautiful!</h2>';
 $buildingsHtml = '';
 foreach ($buildings as $building) {
 	$buildingsHtml .= ViewHelper_Building::create($building);

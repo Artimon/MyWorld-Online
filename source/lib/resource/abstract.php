@@ -4,13 +4,13 @@ abstract class Resource_Abstract implements Resource_Interface {
 	/**
 	 * @var int
 	 */
-	private $productionRequires = 1;
+	private $amountRequired = 1;
 
 	/**
 	 * @param int $productionRequires
 	 */
 	public function __construct($productionRequires = 1) {
-		$this->productionRequires = (int)$productionRequires;
+		$this->amountRequired = (int)$productionRequires;
 	}
 
 	/**
@@ -26,21 +26,21 @@ abstract class Resource_Abstract implements Resource_Interface {
 	 * @return string
 	 */
 	public function productionTypeName() {
-		return Theme::getInstance()->resolve('create');
+		return Theme::getInstance()->resolve('produce');
 	}
 
 	/**
 	 * @return int
 	 */
-	public function productionRequires() {
-		return $this->productionRequires;
+	public function amountRequired() {
+		return $this->amountRequired;
 	}
 
 	/**
 	 * @param City $city
 	 * @return int
 	 */
-	public function amount(City $city) {
+	public function amountAvailable(City $city) {
 		return (int)$city->value(
 			$this->key()
 		);
@@ -113,7 +113,7 @@ abstract class Resource_Abstract implements Resource_Interface {
 		foreach ($required as $resource) {
 			$city->decrement(
 				$resource->key(),
-				$resource->productionRequires()
+				$resource->amountRequired()
 			);
 		}
 

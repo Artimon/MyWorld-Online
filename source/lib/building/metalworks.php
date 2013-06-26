@@ -20,6 +20,17 @@ class Building_Metalworks extends Building_Abstract {
 	}
 
 	/**
+	 * @return Resource_Interface[]
+	 */
+	public function requires() {
+		return array(
+			new Resource_Boards(20),
+			new Resource_Bricks(15),
+			new Resource_Tools(10)
+		);
+	}
+
+	/**
 	 * @return int
 	 */
 	public function maximumNumber() {

@@ -58,6 +58,7 @@ class Buildings {
 
 		if (empty($data)) {
 			$target = new Building_Null();
+			$target->position($position);
 
 			return;
 		}
@@ -65,6 +66,7 @@ class Buildings {
 		$data = explode(':', $data);
 		if (count($data) !== 2) {
 			$target = new Building_Null();
+			$target->position($position);
 
 			return;
 		}
@@ -119,5 +121,17 @@ class Buildings {
 		}
 
 		return $buildings;
+	}
+
+	/**
+	 * @param City_WorkTask $workTask
+	 * @param string $position
+	 * @return Building_Interface
+	 */
+	public function setWorkTask(City_WorkTask $workTask, $position) {
+		$building = $this->building($position);
+		$building->setWorkTask($workTask);
+
+		return $building;
 	}
 }

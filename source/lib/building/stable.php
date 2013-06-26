@@ -20,6 +20,17 @@ class Building_Stable extends Building_Abstract {
 	}
 
 	/**
+	 * @return Resource_Interface[]
+	 */
+	public function requires() {
+		return array(
+			new Resource_Boards(50),
+			new Resource_Bricks(20),
+			new Resource_Tools(20)
+		);
+	}
+
+	/**
 	 * @return int
 	 */
 	public function maximumNumber() {

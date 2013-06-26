@@ -22,6 +22,13 @@ class Building_Council extends Building_Abstract {
 	}
 
 	/**
+	 * @return Resource_Interface[]
+	 */
+	public function requires() {
+		return array();
+	}
+
+	/**
 	 * @return int
 	 */
 	public function maximumNumber() {
