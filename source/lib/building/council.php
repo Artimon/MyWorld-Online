@@ -15,7 +15,7 @@ class Building_Council extends Building_Abstract {
 	 */
 	public function goods() {
 		return array(
-			new Resource_Money(),
+//			new Resource_Money(),
 			new Resource_Wood(),
 			new Resource_Boards()
 		);

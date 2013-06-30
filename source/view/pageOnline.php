@@ -15,7 +15,7 @@ $bindings = JavaScript::getInstance()->bindings();
 
 echo "
 <!DOCTYPE html>
-<html>
+<html ng-app='mwoApp'>
 <head>
 	<title>{$pageTitle}</title>
 
@@ -34,6 +34,7 @@ echo "
 	</div>
 
 	<script type='text/javascript' src='ext/jQuery/jquery-1.8.0.min.js'></script>
+	<script type='text/javascript' src='ext/angular/angular.min.js'></script>
 	<script type='text/javascript' src='mwo/src/page.js'></script>
 	<script type='text/javascript'>
 		{$bindings}

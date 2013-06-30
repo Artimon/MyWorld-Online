@@ -1,3 +1,65 @@
+var mwoApp = angular.module('mwoApp', []);
+
+(function (angular, mwoApp) {
+	mwoApp.di = {};
+	mwoApp.define = function (name, fn) {
+		mwoApp.di[name] = fn;
+	};
+	mwoApp.retrieve = function (name) {
+		if (mwoApp.di[name]) {
+			return mwoApp.di[name];
+		}
+	};
+
+	mwoApp.define('ticker', function (options) {
+		var handle, value;
+
+		function kill() {
+			window.clearInterval(handle);
+		}
+
+		handle = window.setInterval(function () {
+			value = --options.object[options.key];
+
+			if (value <= 0) {
+				kill();
+
+				if (options.callback) {
+					options.callback();
+				}
+			}
+
+			options.$scope.$apply();
+		}, 1000);
+
+		return {
+			kill: kill
+		}
+	});
+
+	angular.module('mwoApp').filter('duration', function () {
+		return function (remainingTime) {
+			if (remainingTime <= 0) {
+				return '-';
+			}
+
+			var hours, minutes, seconds;
+
+			hours = parseInt(remainingTime / 3600, 10);
+			minutes = parseInt((remainingTime - hours * 3600) / 60, 10);
+			seconds = parseInt(remainingTime - hours * 3600 - minutes * 60, 10);
+
+			if (hours > 0) {
+				return hours + 'h ' + minutes + 'm';
+			}
+			else if (minutes > 0) {
+				return minutes + 'm ' + seconds + 's';
+			}
+
+			return seconds + 's';
+		};
+	});
+}(angular, mwoApp));
 
 
 (function ($) {
@@ -33,6 +95,8 @@
 				$box.fadeOut();
 			}
 		});
+
+		return this;
 	};
 
 	$.fn.loginBox = function () {
@@ -60,90 +124,8 @@
 				}
 			);
 		});
-	};
 
-	$.fn.ticker = function (remainingTime, callback) {
-		var $ticker = this,
-			handle;
-
-		handle = window.setInterval(
-			function () {
-				if (--remainingTime <= 0) {
-					window.clearInterval(handle);
-					$ticker.text('-');
-
-					if (callback) {
-						callback();
-					}
-
-					return;
-				}
-
-				if (!$ticker.inDom()) {
-					window.clearInterval(handle);
-
-console.log('Ticker has been removed...');
-
-					return;
-				}
-
-				var result, hours, minutes, seconds;
-
-				hours = parseInt(remainingTime / 3600, 10);
-				minutes = parseInt((remainingTime - hours * 3600) / 60, 10);
-				seconds = parseInt(remainingTime - hours * 3600 - minutes * 60, 10);
-
-				if (hours > 0) {
-					result = hours + 'h ' + minutes + 'm';
-				}
-				else if (minutes > 0) {
-					result = minutes + 'm ' + seconds + 's';
-				}
-				else {
-					result = seconds + 's';
-				}
-
-				$ticker.text(result);
-			},
-			1000
-		);
-	};
-
-	$.updateResources = function (resources) {
-		for (var key in resources) {
-			if (resources.hasOwnProperty(key)) {
-				$('.resource_' + key).text(resources[key]);
-			}
-		}
-	};
-
-
-	$.bindings = {
-		list: {}
-	};
-
-	$.bindings.clear = function (namespace) {
-console.log('Clear: ' + namespace);
-		if (!$.bindings.list[namespace]) {
-			return;
-		}
-
-		$.each($.bindings.list[namespace], function (key, $binding) {
-			$binding.unbind();
-		});
-
-		delete $.bindings.list[namespace];
-	};
-
-	$.bindings.create = function (namespace) {
-		$.bindings.clear(namespace);
-console.log('Create: ' + namespace);
-
-		$.bindings.list[namespace] = [];
-	};
-
-	$.bindings.add = function (namespace, $binding) {
-		$.bindings.list[namespace].push($binding);
+		return this;
 	};
 }(jQuery));
 
@@ -192,110 +174,133 @@ console.log('Create: ' + namespace);
 }(jQuery));
 
 
-(function ($) {
-	$.fn.cityViewModel = function (cityId) {
-		var $city = this,
-			$buildings = $('.building', $city),
-			buildingBox = {};
+mwoApp.define('cityViewModel', function () {
+	/**
+	 * City Controller
+	 */
+	mwoApp.controller('CityCtrl', ['$scope', '$http', function ($scope, $http) {
+		var contentBox = $('#cityContentBox');
 
-		buildingBox.$self = $('#buildingBox');
-		buildingBox.open = function (html) {
-			$.bindings.create('buildingBox');
-			buildingBox.$self.html(html).fadeIn('fast');
+		$scope.cityId = 0;
+		$scope.resources = [];
+		$scope.buildings = [];
+		$scope.goods = [];
 
-			var $close = $('.close', buildingBox.$self);
+		$scope.currentBuilding = null;
+		$scope.contentBoxTitle = '';
+		$scope.productionTicker = null;
 
-			this.$self.on('close', function () {
-				$.bindings.clear('buildingBox');
-				buildingBox.$self.fadeOut('fast');
-			});
-
-			$close.click(function (event) {
-				event.preventDefault();
-				buildingBox.$self.trigger('close');
-			});
-
-			$.bindings.add('buildingBox', $close);
-			$.bindings.add('buildingBox', buildingBox.$self);
+		$scope.setup = function (cityId, resources, buildings) {
+			$scope.cityId = cityId;
+			$scope.resources = resources;
+			$scope.buildings = buildings;
 		};
 
-		$('.interact', $buildings).live('click', function (event) {
-			var $link = $(this),
-				$building = $link.parent(),
-				action = $link.data('action'),
-				actions,
-				url = '?r=building_' + action + '/' + cityId + '/' + $building.data('position');
+		$scope.contentBox = {};
+		$scope.contentBox.open = function () {
+			$scope.killTicker();
+			contentBox.fadeIn('fast');
+		};
+		$scope.contentBox.close = function () {
+			$scope.killTicker();
+			contentBox.fadeOut('fast');
+		};
 
-			event.preventDefault();
+		/**
+		 * @param {string} key
+		 * @returns {number}
+		 */
+		$scope.resourceAvailable = function (key) {
+			return $scope.resources[key];
+		};
+
+		$scope.registerTicker = function (ware) {
+			$scope.productionTicker = mwoApp.retrieve('ticker')({
+				$scope: $scope,
+				object: ware,
+				key: 'remainingTime',
+				callback: function () {
+					$scope.currentBuilding.state = 'ready';
+				}
+			});
+		};
+
+		$scope.killTicker = function () {
+			if ($scope.productionTicker) {
+				$scope.productionTicker.kill();
+				$scope.productionTicker = null;
+			}
+		};
+
+		$scope.buildingAction = function (building) {
+			return building.state === 'ready' ? 'collect' : 'enter';
+		};
+
+		$scope.buildingInteractUrl = function (building) {
+			return '?r=building_' + $scope.buildingAction(building) + '/' +
+				$scope.cityId + '/' + building.position;
+		};
+
+		$scope.buildingInteract = function (building) {
+			$scope.currentBuilding = building;
+
 			$('body').showLoader();
 
-			function enterBuilding(html) {
-				buildingBox.open(html);
+			function enterBuilding(json) {
+				$scope.contentBoxTitle = json.title;
+				$scope.goods = json.goods;
+
+				$scope.contentBox.open();
+
+				$.each($scope.goods, function (key, ware) {
+					if (ware.remainingTime > 0) {
+						$scope.registerTicker(ware);
+						return false;
+					}
+					return true;
+				});
 			}
 
 			function collectResources(json) {
-				buildingBox.$self.trigger('close');
-				$.updateResources(json.resources);
-console.log(json);
-				$building.find('.icon > span').removeClass().addClass('entypo-dot-3');
-				$building.find('.interact').data('action', 'enter');
+				$scope.contentBox.close();
+				$scope.resources = json.resources;
+
+				$scope.currentBuilding.state = 'waiting';
+				$scope.currentBuilding.isWorking = false;
 			}
 
-			actions = {
+			var actions = {
 				enter: enterBuilding,
 				collect: collectResources
 			};
 
-			$.get(url)
-				.success(function (data) {
-					$buildings.removeClass('active');
-					$building.addClass('active');
+			var url = $scope.buildingInteractUrl(building);
+			$http.get(url).success(function (data) {
+				var action = $scope.buildingAction(building);
+				actions[action](data);
 
-					actions[action](data);
-
-					$.removeLoader();
-				});
-		});
-
-		$.fn.produce = function () {
-			var $links = this,
-				$container = buildingBox.$self.find('.body');
-
-			$.bindings.add('buildingBox', $links);
-
-			$links.click(function (event) {
-				var $link = $(this);
-
-				$links.addClass('disabled');
-
-				event.preventDefault();
-				$container.showLoader();
-
-				$.get($link.attr('href'))
-					.success(function (json) {
-						$.updateResources(json.resources);
-console.log(json);
-						var selector = $link.data('reference'),
-							duration = $link.data('duration'),
-							$building = $('.building.active'),
-							$icon = $building.find('.icon > span');
-
-						$icon.removeClass();
-
-						window.setTimeout(
-							function () {
-								$building.find('.icon > span').addClass('entypo-flag');
-								$building.find('.interact').data('action', 'collect');
-							},
-							duration * 1000
-						);
-
-
-						$(selector).ticker(duration);
-
-						$.removeLoader();
-					})
+				$.removeLoader();
 			});
 		};
-	};
-}(jQuery));
+
+		$scope.produceUrl = function (key) {
+			return '?r=resource_produce/' + $scope.cityId + '/' +
+				$scope.currentBuilding.position + '/' + key;
+		};
+
+		$scope.produce = function (ware) {
+			$http.get($scope.produceUrl(ware.key)).success(function (json) {
+				$scope.resources = json.resources;
+
+				ware.remainingTime = ware.productionDuration;
+
+				$scope.currentBuilding.state = 'working';
+				$scope.currentBuilding.isWorking = true;
+
+				$scope.registerTicker(ware);
+
+				$.removeLoader();
+			});
+		};
+	}]);
+});

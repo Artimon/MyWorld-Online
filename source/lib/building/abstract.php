@@ -17,6 +17,35 @@ abstract class Building_Abstract implements Building_Interface {
 	private $workTask;
 
 	/**
+	 * @return array
+	 */
+	public function __toArray() {
+		$state = 'clear';
+		$isWorking = false;
+
+		if ($this->valid()) {
+			$isWorking = $this->isWorking();
+			if ($isWorking) {
+				$state = $this->workTask()->isCompleted()
+					? 'ready'
+					: 'working';
+			}
+			else {
+				$state = 'waiting';
+			}
+		}
+
+		return array(
+			'key' => $this->key(),
+			'name' => $this->name(),
+			'level' => $this->level(),
+			'position' => $this->position(),
+			'isWorking' => $isWorking,
+			'state' => $state
+		);
+	}
+
+	/**
 	 * @return string
 	 */
 	public function name() {
@@ -87,6 +116,28 @@ abstract class Building_Abstract implements Building_Interface {
 	 */
 	public function isConstructionSite() {
 		return false;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isWorking() {
+		return ($this->workTask() !== null);
+	}
+
+	/**
+	 * @param City $city
+	 * @param bool $addRequired
+	 * @return array
+	 */
+	public function goodsArray(City $city, $addRequired = false) {
+		$result = array();
+
+		foreach ($this->goods() as $ware) {
+			$result[] = $ware->__toArray($city, $this, $addRequired);
+		}
+
+		return $result;
 	}
 
 	/**

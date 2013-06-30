@@ -11,15 +11,14 @@ class Controller_Building_Enter extends Controller_Abstract {
 		$building = $city->currentBuilding();
 
 		if ($building && $building->valid()) {
-			$file = 'building';
 			$template = $this->assignWorkData($city, $building);
+			$this->json($template);
 		}
 		else {
 			$file = 'buildList';
 			$template = $this->assignBuildData($city, $position);
+			$this->partial($template, $file);
 		}
-
-		$this->partial($template, $file);
 	}
 
 	/**
@@ -45,9 +44,9 @@ class Controller_Building_Enter extends Controller_Abstract {
 		$template->assignArray(array(
 			'buildingKey' => $building->key(),
 			'title' => $building->name(),
-			'goods' => $building->goods(),
+			'goods' => $building->goodsArray($city, true),
 			'position' => $building->position(),
-			'city' => $city,
+			'cityId' => $city->id(),
 			'isWorking' => $isWorking,
 			'remainingTime' => $remainingTime,
 			'productionResourceKey' => $resourceKey

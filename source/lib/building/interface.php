@@ -2,6 +2,11 @@
 
 interface Building_Interface {
 	/**
+	 * @return array
+	 */
+	public function __toArray();
+
+	/**
 	 * @return string
 	 */
 	public function key();
@@ -45,9 +50,21 @@ interface Building_Interface {
 	public function isConstructionSite();
 
 	/**
+	 * @return bool
+	 */
+	public function isWorking();
+
+	/**
 	 * @return Resource_Interface[]
 	 */
 	public function goods();
+
+	/**
+	 * @param City $city
+	 * @param bool $addRequired
+	 * @return array
+	 */
+	public function goodsArray(City $city, $addRequired = false);
 
 	/**
 	 * @return Resource_Interface[]
@@ -62,6 +79,8 @@ interface Building_Interface {
 	public function build(City $city, $position);
 
 	/**
+	 * Return whether this resource is produced by the building or not.
+	 *
 	 * @param Resource_Interface $resource
 	 * @return bool
 	 */

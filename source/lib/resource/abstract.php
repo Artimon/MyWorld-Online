@@ -14,6 +14,47 @@ abstract class Resource_Abstract implements Resource_Interface {
 	}
 
 	/**
+	 * @param City $city
+	 * @param Building_Interface $building
+	 * @param bool $addRequired
+	 * @return array
+	 */
+	public function __toArray(
+		City $city,
+		Building_Interface $building = null,
+		$addRequired = false
+	) {
+		$required = array();
+		if ($addRequired) {
+			foreach ($this->requires() as $resource) {
+				$required[] = $resource->__toArray($city);
+			}
+		}
+
+		$canProduce = false;
+		$remainingTime = 0;
+		if ($building) {
+			$canProduce = $this->canProduce($city, $building);
+
+			if ($city->hasWorkingBuilding($building)) {
+				$remainingTime = $city->remainingProductionTime($building, $this);
+			}
+		}
+
+		return array(
+			'key' => $this->key(),
+			'name' => $this->name(),
+			'productionTypeName' => $this->productionTypeName(),
+			'productionDuration' => $this->productionDuration(),
+			'canProduce' => $canProduce,
+			'remainingTime' => $remainingTime,
+			'amountRequired' => $this->amountRequired(),
+			'amountAvailable' => $this->amountAvailable($city),
+			'required' => $required
+		);
+	}
+
+	/**
 	 * @return string
 	 */
 	public function name() {
@@ -91,15 +132,19 @@ abstract class Resource_Abstract implements Resource_Interface {
 	 * @param Building_Interface $building
 	 * @return bool
 	 */
-	public function produce(
+	public function canProduce(
 		City $city,
 		Building_Interface $building
 	) {
-		if (!$city->buildings()->has($building)) {
+		if (!$city->hasBuilding($building)) {
 			return false;
 		}
 
 		if (!$building->produces($this)) {
+			return false;
+		}
+
+		if ($building->isWorking($city)) {
 			return false;
 		}
 
@@ -110,6 +155,23 @@ abstract class Resource_Abstract implements Resource_Interface {
 			}
 		}
 
+		return true;
+	}
+
+	/**
+	 * @param City $city
+	 * @param Building_Interface $building
+	 * @return bool
+	 */
+	public function produce(
+		City $city,
+		Building_Interface $building
+	) {
+		if (!$this->canProduce($city, $building)) {
+			return false;
+		}
+
+		$required = $this->requires();
 		foreach ($required as $resource) {
 			$city->decrement(
 				$resource->key(),
@@ -122,5 +184,13 @@ abstract class Resource_Abstract implements Resource_Interface {
 		$amount		= $this->productionAmount();
 
 		return City_WorkTask::insert($city, $building, $task, $completion, $amount);
+	}
+
+	/**
+	 * @param Resource_Interface $resource
+	 * @return bool
+	 */
+	public function isSame(Resource_Interface $resource) {
+		return ($resource->key() === $this->key());
 	}
 }

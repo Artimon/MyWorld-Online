@@ -64,7 +64,7 @@ class City extends Lisbeth_Entity {
 	}
 
 	/**
-	 * @return array
+	 * @return array of [key => amount]
 	 */
 	public function resourceList() {
 		$result = array();
@@ -87,6 +87,61 @@ class City extends Lisbeth_Entity {
 		}
 
 		return $this->buildings;
+	}
+
+	/**
+	 * @param Building_Interface $building
+	 * @return bool
+	 */
+	public function hasBuilding(Building_Interface $building) {
+		return $this->buildings()->has($building);
+	}
+
+	/**
+	 * @param Building_Interface $building
+	 * @return bool
+	 */
+	public function hasWorkingBuilding(Building_Interface $building) {
+		return $this->workTasks()->isWorking($building);
+	}
+
+	/**
+	 * @param Building_Interface $building
+	 * @param Resource_Interface $resource
+	 * @return City_WorkTask|null
+	 */
+	public function remainingProductionTime(
+		Building_Interface $building,
+		Resource_Interface $resource
+	) {
+		if (!$this->hasWorkingBuilding($building)) {
+			return 0;
+		}
+
+		$workTask = $this->workTasks()->workTask($building);
+
+		if (!$workTask->isProduction()) {
+			return 0;
+		}
+
+		if (!$workTask->resource()->isSame($resource)) {
+			return 0;
+		}
+
+		return $workTask->remainingTime();
+	}
+
+	/**
+	 * @return array
+	 */
+	public function buildingsArray() {
+		$result = array();
+
+		foreach ($this->buildings()->all() as $building) {
+			$result[] = $building->__toArray();
+		}
+
+		return $result;
 	}
 
 	/**

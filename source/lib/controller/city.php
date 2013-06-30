@@ -9,7 +9,8 @@ class Controller_City extends Controller_Abstract {
 		$template = new Leviathan_Template();
 		$template->assignArray(array(
 			'city' => $city,
-			'buildings' => $city->buildings()->all()
+			'resources' => json_encode($city->resourceList()),
+			'buildings' => json_encode($city->buildingsArray())
 		));
 
 		$this->render($template, 'city');

@@ -2,6 +2,18 @@
 
 interface Resource_Interface {
 	/**
+	 * @param City $city
+	 * @param Building_Interface $building
+	 * @param bool $addRequired
+	 * @return array
+	 */
+	public function __toArray(
+		City $city,
+		Building_Interface $building = null,
+		$addRequired = false
+	);
+
+	/**
 	 * @return string
 	 */
 	public function key();
@@ -71,7 +83,20 @@ interface Resource_Interface {
 	 * @param Building_Interface $building
 	 * @return bool
 	 */
+	public function canProduce(City $city, Building_Interface $building);
+
+	/**
+	 * @param City $city
+	 * @param Building_Interface $building
+	 * @return bool
+	 */
 	public function produce(City $city, Building_Interface $building);
+
+	/**
+	 * @param Resource_Interface $resource
+	 * @return bool
+	 */
+	public function isSame(Resource_Interface $resource);
 
 	// production price -> money = 0
 }
