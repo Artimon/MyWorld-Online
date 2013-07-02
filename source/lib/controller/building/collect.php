@@ -21,7 +21,7 @@ class Controller_Building_Collect extends Controller_Abstract {
 		$template = new Leviathan_Template();
 		$template->assignArray(array(
 			'success' => $success,
-			'resources' => $city->resourceList()
+			'resources' => $city->resourcesArray($building, true)
 		));
 
 		$this->json($template);

@@ -64,18 +64,20 @@ class City extends Lisbeth_Entity {
 	}
 
 	/**
+	 * @param Building_Interface $building
+	 * @param bool $addRequired
 	 * @return array of [key => amount]
 	 */
-	public function resourceList() {
-		$result = array();
-
-		$resources = Resources::all();
-		foreach ($resources as $resource) {
-			$key = $resource->key();
-			$result[$key] = (int)$this->value($key);
-		}
-
-		return $result;
+	public function resourcesArray(
+		Building_Interface $building = null,
+		$addRequired = false
+	) {
+		return Resources::__toArray(
+			Resources::all(),
+			$this,
+			$building,
+			$addRequired
+		);
 	}
 
 	/**
@@ -135,17 +137,14 @@ class City extends Lisbeth_Entity {
 	 * @return array
 	 */
 	public function buildingsArray() {
-		$result = array();
-
-		foreach ($this->buildings()->all() as $building) {
-			$result[] = $building->__toArray();
-		}
-
-		return $result;
+		return Buildings::__toArray(
+			$this->buildings()->all(),
+			$this
+		);
 	}
 
 	/**
-	 * Get a list og buildable buildings.
+	 * Get a list of buildable buildings.
 	 *
 	 * @return Building_Interface[]
 	 */

@@ -7,18 +7,13 @@ class Controller_Building_Enter extends Controller_Abstract {
 		$resolve = new Resolve($this);
 
 		$city = $resolve->city();
-		$position = $resolve->position();
 		$building = $city->currentBuilding();
 
-		if ($building && $building->valid()) {
-			$template = $this->assignWorkData($city, $building);
-			$this->json($template);
-		}
-		else {
-			$file = 'buildList';
-			$template = $this->assignBuildData($city, $position);
-			$this->partial($template, $file);
-		}
+		$template = ($building && $building->valid())
+			? $this->assignWorkData($city, $building)
+			: $this->assignBuildData($city);
+
+		$this->json($template);
 	}
 
 	/**
@@ -27,29 +22,12 @@ class Controller_Building_Enter extends Controller_Abstract {
 	 * @return Leviathan_Template
 	 */
 	protected function assignWorkData(City $city, Building_Interface $building) {
-		$workTasks = $city->workTasks();
-
-		$isWorking = $workTasks->isWorking($building);
-		if ($isWorking) {
-			$workTask = $workTasks->workTask($building);
-			$remainingTime = $workTask->remainingTime();
-			$resourceKey = $workTask->resource()->key();
-		}
-		else {
-			$remainingTime = 0;
-			$resourceKey = '';
-		}
-
 		$template = new Leviathan_Template();
 		$template->assignArray(array(
-			'buildingKey' => $building->key(),
+			'isConstructionSite' => false,
 			'title' => $building->name(),
 			'goods' => $building->goodsArray($city, true),
-			'position' => $building->position(),
-			'cityId' => $city->id(),
-			'isWorking' => $isWorking,
-			'remainingTime' => $remainingTime,
-			'productionResourceKey' => $resourceKey
+			'buildable' => array()
 		));
 
 		return $template;
@@ -57,15 +35,18 @@ class Controller_Building_Enter extends Controller_Abstract {
 
 	/**
 	 * @param City $city
-	 * @param int $position
 	 * @return Leviathan_Template
 	 */
-	protected function assignBuildData(City $city, $position) {
+	protected function assignBuildData(City $city) {
 		$template = new Leviathan_Template();
 		$template->assignArray(array(
-			'city' => $city,
-			'position' => $position,
-			'buildings' => $city->buildingsBuildable()
+			'isConstructionSite' => true,
+			'title' => 'Empty construction site(t)',
+			'goods' => array(),
+			'buildable' => Buildings::__toArray(
+				$city->buildingsBuildable(),
+				$city
+			)
 		));
 
 		return $template;

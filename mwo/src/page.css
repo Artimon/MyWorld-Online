@@ -386,9 +386,9 @@ div.box {
   margin-left: -175px;
   background-color: #e3cb8f; }
 
-.resourceList ul {
+ul.resources {
   list-style: none; }
-  .resourceList ul li {
+  ul.resources li {
     float: left;
     margin-right: 5px; }
 

@@ -1,6 +1,6 @@
 <?php
 
-class Resource_Flour {
+class Resource_Flour extends Resource_Abstract {
 	const KEY = 'flour';
 
 	/**

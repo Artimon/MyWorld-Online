@@ -19,6 +19,21 @@ class Buildings {
 	}
 
 	/**
+	 * @param Building_Interface[] $buildings
+	 * @param City $city if resource requirements shall be added.
+	 * @return array
+	 */
+	public static function __toArray(array $buildings, City $city = null) {
+		$result = array();
+
+		foreach ($buildings as $building) {
+			$result[] = $building->__toArray($city);
+		}
+
+		return $result;
+	}
+
+	/**
 	 * @param Building_Interface $building
 	 * @return bool
 	 */

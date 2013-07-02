@@ -11,7 +11,7 @@ return array(
 		'controller' => 'Controller_City'
 	),
 	'building_build' => array(
-		// building_create/{cityId}/{position}
+		// building_build/{cityId}/{position}/building_key
 		'controller' => 'Controller_Building_Build'
 	),
 	'building_enter' => array(

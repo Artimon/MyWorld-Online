@@ -20,29 +20,30 @@ class Resources {
 			'ironIngot' => new Resource_IronIngot(),
 			'goldIngot' => new Resource_GoldIngot(),
 			'bread' => new Resource_Bread(),
+			'beer' => new Resource_Beer(),
 			'swords' => new Resource_Swords()
 		);
 	}
+
+	/**
+	 * @param Resource_Interface[] $resources
+	 * @param City $city
+	 * @param Building_Interface $building
+	 * @param bool $addRequired
+	 * @return array
+	 */
+	public static function __toArray(
+		array $resources,
+		City $city,
+		Building_Interface $building = null,
+		$addRequired = false
+	) {
+		$result = array();
+
+		foreach ($resources as $resource) {
+			$result[$resource->key()] = $resource->__toArray($city, $building, $addRequired);
+		}
+
+		return $result;
+	}
 }
-
-
-
-
-
-$sql = "
-ALTER TABLE  `cities`
-ADD `boards` INT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `ownerId`,
-ADD `bread` INT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `boards`,
-ADD `bricks` INT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `bread`,
-ADD `clay` INT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `bricks`,
-ADD `coal` INT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `clay`,
-ADD `flour` INT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `coal`,
-ADD `goldIngot` INT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `flour`,
-ADD `goldOre` INT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `goldIngot`,
-ADD `grain` INT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `goldOre`,
-ADD `horses` INT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `grain`,
-ADD `ironIngot` INT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `horses`,
-ADD `ironOre` INT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `ironIngot`,
-ADD `swords` INT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `ironOre`,
-ADD `water` INT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `swords`,
-ADD `wood` INT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `water`";

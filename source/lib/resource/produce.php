@@ -38,7 +38,7 @@ class Resource_Produce {
 		return $template->assignArray(array(
 			'error' => $error,
 			'message' => $message,
-			'resources' => $city->resourceList()
+			'resources' => $city->resourcesArray($building, true)
 		));
 	}
 }

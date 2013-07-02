@@ -186,6 +186,9 @@ mwoApp.define('cityViewModel', function () {
 		$scope.buildings = [];
 		$scope.goods = [];
 
+		$scope.isConstructionSite = false;
+		$scope.buildable = [];
+
 		$scope.currentBuilding = null;
 		$scope.contentBoxTitle = '';
 		$scope.productionTicker = null;
@@ -204,14 +207,6 @@ mwoApp.define('cityViewModel', function () {
 		$scope.contentBox.close = function () {
 			$scope.killTicker();
 			contentBox.fadeOut('fast');
-		};
-
-		/**
-		 * @param {string} key
-		 * @returns {number}
-		 */
-		$scope.resourceAvailable = function (key) {
-			return $scope.resources[key];
 		};
 
 		$scope.registerTicker = function (ware) {
@@ -247,7 +242,9 @@ mwoApp.define('cityViewModel', function () {
 			$('body').showLoader();
 
 			function enterBuilding(json) {
+				$scope.isConstructionSite = json.isConstructionSite;
 				$scope.contentBoxTitle = json.title;
+				$scope.buildable = json.buildable;
 				$scope.goods = json.goods;
 
 				$scope.contentBox.open();
@@ -283,6 +280,28 @@ mwoApp.define('cityViewModel', function () {
 			});
 		};
 
+		/**
+		 * @param {object} building
+		 * @param {string }key
+		 * @returns {string}
+		 */
+		$scope.buildingBuildUrl = function (building, key) {
+			return $scope.buildingInteractUrl(building) + '/' + key;
+		};
+
+		$scope.buildingBuild = function (key) {
+			var url = $scope.buildingBuildUrl(
+				$scope.currentBuilding,
+				key
+			);
+
+			console.log(url);
+		};
+
+		/**
+		 * @param {string} key
+		 * @returns {string}
+		 */
 		$scope.produceUrl = function (key) {
 			return '?r=resource_produce/' + $scope.cityId + '/' +
 				$scope.currentBuilding.position + '/' + key;

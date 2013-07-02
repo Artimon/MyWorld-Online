@@ -17,9 +17,10 @@ abstract class Building_Abstract implements Building_Interface {
 	private $workTask;
 
 	/**
+	 * @param City $city if resource requirements shall be added.
 	 * @return array
 	 */
-	public function __toArray() {
+	public function __toArray(City $city = null) {
 		$state = 'clear';
 		$isWorking = false;
 
@@ -38,10 +39,13 @@ abstract class Building_Abstract implements Building_Interface {
 		return array(
 			'key' => $this->key(),
 			'name' => $this->name(),
+			'buildTypeName' => $this->buildTypeName(),
 			'level' => $this->level(),
 			'position' => $this->position(),
 			'isWorking' => $isWorking,
-			'state' => $state
+			'state' => $state,
+			'canBuild' => $this->canBuild($city),
+			'requires' => Resources::__toArray($this->requires(), $city)
 		);
 	}
 
@@ -152,6 +156,20 @@ abstract class Building_Abstract implements Building_Interface {
 		}
 
 		return false;
+	}
+
+	/**
+	 * @param City $city
+	 * @return bool
+	 */
+	public function canBuild(City $city) {
+		foreach ($this->requires() as $resource) {
+			if ($resource->amountRequired() > $resource->amountAvailable($city)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**

@@ -12,8 +12,16 @@ JavaScript::getInstance()->bind('mwoApp.retrieve("cityViewModel")();');
 
 echo "
 <div id='city' ng-controller='CityCtrl' ng-init='setup({$city->id()}, {$resources}, {$buildings})'>
-	<div class='buildings' ng-repeat='building in buildings'>
-		<div class='building'>
+	<ul class='resources'>
+		<li ng-repeat='resource in resources'>
+			{{resource.amountAvailable}}
+			{{resource.name}}
+		</li>
+	</ul>
+	<div class='clear'></div>
+
+	<div class='buildings'>
+		<div class='building' ng-repeat='building in buildings'>
 			<span>{{building.name}}</span>
 			<span>{{building.level}}</span>
 			<span class='icon'>
@@ -35,7 +43,7 @@ echo "
 				<a href='javascript:;' class='entypo-cancel' ng-click='contentBox.close()'></a>
 			</h3>
 			<div class='body'>
-				<table>
+				<table ng-hide='isConstructionSite'>
 					<tr ng-repeat='ware in goods'>
 						<td>{{ware.name}}</td>
 						<td>
@@ -48,7 +56,7 @@ echo "
 						</td>
 						<td>
 							<div ng-repeat='resource in ware.required' ng-show='ware.required'>
-								<span class=''>{{resourceAvailable(resource.key)}}</span> /
+								<span class=''>{{resource.amountAvailable}}</span> /
 								{{resource.amountRequired}}
 								{{resource.name}}
 							</div>
@@ -59,6 +67,29 @@ echo "
 								ng-class='{button: true, disabled: (!ware.canProduce || currentBuilding.isWorking)}'
 								ng-click='produce(ware)'>
 								{{ware.productionTypeName}}
+							</a>
+						</td>
+					</tr>
+				</table>
+				<table ng-show='isConstructionSite'>
+					<tr ng-repeat='building in buildable'>
+						<td>{{building.name}}</td>
+						<td>
+							<ul class='resources'>
+								<li ng-repeat='resource in building.requires'
+									ng-class='{insufficient: (resource.amountRequired > resource.amountAvailable)}'>
+									{{resource.amountAvailable}} /
+									{{resource.amountRequired}}
+									{{resource.name}}
+								</li>
+							</ul>
+							<div class='clear'></div>
+						</td>
+						<td>
+							<a href='javascript:;'
+								ng-click='buildingBuild(building.key)'
+								ng-class='{button: true, disabled: !building.canBuild}'>
+								{{building.buildTypeName}}
 							</a>
 						</td>
 					</tr>

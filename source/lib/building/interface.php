@@ -73,6 +73,12 @@ interface Building_Interface {
 
 	/**
 	 * @param City $city
+	 * @return bool
+	 */
+	public function canBuild(City $city);
+
+	/**
+	 * @param City $city
 	 * @param int $position
 	 * @return Building_Interface
 	 */
