@@ -220,4 +220,12 @@ class City extends Lisbeth_Entity {
 	public function isOwner(Account $account) {
 		return $this->owner()->isSame($account);
 	}
+
+	/**
+	 * @param int $position
+	 * @return bool
+	 */
+	public function isConstructionSite($position) {
+		return !$this->value('building' . (int)$position);
+	}
 }

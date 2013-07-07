@@ -47,11 +47,6 @@ interface Building_Interface {
 	/**
 	 * @return bool
 	 */
-	public function isConstructionSite();
-
-	/**
-	 * @return bool
-	 */
 	public function isWorking();
 
 	/**

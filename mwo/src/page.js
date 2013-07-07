@@ -37,6 +37,20 @@ var mwoApp = angular.module('mwoApp', []);
 		}
 	});
 
+	mwoApp.define('router', function () {
+		var self = {};
+		/**
+		 * @param {string} route
+		 * @param {string[]} parameters
+		 * @returns {string}
+		 */
+		self.buildUrl = function (route, parameters) {
+			return '?r=' + route + '/' + parameters.join('/');
+		};
+
+		return self;
+	}());
+
 	angular.module('mwoApp').filter('duration', function () {
 		return function (remainingTime) {
 			if (remainingTime <= 0) {
@@ -174,152 +188,160 @@ var mwoApp = angular.module('mwoApp', []);
 }(jQuery));
 
 
-mwoApp.define('cityViewModel', function () {
-	/**
-	 * City Controller
-	 */
-	mwoApp.controller('CityCtrl', ['$scope', '$http', function ($scope, $http) {
-		var contentBox = $('#cityContentBox');
+/**
+ * City Controller
+ */
+mwoApp.controller('CityCtrl', ['$scope', '$http', function ($scope, $http) {
+	var contentBox = $('#cityContentBox'),
+		router = mwoApp.retrieve('router');
 
-		$scope.cityId = 0;
-		$scope.resources = [];
-		$scope.buildings = [];
-		$scope.goods = [];
+	$scope.cityId = 0;
+	$scope.resources = [];
+	$scope.buildings = [];
+	$scope.goods = [];
 
-		$scope.isConstructionSite = false;
-		$scope.buildable = [];
+	$scope.isConstructionSite = false;
+	$scope.buildable = [];
 
-		$scope.currentBuilding = null;
-		$scope.contentBoxTitle = '';
-		$scope.productionTicker = null;
+	$scope.currentBuilding = null;
+	$scope.contentBoxTitle = '';
+	$scope.productionTicker = null;
 
-		$scope.setup = function (cityId, resources, buildings) {
-			$scope.cityId = cityId;
-			$scope.resources = resources;
-			$scope.buildings = buildings;
-		};
+	$scope.setup = function (cityId, resources, buildings) {
+		$scope.cityId = cityId;
+		$scope.resources = resources;
+		$scope.buildings = buildings;
+	};
 
-		$scope.contentBox = {};
-		$scope.contentBox.open = function () {
-			$scope.killTicker();
-			contentBox.fadeIn('fast');
-		};
-		$scope.contentBox.close = function () {
-			$scope.killTicker();
-			contentBox.fadeOut('fast');
-		};
+	$scope.contentBox = {};
+	$scope.contentBox.open = function () {
+		$scope.killTicker();
+		contentBox.fadeIn('fast');
+	};
+	$scope.contentBox.close = function () {
+		$scope.killTicker();
+		contentBox.fadeOut('fast');
+	};
 
-		$scope.registerTicker = function (ware) {
-			$scope.productionTicker = mwoApp.retrieve('ticker')({
-				$scope: $scope,
-				object: ware,
-				key: 'remainingTime',
-				callback: function () {
-					$scope.currentBuilding.state = 'ready';
+	$scope.registerTicker = function (ware) {
+		$scope.productionTicker = mwoApp.retrieve('ticker')({
+			$scope: $scope,
+			object: ware,
+			key: 'remainingTime',
+			callback: function () {
+				$scope.currentBuilding.state = 'ready';
+			}
+		});
+	};
+
+	$scope.killTicker = function () {
+		if ($scope.productionTicker) {
+			$scope.productionTicker.kill();
+			$scope.productionTicker = null;
+		}
+	};
+
+	$scope.buildingAction = function (building) {
+		return building.state === 'ready' ? 'collect' : 'enter';
+	};
+
+	$scope.buildingInteractUrl = function (building) {
+		return router.buildUrl(
+			'building_' + $scope.buildingAction(building),
+			[$scope.cityId, building.position]
+		);
+	};
+
+	$scope.buildingInteract = function (building) {
+		$scope.currentBuilding = building;
+
+		$('body').showLoader();
+
+		function enterBuilding(json) {
+			$scope.isConstructionSite = json.isConstructionSite;
+			$scope.contentBoxTitle = json.title;
+			$scope.buildable = json.buildable;
+			$scope.goods = json.goods;
+
+			$scope.contentBox.open();
+
+			$.each($scope.goods, function (key, ware) {
+				if (ware.remainingTime > 0) {
+					$scope.registerTicker(ware);
+					return false;
 				}
+				return true;
 			});
+		}
+
+		function collectResources(json) {
+			$scope.contentBox.close();
+			$scope.resources = json.resources;
+
+			$scope.currentBuilding.state = 'waiting';
+			$scope.currentBuilding.isWorking = false;
+		}
+
+		var actions = {
+			enter: enterBuilding,
+			collect: collectResources
 		};
 
-		$scope.killTicker = function () {
-			if ($scope.productionTicker) {
-				$scope.productionTicker.kill();
-				$scope.productionTicker = null;
-			}
-		};
+		var url = $scope.buildingInteractUrl(building);
+		$http.get(url).success(function (data) {
+			var action = $scope.buildingAction(building);
+			actions[action](data);
 
-		$scope.buildingAction = function (building) {
-			return building.state === 'ready' ? 'collect' : 'enter';
-		};
+			$.removeLoader();
+		});
+	};
 
-		$scope.buildingInteractUrl = function (building) {
-			return '?r=building_' + $scope.buildingAction(building) + '/' +
-				$scope.cityId + '/' + building.position;
-		};
+	/**
+	 * @param {object} building
+	 * @param {string }key
+	 * @returns {string}
+	 */
+	$scope.buildingBuildUrl = function (building, key) {
+		return router.buildUrl(
+			'building_build',
+			[$scope.cityId, building.position, key]
+		);
+	};
 
-		$scope.buildingInteract = function (building) {
-			$scope.currentBuilding = building;
+	$scope.buildingBuild = function (key) {
+		var url = $scope.buildingBuildUrl(
+			$scope.currentBuilding,
+			key
+		);
 
-			$('body').showLoader();
+		$http.get(url).success(function (data) {
+			console.log(data);
+		});
+	};
 
-			function enterBuilding(json) {
-				$scope.isConstructionSite = json.isConstructionSite;
-				$scope.contentBoxTitle = json.title;
-				$scope.buildable = json.buildable;
-				$scope.goods = json.goods;
+	/**
+	 * @param {string} key
+	 * @returns {string}
+	 */
+	$scope.produceUrl = function (key) {
+		return router.buildUrl(
+			'resource_produce',
+			[$scope.cityId, $scope.currentBuilding.position, key]
+		);
+	};
 
-				$scope.contentBox.open();
+	$scope.produce = function (ware) {
+		$http.get($scope.produceUrl(ware.key)).success(function (json) {
+			$scope.resources = json.resources;
 
-				$.each($scope.goods, function (key, ware) {
-					if (ware.remainingTime > 0) {
-						$scope.registerTicker(ware);
-						return false;
-					}
-					return true;
-				});
-			}
+			ware.remainingTime = ware.productionDuration;
 
-			function collectResources(json) {
-				$scope.contentBox.close();
-				$scope.resources = json.resources;
+			$scope.currentBuilding.state = 'working';
+			$scope.currentBuilding.isWorking = true;
 
-				$scope.currentBuilding.state = 'waiting';
-				$scope.currentBuilding.isWorking = false;
-			}
+			$scope.registerTicker(ware);
 
-			var actions = {
-				enter: enterBuilding,
-				collect: collectResources
-			};
-
-			var url = $scope.buildingInteractUrl(building);
-			$http.get(url).success(function (data) {
-				var action = $scope.buildingAction(building);
-				actions[action](data);
-
-				$.removeLoader();
-			});
-		};
-
-		/**
-		 * @param {object} building
-		 * @param {string }key
-		 * @returns {string}
-		 */
-		$scope.buildingBuildUrl = function (building, key) {
-			return $scope.buildingInteractUrl(building) + '/' + key;
-		};
-
-		$scope.buildingBuild = function (key) {
-			var url = $scope.buildingBuildUrl(
-				$scope.currentBuilding,
-				key
-			);
-
-			console.log(url);
-		};
-
-		/**
-		 * @param {string} key
-		 * @returns {string}
-		 */
-		$scope.produceUrl = function (key) {
-			return '?r=resource_produce/' + $scope.cityId + '/' +
-				$scope.currentBuilding.position + '/' + key;
-		};
-
-		$scope.produce = function (ware) {
-			$http.get($scope.produceUrl(ware.key)).success(function (json) {
-				$scope.resources = json.resources;
-
-				ware.remainingTime = ware.productionDuration;
-
-				$scope.currentBuilding.state = 'working';
-				$scope.currentBuilding.isWorking = true;
-
-				$scope.registerTicker(ware);
-
-				$.removeLoader();
-			});
-		};
-	}]);
-});
+			$.removeLoader();
+		});
+	};
+}]);

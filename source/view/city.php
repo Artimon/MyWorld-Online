@@ -7,9 +7,6 @@
  * @var array $buildings
  */
 
-JavaScript::getInstance()->bind('mwoApp.retrieve("cityViewModel")();');
-
-
 echo "
 <div id='city' ng-controller='CityCtrl' ng-init='setup({$city->id()}, {$resources}, {$buildings})'>
 	<ul class='resources'>

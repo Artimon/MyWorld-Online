@@ -32,13 +32,6 @@ class Building_Null extends Building_Abstract {
 	/**
 	 * @return bool
 	 */
-	public function isConstructionSite() {
-		return true;
-	}
-
-	/**
-	 * @return bool
-	 */
 	public function valid() {
 		return false;
 	}

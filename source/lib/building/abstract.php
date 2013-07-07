@@ -118,13 +118,6 @@ abstract class Building_Abstract implements Building_Interface {
 	/**
 	 * @return bool
 	 */
-	public function isConstructionSite() {
-		return false;
-	}
-
-	/**
-	 * @return bool
-	 */
 	public function isWorking() {
 		return ($this->workTask() !== null);
 	}
@@ -183,7 +176,7 @@ abstract class Building_Abstract implements Building_Interface {
 		$position = (int)$position;
 		$city->assertPosition($position);
 
-		if (!$this->isConstructionSite()) {
+		if (!$city->isConstructionSite($position)) {
 			throw CreationException::noConstructionSite();
 		}
 

@@ -16,10 +16,13 @@ class Controller_Building_Build extends Controller_Abstract {
 		$template = new Leviathan_Template();
 
 		$resolve = new Resolve($this);
+		$position = $resolve->position();
+		$buildingKey = $resolve->key();
+
 		$city = $resolve->city();
 		$building = $city->currentBuilding();
 
-		if (!$building->isConstructionSite()) {
+		if (!$city->isConstructionSite($position)) {
 			return $template->assignArray(array(
 				'error' => true,
 				'message' => '@TODO Translate construction site not available.'
@@ -37,7 +40,7 @@ class Controller_Building_Build extends Controller_Abstract {
 			));
 		}
 
-		$city->buildingBuild();
+		$city->buildingBuild($buildingKey, $position);
 
 		return $template->assignArray(array(
 			'error' => false,

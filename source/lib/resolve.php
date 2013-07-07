@@ -42,6 +42,13 @@ class Resolve {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function key() {
+		return (string)$this->controller->argument(3);
+	}
+
+	/**
 	 * @return int
 	 */
 	public function position() {
