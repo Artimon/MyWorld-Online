@@ -71,6 +71,13 @@ class City_WorkTask extends Lisbeth_Entity {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function isUpgrade() {
+		return ($this->type() === 'upgrade');
+	}
+
+	/**
 	 * @return Resource_Interface
 	 */
 	public function resource() {
@@ -95,6 +102,16 @@ class City_WorkTask extends Lisbeth_Entity {
 					$this->key(),
 					$this->resource()->productionAmount()
 				);
+				break;
+
+			case $this->isUpgrade():
+				$position = $this->value('position');
+				$building = $city->buildings()->building($position);
+
+				$level = $building->level() + 1;
+				$building->level($level);
+				$building->position($position);
+				$building->__toCity($city);
 				break;
 
 			default:

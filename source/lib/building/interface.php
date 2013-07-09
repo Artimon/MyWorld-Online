@@ -7,6 +7,12 @@ interface Building_Interface {
 	public function __toArray();
 
 	/**
+	 * @param City $city
+	 * @return mixed
+	 */
+	public function __toCity(City $city);
+
+	/**
 	 * @return string
 	 */
 	public function key();

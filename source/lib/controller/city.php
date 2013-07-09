@@ -4,8 +4,10 @@ class Controller_City extends Controller_Abstract {
 	public function index() {
 		$this->assertOnline();
 
-		$city = new City(1);
+		$city = Lisbeth_ObjectPool::get('City', 1);
+		$city->workTasks()->convertUpgradeTasks($city);
 		$city->assignWorkTasks();
+
 		$template = new Leviathan_Template();
 		$template->assignArray(array(
 			'city' => $city,

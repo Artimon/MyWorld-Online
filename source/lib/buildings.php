@@ -94,6 +94,14 @@ class Buildings {
 	}
 
 	/**
+	 * @param Building_Interface $building
+	 * @param int $position
+	 */
+	public function replace(Building_Interface $building, $position) {
+		$this->list[(int)$position] = $building;
+	}
+
+	/**
 	 * @return Building_Interface[]
 	 */
 	public function all() {

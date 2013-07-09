@@ -45,4 +45,16 @@ class City_WorkTasks extends Lisbeth_Collection {
 	public function isWorking(Building_Interface $building) {
 		return ($this->workTask($building) !== null);
 	}
+
+	/**
+	 * @param City $city
+	 */
+	public function convertUpgradeTasks(City $city) {
+		/** @var City_WorkTask $entity */
+		foreach ($this->entities as $entity) {
+			if ($entity->isUpgrade()) {
+				$entity->convert($city, $this);
+			}
+		}
+	}
 }

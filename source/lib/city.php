@@ -158,7 +158,10 @@ class City extends Lisbeth_Entity {
 	 * @return Building_Interface
 	 */
 	public function buildingBuild($key, $position) {
-		return Building::get($key)->build($this, $position);
+		$building = Building::get($key);
+		$this->buildings()->replace($building, $position);
+
+		return $building->build($this, $position);
 	}
 
 	/**

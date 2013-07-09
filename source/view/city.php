@@ -25,6 +25,7 @@ echo "
 				<span ng-class='{
 					ready: \"entypo-flag\",
 					waiting: \"entypo-dot-3\",
+					upgrading: \"entypo-up-open-big\",
 					clear: \"\",
 					working: \"\"
 				}[building.state]'></span>

@@ -25,7 +25,7 @@ class Controller_Building_Build extends Controller_Abstract {
 		if (!$city->isConstructionSite($position)) {
 			return $template->assignArray(array(
 				'error' => true,
-				'message' => '@TODO Translate construction site not available.'
+				'message' => '@TODO Translate: construction site not available.'
 			));
 		}
 
@@ -36,15 +36,18 @@ class Controller_Building_Build extends Controller_Abstract {
 		if (!$hasResources) {
 			return $template->assignArray(array(
 				'error' => true,
-				'message' => '@TODO Translate missing resources.'
+				'message' => '@TODO Translate: missing resources.'
 			));
 		}
 
 		$city->buildingBuild($buildingKey, $position);
+		$city->assignWorkTasks();
 
 		return $template->assignArray(array(
 			'error' => false,
-			'message' => '@TODO Translate construction started.'
+			'message' => '@TODO Translate: construction started.',
+			'resources' => $city->resourcesArray(),
+			'buildings' => $city->buildingsArray()
 		));
 	}
 

@@ -21,32 +21,41 @@ abstract class Building_Abstract implements Building_Interface {
 	 * @return array
 	 */
 	public function __toArray(City $city = null) {
-		$state = 'clear';
-		$isWorking = false;
-
-		if ($this->valid()) {
-			$isWorking = $this->isWorking();
-			if ($isWorking) {
-				$state = $this->workTask()->isCompleted()
-					? 'ready'
-					: 'working';
-			}
-			else {
-				$state = 'waiting';
-			}
-		}
-
 		return array(
 			'key' => $this->key(),
 			'name' => $this->name(),
 			'buildTypeName' => $this->buildTypeName(),
 			'level' => $this->level(),
 			'position' => $this->position(),
-			'isWorking' => $isWorking,
-			'state' => $state,
+			'isWorking' => $this->isWorking(),
+			'state' => $this->state(),
 			'canBuild' => $this->canBuild($city),
 			'requires' => Resources::__toArray($this->requires(), $city)
 		);
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function state() {
+		if (!$this->valid()) {
+			return 'clear';
+		}
+
+		if (!$this->isWorking()) {
+			return 'waiting';
+		}
+
+		$workTask = $this->workTask();
+		if ($workTask->isCompleted()) {
+			return 'ready';
+		}
+
+		if ($workTask->isProduction()) {
+			return 'working';
+		}
+
+		return 'upgrading';
 	}
 
 	/**
@@ -167,6 +176,16 @@ abstract class Building_Abstract implements Building_Interface {
 
 	/**
 	 * @param City $city
+	 */
+	public function __toCity(City $city) {
+		$key = 'building' . $this->position();
+		$value = $this->level() . ':' . $this->key();
+
+		$city->setValue($key, $value);
+	}
+
+	/**
+	 * @param City $city
 	 * @param int $position
 	 * @return Building_Interface
 	 * @throws CreationException
@@ -174,8 +193,11 @@ abstract class Building_Abstract implements Building_Interface {
 	 */
 	public function build(City $city, $position) {
 		$position = (int)$position;
-		$city->assertPosition($position);
 
+		$this->level(0);
+		$this->position($position);
+
+		$city->assertPosition($position);
 		if (!$city->isConstructionSite($position)) {
 			throw CreationException::noConstructionSite();
 		}
@@ -184,9 +206,14 @@ abstract class Building_Abstract implements Building_Interface {
 			throw CreationException::insufficientResources();
 		}
 
-		$city->setValue(
-			'building' . $position,
-			'0:' . $this->key()
+		$this->__toCity($city);
+
+		City_WorkTask::insert(
+			$city,
+			$this,
+			"upgrade:{$this->key()}",
+			TIME + 5, // @TODO Insert duration.
+			1
 		);
 
 		$this->level(0);
