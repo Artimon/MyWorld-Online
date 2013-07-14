@@ -71,6 +71,17 @@ interface Resource_Interface {
 	/**
 	 * @return int
 	 */
+	public function requiredBuildingLevel();
+
+	/**
+	 * @param Building_Interface $building
+	 * @return bool
+	 */
+	public function hasRequiredBuildingLevel(Building_Interface $building);
+
+	/**
+	 * @return int
+	 */
 	public function productionAmount();
 
 	/**

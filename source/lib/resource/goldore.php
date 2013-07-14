@@ -22,6 +22,13 @@ class Resource_GoldOre extends Resource_Abstract {
 	/**
 	 * @return int
 	 */
+	public function requiredBuildingLevel() {
+		return 4;
+	}
+
+	/**
+	 * @return int
+	 */
 	public function productionAmount() {
 		return 1;
 	}

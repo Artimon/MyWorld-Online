@@ -128,6 +128,21 @@ abstract class Resource_Abstract implements Resource_Interface {
 	}
 
 	/**
+	 * @return int
+	 */
+	public function requiredBuildingLevel() {
+		return 1;
+	}
+
+	/**
+	 * @param Building_Interface $building
+	 * @return bool
+	 */
+	public function hasRequiredBuildingLevel(Building_Interface $building) {
+		return ($building->level() >= $this->requiredBuildingLevel());
+	}
+
+	/**
 	 * @param City $city
 	 * @param Building_Interface $building
 	 * @return bool
@@ -145,6 +160,10 @@ abstract class Resource_Abstract implements Resource_Interface {
 		}
 
 		if ($building->isWorking($city)) {
+			return false;
+		}
+
+		if (!$this->hasRequiredBuildingLevel($building)) {
 			return false;
 		}
 
