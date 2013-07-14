@@ -87,7 +87,7 @@ var mwoApp = angular.module('mwoApp', []);
 			handle = window.setTimeout(function () {
 				handle = null;
 				$response.fadeOut('slow');
-			}, 10000);
+			}, 2000);
 
 			return service;
 		};
@@ -268,7 +268,7 @@ mwoApp.controller(
 
 			$scope.currentBuilding = null;
 			$scope.contentBoxTitle = '';
-			$scope.productionTicker = null;
+			$scope.ticker = {};
 
 			$scope.setup = function (cityId, resources, buildings) {
 				$scope.cityId = cityId;
@@ -278,30 +278,42 @@ mwoApp.controller(
 
 			$scope.contentBox = {};
 			$scope.contentBox.open = function () {
-				$scope.killTicker();
 				contentBox.fadeIn('fast');
 			};
 			$scope.contentBox.close = function () {
-				$scope.killTicker();
 				contentBox.fadeOut('fast');
 			};
 
-			$scope.registerTicker = function (ware) {
-				$scope.productionTicker = mwoApp.retrieve('ticker')({
-					$scope: $scope,
-					object: ware,
-					key: 'remainingTime',
-					callback: function () {
-						$scope.currentBuilding.state = 'ready';
-					}
+			$scope.ticker.list = {};
+			$scope.ticker.register = function (data, callback) {
+				var key = $scope.currentBuilding.position - 1,
+					ticker = mwoApp.retrieve('ticker')({
+						$scope: $scope,
+						object: data,
+						key: 'remainingTime',
+						callback: function () {
+							callback($scope.buildings[key]);
+						}
+					});
+
+				if ($scope.ticker.list[key]) {
+					$scope.ticker.list[key].kill();
+				}
+
+				$scope.ticker.list[key] = ticker;
+			};
+
+			$scope.ticker.production = function (data) {
+				$scope.ticker.register(data, function (building) {
+					building.state = 'ready';
 				});
 			};
 
-			$scope.killTicker = function () {
-				if ($scope.productionTicker) {
-					$scope.productionTicker.kill();
-					$scope.productionTicker = null;
-				}
+			$scope.ticker.upgrade = function (data) {
+				$scope.ticker.register(data, function (building) {
+					building.level += 1;
+					building.state = 'waiting';
+				});
 			};
 
 			$scope.buildingAction = function (building) {
@@ -330,7 +342,7 @@ mwoApp.controller(
 
 					$.each($scope.goods, function (key, ware) {
 						if (ware.remainingTime > 0) {
-							$scope.registerTicker(ware);
+							$scope.ticker.production(ware);
 							return false;
 						}
 						return true;
@@ -371,7 +383,7 @@ mwoApp.controller(
 				);
 			};
 
-			$scope.buildingBuild = function (key, $event) {
+			$scope.buildingBuild = function (key) {
 				var url = $scope.buildingBuildUrl(
 					$scope.currentBuilding,
 					key
@@ -385,6 +397,12 @@ mwoApp.controller(
 						$scope.contentBox.close();
 						$scope.buildings = data.buildings;
 						$scope.resources = data.resources;
+
+						$scope.currentBuilding = $scope.buildings[
+							$scope.currentBuilding.position - 1
+						];
+
+						$scope.ticker.upgrade($scope.currentBuilding);
 					}
 				});
 			};
@@ -414,9 +432,7 @@ mwoApp.controller(
 					$scope.currentBuilding.state = 'working';
 					$scope.currentBuilding.isWorking = true;
 
-					$scope.registerTicker(ware);
-
-					$.removeLoader();
+					$scope.ticker.production(ware);
 				});
 			};
 		}

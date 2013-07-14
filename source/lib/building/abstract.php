@@ -30,6 +30,7 @@ abstract class Building_Abstract implements Building_Interface {
 			'isWorking' => $this->isWorking(),
 			'state' => $this->state(),
 			'canBuild' => $this->canBuild($city),
+			'remainingTime' => $this->remainingTime(),
 			'requires' => Resources::__toArray($this->requires(), $city)
 		);
 	}
@@ -56,6 +57,24 @@ abstract class Building_Abstract implements Building_Interface {
 		}
 
 		return 'upgrading';
+	}
+
+	/**
+	 * Seconds until the upgrade is finished.
+	 *
+	 * @return int
+	 */
+	public function remainingTime() {
+		if (!$this->isWorking()) {
+			return 0;
+		}
+
+		$workTask = $this->workTask();
+		if (!$workTask->isUpgrade()) {
+			return 0;
+		}
+
+		return $workTask->completion() - TIME;
 	}
 
 	/**

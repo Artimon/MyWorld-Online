@@ -262,6 +262,21 @@ button {
   font-weight: bold;
   color: #f9541c; }
 
+.stars {
+  width: 49px;
+  height: 23px;
+  background-image: url("../img/stars.png");
+  background-repeat: no-repeat; }
+  .stars.none {
+    background-image: none; }
+  .stars.one {
+    background-position: 0 0; }
+  .stars.two {
+    background-position: 0 -24px; }
+  .stars.three {
+    height: 26px;
+    background-position: 0 -47px; }
+
 #title {
   position: absolute;
   top: 54px;

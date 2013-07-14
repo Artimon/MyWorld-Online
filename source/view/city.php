@@ -31,6 +31,13 @@ echo "
 				}[building.state]'></span>
 			</span>
 			<a href='javascript:;' ng-click='buildingInteract(building)'>action</a>
+			<div class='stars' ng-class='{
+				0: \"none\",
+				1: \"none\",
+				2: \"one\",
+				3: \"two\",
+				4: \"three\"
+			}[building.level]'></div>
 		</div>
 	</div>
 

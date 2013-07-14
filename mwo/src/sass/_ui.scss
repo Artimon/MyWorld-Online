@@ -122,3 +122,31 @@ button {
 	font-weight: bold;
 	color: $colorTextError;
 }
+
+.stars {
+	//position: absolute;
+	width: 49px;
+	height: 23px;
+
+	background: {
+		image: url("../img/stars.png");
+		repeat: no-repeat;
+	}
+
+	&.none {
+		background-image: none;
+	}
+
+	&.one {
+		background-position: 0 0;
+	}
+
+	&.two {
+		background-position: 0 -24px;
+	}
+
+	&.three {
+		height: 26px;
+		background-position: 0 -47px;
+	}
+}
