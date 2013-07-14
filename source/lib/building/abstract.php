@@ -180,6 +180,54 @@ abstract class Building_Abstract implements Building_Interface {
 	}
 
 	/**
+	 * @param int|null $level [1-4]
+	 * @throws CreationException
+	 * @return Resource_Interface[]
+	 */
+	public function requires($level = null) {
+		if (!$level) {
+			$level = $this->level() + 1;
+		}
+
+		switch ($level) {
+			case 1:
+				return $this->requiresBuild();
+
+			case 2:
+				return $this->requiresUpgrade1();
+
+			case 3:
+				return $this->requiresUpgrade2();
+
+			case 4:
+				return $this->requiresUpgrade3();
+
+			default:
+				return array();
+		}
+	}
+
+	/**
+	 * @return Resource_Interface[]
+	 */
+	abstract protected function requiresBuild();
+
+	/**
+	 * @return Resource_Interface[]
+	 */
+	abstract protected function requiresUpgrade1();
+
+	/**
+	 * @return Resource_Interface[]
+	 */
+	abstract protected function requiresUpgrade2();
+
+	/**
+	 * @return Resource_Interface[]
+	 */
+	abstract protected function requiresUpgrade3();
+
+	/**
 	 * @param City $city
 	 * @return bool
 	 */

@@ -5,7 +5,7 @@
  */
 class CreationException extends Exception {
 	/**
-	 * @throws CreationException
+	 * @return CreationException
 	 */
 	public static function insufficientResources() {
 		return new self(
@@ -15,7 +15,7 @@ class CreationException extends Exception {
 	}
 
 	/**
-	 * @throws CreationException
+	 * @return CreationException
 	 */
 	public static function noConstructionSite() {
 		return new self(
@@ -25,7 +25,7 @@ class CreationException extends Exception {
 	}
 
 	/**
-	 * @throws CreationException
+	 * @return CreationException
 	 */
 	public static function invalidPosition() {
 		return new self(

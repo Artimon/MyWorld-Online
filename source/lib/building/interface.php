@@ -8,7 +8,6 @@ interface Building_Interface {
 
 	/**
 	 * @param City $city
-	 * @return mixed
 	 */
 	public function __toCity(City $city);
 
@@ -68,9 +67,11 @@ interface Building_Interface {
 	public function goodsArray(City $city, $addRequired = false);
 
 	/**
+	 * @param int|null $level [1-4]
+	 * @throws CreationException
 	 * @return Resource_Interface[]
 	 */
-	public function requires();
+	public function requires($level = null);
 
 	/**
 	 * @param City $city

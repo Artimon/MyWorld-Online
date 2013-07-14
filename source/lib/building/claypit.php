@@ -22,11 +22,32 @@ class Building_ClayPit extends Building_Abstract {
 	/**
 	 * @return Resource_Interface[]
 	 */
-	public function requires() {
+	protected function requiresBuild() {
 		return array(
 			new Resource_Boards(10),
 			new Resource_Tools(5)
 		);
+	}
+
+	/**
+	 * @return Resource_Interface[]
+	 */
+	protected function requiresUpgrade1() {
+		return array();
+	}
+
+	/**
+	 * @return Resource_Interface[]
+	 */
+	protected function requiresUpgrade2() {
+		return array();
+	}
+
+	/**
+	 * @return Resource_Interface[]
+	 */
+	protected function requiresUpgrade3() {
+		return array();
 	}
 
 	/**

@@ -23,9 +23,38 @@ class Building_Null extends Building_Abstract {
 	}
 
 	/**
+	 * @param int|null $level
 	 * @return Resource_Interface[]
 	 */
-	public function requires() {
+//	public function requires($level = null) {
+//		return array();
+//	}
+
+	/**
+	 * @return Resource_Interface[]
+	 */
+	protected function requiresBuild() {
+		return array();
+	}
+
+	/**
+	 * @return Resource_Interface[]
+	 */
+	protected function requiresUpgrade1() {
+		return array();
+	}
+
+	/**
+	 * @return Resource_Interface[]
+	 */
+	protected function requiresUpgrade2() {
+		return array();
+	}
+
+	/**
+	 * @return Resource_Interface[]
+	 */
+	protected function requiresUpgrade3() {
 		return array();
 	}
 
