@@ -1,6 +1,6 @@
 var mwoApp = angular.module('mwoApp', []);
 
-(function (angular, mwoApp) {
+(function ($, angular, mwoApp) {
 	mwoApp.di = {};
 	mwoApp.define = function (name, fn) {
 		mwoApp.di[name] = fn;
@@ -51,6 +51,66 @@ var mwoApp = angular.module('mwoApp', []);
 		return service;
 	});
 
+	mwoApp.service('response', function () {
+		var service = {},
+			$response = $('#response'),
+			handle;
+
+		/**
+		 * @param {object} element
+		 * @returns {object}
+		 */
+		service.position = function (element) {
+			var $element = $(element),
+				offset = $element.offset();
+
+			$response.css({
+				left: offset.left + $element.width() - 24,
+				top: offset.top + $element.height() - 24
+			});
+
+			return service;
+		};
+
+		/**
+		 * @returns {object}
+		 */
+		service.show = function () {
+			if (!$response.is(':visible')) {
+				$response.fadeIn();
+			}
+
+			if (handle) {
+				window.clearTimeout(handle);
+			}
+
+			handle = window.setTimeout(function () {
+				handle = null;
+				$response.fadeOut('slow');
+			}, 10000);
+
+			return service;
+		};
+
+		/**
+		 * @param {object} element
+		 */
+		service.loading = function (element) {
+			$response.removeClass('success error').addClass('loading');
+			service.position(element).show();
+		};
+
+		/**
+		 * @param {object} element
+		 */
+		service.success = function (element) {
+			$response.removeClass('loading error').addClass('success');
+			service.position(element).show();
+		};
+
+		return service;
+	});
+
 	angular.module('mwoApp').filter('duration', function () {
 		return function (remainingTime) {
 			if (remainingTime <= 0) {
@@ -73,7 +133,7 @@ var mwoApp = angular.module('mwoApp', []);
 			return seconds + 's';
 		};
 	});
-}(angular, mwoApp));
+}(jQuery, angular, mwoApp));
 
 
 (function ($) {
@@ -193,164 +253,172 @@ var mwoApp = angular.module('mwoApp', []);
  */
 mwoApp.controller(
 	'CityCtrl',
-	['$scope', '$http', 'router', function ($scope, $http, router) {
-		var contentBox = $('#cityContentBox');
+	[
+		'$scope', '$http', 'router', 'response',
+		function ($scope, $http, router, response) {
+			var contentBox = $('#cityContentBox');
 
-		$scope.cityId = 0;
-		$scope.resources = [];
-		$scope.buildings = [];
-		$scope.goods = [];
+			$scope.cityId = 0;
+			$scope.resources = [];
+			$scope.buildings = [];
+			$scope.goods = [];
 
-		$scope.isConstructionSite = false;
-		$scope.buildable = [];
+			$scope.isConstructionSite = false;
+			$scope.buildable = [];
 
-		$scope.currentBuilding = null;
-		$scope.contentBoxTitle = '';
-		$scope.productionTicker = null;
+			$scope.currentBuilding = null;
+			$scope.contentBoxTitle = '';
+			$scope.productionTicker = null;
 
-		$scope.setup = function (cityId, resources, buildings) {
-			$scope.cityId = cityId;
-			$scope.resources = resources;
-			$scope.buildings = buildings;
-		};
-
-		$scope.contentBox = {};
-		$scope.contentBox.open = function () {
-			$scope.killTicker();
-			contentBox.fadeIn('fast');
-		};
-		$scope.contentBox.close = function () {
-			$scope.killTicker();
-			contentBox.fadeOut('fast');
-		};
-
-		$scope.registerTicker = function (ware) {
-			$scope.productionTicker = mwoApp.retrieve('ticker')({
-				$scope: $scope,
-				object: ware,
-				key: 'remainingTime',
-				callback: function () {
-					$scope.currentBuilding.state = 'ready';
-				}
-			});
-		};
-
-		$scope.killTicker = function () {
-			if ($scope.productionTicker) {
-				$scope.productionTicker.kill();
-				$scope.productionTicker = null;
-			}
-		};
-
-		$scope.buildingAction = function (building) {
-			return building.state === 'ready' ? 'collect' : 'enter';
-		};
-
-		$scope.buildingInteractUrl = function (building) {
-			return router.buildUrl(
-				'building_' + $scope.buildingAction(building),
-				[$scope.cityId, building.position]
-			);
-		};
-
-		$scope.buildingInteract = function (building) {
-			$scope.currentBuilding = building;
-
-			$('body').showLoader();
-
-			function enterBuilding(json) {
-				$scope.isConstructionSite = json.isConstructionSite;
-				$scope.contentBoxTitle = json.title;
-				$scope.buildable = json.buildable;
-				$scope.goods = json.goods;
-
-				$scope.contentBox.open();
-
-				$.each($scope.goods, function (key, ware) {
-					if (ware.remainingTime > 0) {
-						$scope.registerTicker(ware);
-						return false;
-					}
-					return true;
-				});
-			}
-
-			function collectResources(json) {
-				$scope.contentBox.close();
-				$scope.resources = json.resources;
-
-				$scope.currentBuilding.state = 'waiting';
-				$scope.currentBuilding.isWorking = false;
-			}
-
-			var actions = {
-				enter: enterBuilding,
-				collect: collectResources
+			$scope.setup = function (cityId, resources, buildings) {
+				$scope.cityId = cityId;
+				$scope.resources = resources;
+				$scope.buildings = buildings;
 			};
 
-			var url = $scope.buildingInteractUrl(building);
-			$http.get(url).success(function (data) {
-				var action = $scope.buildingAction(building);
-				actions[action](data);
+			$scope.contentBox = {};
+			$scope.contentBox.open = function () {
+				$scope.killTicker();
+				contentBox.fadeIn('fast');
+			};
+			$scope.contentBox.close = function () {
+				$scope.killTicker();
+				contentBox.fadeOut('fast');
+			};
 
-				$.removeLoader();
-			});
-		};
+			$scope.registerTicker = function (ware) {
+				$scope.productionTicker = mwoApp.retrieve('ticker')({
+					$scope: $scope,
+					object: ware,
+					key: 'remainingTime',
+					callback: function () {
+						$scope.currentBuilding.state = 'ready';
+					}
+				});
+			};
 
-		/**
-		 * @param {object} building
-		 * @param {string }key
-		 * @returns {string}
-		 */
-		$scope.buildingBuildUrl = function (building, key) {
-			return router.buildUrl(
-				'building_build',
-				[$scope.cityId, building.position, key]
-			);
-		};
-
-		$scope.buildingBuild = function (key) {
-			var url = $scope.buildingBuildUrl(
-				$scope.currentBuilding,
-				key
-			);
-
-			$http.get(url).success(function (data) {
-				if (data.error) {
-					console.log('Error: ', data.message);
+			$scope.killTicker = function () {
+				if ($scope.productionTicker) {
+					$scope.productionTicker.kill();
+					$scope.productionTicker = null;
 				}
-				else {
+			};
+
+			$scope.buildingAction = function (building) {
+				return building.state === 'ready' ? 'collect' : 'enter';
+			};
+
+			$scope.buildingInteractUrl = function (building) {
+				return router.buildUrl(
+					'building_' + $scope.buildingAction(building),
+					[$scope.cityId, building.position]
+				);
+			};
+
+			$scope.buildingInteract = function (building) {
+				$scope.currentBuilding = building;
+
+				$('body').showLoader();
+
+				function enterBuilding(json) {
+					$scope.isConstructionSite = json.isConstructionSite;
+					$scope.contentBoxTitle = json.title;
+					$scope.buildable = json.buildable;
+					$scope.goods = json.goods;
+
+					$scope.contentBox.open();
+
+					$.each($scope.goods, function (key, ware) {
+						if (ware.remainingTime > 0) {
+							$scope.registerTicker(ware);
+							return false;
+						}
+						return true;
+					});
+				}
+
+				function collectResources(json) {
 					$scope.contentBox.close();
-					$scope.buildings = data.buildings;
-					$scope.resources = data.resources;
+					$scope.resources = json.resources;
+
+					$scope.currentBuilding.state = 'waiting';
+					$scope.currentBuilding.isWorking = false;
 				}
-			});
-		};
 
-		/**
-		 * @param {string} key
-		 * @returns {string}
-		 */
-		$scope.produceUrl = function (key) {
-			return router.buildUrl(
-				'resource_produce',
-				[$scope.cityId, $scope.currentBuilding.position, key]
-			);
-		};
+				var actions = {
+					enter: enterBuilding,
+					collect: collectResources
+				};
 
-		$scope.produce = function (ware) {
-			$http.get($scope.produceUrl(ware.key)).success(function (json) {
-				$scope.resources = json.resources;
+				var url = $scope.buildingInteractUrl(building);
+				$http.get(url).success(function (data) {
+					var action = $scope.buildingAction(building);
+					actions[action](data);
 
-				ware.remainingTime = ware.productionDuration;
+					$.removeLoader();
+				});
+			};
 
-				$scope.currentBuilding.state = 'working';
-				$scope.currentBuilding.isWorking = true;
+			/**
+			 * @param {object} building
+			 * @param {string }key
+			 * @returns {string}
+			 */
+			$scope.buildingBuildUrl = function (building, key) {
+				return router.buildUrl(
+					'building_build',
+					[$scope.cityId, building.position, key]
+				);
+			};
 
-				$scope.registerTicker(ware);
+			$scope.buildingBuild = function (key, $event) {
+				var url = $scope.buildingBuildUrl(
+					$scope.currentBuilding,
+					key
+				);
 
-				$.removeLoader();
-			});
-		};
-	}]
+				$http.get(url).success(function (data) {
+					if (data.error) {
+						console.log('Error: ', data.message);
+					}
+					else {
+						$scope.contentBox.close();
+						$scope.buildings = data.buildings;
+						$scope.resources = data.resources;
+					}
+				});
+			};
+
+			/**
+			 * @param {string} key
+			 * @returns {string}
+			 */
+			$scope.produceUrl = function (key) {
+				return router.buildUrl(
+					'resource_produce',
+					[$scope.cityId, $scope.currentBuilding.position, key]
+				);
+			};
+
+			$scope.produce = function (ware, $event) {
+				var $link = angular.element($event.srcElement);
+				response.loading($link);
+
+				$http.get($scope.produceUrl(ware.key)).success(function (json) {
+					response.success($link);
+
+					$scope.resources = json.resources;
+
+					ware.remainingTime = ware.productionDuration;
+
+					$scope.currentBuilding.state = 'working';
+					$scope.currentBuilding.isWorking = true;
+
+					$scope.registerTicker(ware);
+
+					$.removeLoader();
+				});
+			};
+		}
+	]
 );

@@ -63,7 +63,7 @@ echo "
 						<td>
 							<a href='javascript:;'
 								ng-class='{button: true, disabled: (!ware.canProduce || currentBuilding.isWorking)}'
-								ng-click='produce(ware)'>
+								ng-click='produce(ware, \$event)'>
 								{{ware.productionTypeName}}
 							</a>
 						</td>
