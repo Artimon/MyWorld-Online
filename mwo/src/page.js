@@ -1,6 +1,6 @@
 var mwoApp = angular.module('mwoApp', []);
 
-(function ($, angular, mwoApp) {
+(function ($, angular, mwoApp, translations) {
 	mwoApp.di = {};
 	mwoApp.define = function (name, fn) {
 		mwoApp.di[name] = fn;
@@ -111,7 +111,7 @@ var mwoApp = angular.module('mwoApp', []);
 		return service;
 	});
 
-	angular.module('mwoApp').filter('duration', function () {
+	mwoApp.filter('duration', function () {
 		return function (remainingTime) {
 			if (remainingTime <= 0) {
 				return '-';
@@ -133,7 +133,17 @@ var mwoApp = angular.module('mwoApp', []);
 			return seconds + 's';
 		};
 	});
-}(jQuery, angular, mwoApp));
+
+	mwoApp.filter('i18n', function () {
+		return function (translationKey) {
+			if (translations[translationKey]) {
+				return translations[translationKey];
+			}
+
+			return translationKey;
+		};
+	});
+}(jQuery, angular, mwoApp, translations));
 
 
 (function ($) {

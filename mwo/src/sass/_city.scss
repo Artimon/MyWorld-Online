@@ -1,5 +1,19 @@
-#buildingBox {
-	.box {
+#city {
+	#cityContentBox {
+		position: absolute;
+		left: 50%;
+		top: 50px;
+
 		width: 450px;
+
+		.building {
+			.upgrade {
+				text-align: center;
+
+				.stars {
+					display: inline-block;
+				}
+			}
+		}
 	}
 }

@@ -4,6 +4,7 @@ class Controller_City extends Controller_Abstract {
 	public function index() {
 		$this->assertOnline();
 
+		/** @var City $city */
 		$city = Lisbeth_ObjectPool::get('City', 1);
 		$city->workTasks()->convertUpgradeTasks($city);
 		$city->assignWorkTasks();

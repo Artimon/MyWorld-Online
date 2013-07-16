@@ -27,7 +27,7 @@ return array(
 	'ui' => array(
 		'controller' => 'Controller_UserInterface'
 	),
-	'pageNotFound' => array(
+	'page_not_found' => array(
 		'controller' => 'Controller_PageNotFound'
 	)
 );

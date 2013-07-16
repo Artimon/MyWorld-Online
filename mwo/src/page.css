@@ -518,8 +518,15 @@ ul.resources {
     width: 250px;
     margin-right: 15px; }
 
-#buildingBox .box {
+#city #cityContentBox {
+  position: absolute;
+  left: 50%;
+  top: 50px;
   width: 450px; }
+  #city #cityContentBox .building .upgrade {
+    text-align: center; }
+    #city #cityContentBox .building .upgrade .stars {
+      display: inline-block; }
 
 * {
   padding: 0px;

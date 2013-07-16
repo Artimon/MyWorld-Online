@@ -69,9 +69,12 @@ abstract class Controller_Abstract implements Controller_Interface {
 	public function render(Leviathan_Template $template, $path) {
 		$data = $this->pageData();
 
+		$language = new Language();
+
 		$page = new Leviathan_Template();
 		$page->assignArray(array(
 			'pageTitle' => $data['title'],
+			'language' => $language->get(),
 			'body' => $template->render("source/view/{$path}.php")
 		));
 

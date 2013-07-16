@@ -48,34 +48,53 @@ echo "
 				<a href='javascript:;' class='entypo-cancel' ng-click='contentBox.close()'></a>
 			</h3>
 			<div class='body'>
-				<table ng-hide='isConstructionSite'>
-					<tr ng-repeat='ware in goods'>
-						<td>{{ware.name}}</td>
-						<td>
-							<span ng-hide='currentBuilding.isWorking'>
-								{{ware.productionDuration|duration}}
-							</span>
-							<span ng-show='currentBuilding.isWorking'>
-								{{ware.remainingTime|duration}}
-							</span>
-						</td>
-						<td>
-							<div ng-repeat='resource in ware.required' ng-show='ware.required'>
-								<span class=''>{{resource.amountAvailable}}</span> /
-								{{resource.amountRequired}}
-								{{resource.name}}
-							</div>
-							<div ng-hide='ware.required'>-</div>
-						</td>
-						<td>
-							<a href='javascript:;'
-								ng-class='{button: true, disabled: (!ware.canProduce || currentBuilding.isWorking)}'
-								ng-click='produce(ware, \$event)'>
-								{{ware.productionTypeName}}
-							</a>
-						</td>
-					</tr>
-				</table>
+				<div class='building' ng-hide='isConstructionSite'>
+					<div class='upgrade left'>
+						<h4>{{'upgrade'|i18n}}</h4>
+						<div class='stars' ng-class='{
+							1: \"none\",
+							2: \"one\",
+							3: \"two\",
+							4: \"three\",
+							5: \"three\"
+						}[currentBuilding.level + 1]'></div>
+						<p>{{'cost'|i18n}}</p>
+						<div ng-repeat='resource in currentBuilding.requires'>
+							{{resource.name}}
+							{{resource.amountRequired}}
+						</div>
+						<a class='button small important entypo-up-open-big'></a>
+					</div>
+					<table class='left'>
+						<tr ng-repeat='ware in goods'>
+							<td>{{ware.name}}</td>
+							<td>
+								<span ng-hide='currentBuilding.isWorking'>
+									{{ware.productionDuration|duration}}
+								</span>
+								<span ng-show='currentBuilding.isWorking'>
+									{{ware.remainingTime|duration}}
+								</span>
+							</td>
+							<td>
+								<div ng-repeat='resource in ware.required' ng-show='ware.required'>
+									<span class=''>{{resource.amountAvailable}}</span> /
+									{{resource.amountRequired}}
+									{{resource.name}}
+								</div>
+								<div ng-hide='ware.required'>-</div>
+							</td>
+							<td>
+								<a href='javascript:;'
+									ng-class='{button: true, disabled: (!ware.canProduce || currentBuilding.isWorking)}'
+									ng-click='produce(ware, \$event)'>
+									{{ware.productionTypeName}}
+								</a>
+							</td>
+						</tr>
+					</table>
+					<div class='clear'></div>
+				</div>
 				<table ng-show='isConstructionSite'>
 					<tr ng-repeat='building in buildable'>
 						<td>{{building.name}}</td>

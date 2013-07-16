@@ -4,7 +4,7 @@ class Controller_PageNotFound extends Controller_Abstract {
 	public function index() {
 		$this->render(
 			new Leviathan_Template(),
-			'pageNotFound'
+			'page_not_found'
 		);
 	}
 

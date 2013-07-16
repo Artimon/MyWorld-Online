@@ -71,7 +71,7 @@ class Router {
 
 session_start();
 
-$router = new Router('login', 'pageNotFound');
+$router = new Router('login', 'page_not_found');
 
 
 $baseDir = __DIR__;

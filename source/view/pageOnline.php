@@ -2,6 +2,7 @@
 
 /**
  * @var string $pageTitle
+ * @var string $language
  * @var string $body
  */
 
@@ -35,6 +36,7 @@ echo "
 
 	<div id='response' class='null'></div>
 
+	<script type='text/javascript' src='mwo/src/i18n/{$language}.js'></script>
 	<script type='text/javascript' src='ext/jQuery/jquery-1.8.0.min.js'></script>
 	<script type='text/javascript' src='ext/angular/angular.min.js'></script>
 	<script type='text/javascript' src='mwo/src/page.js'></script>
