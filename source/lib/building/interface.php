@@ -28,6 +28,12 @@ interface Building_Interface {
 	public function level($level = null);
 
 	/**
+	 * @param City $city
+	 * @return bool
+	 */
+	public function upgrade(City $city);
+
+	/**
 	 * @param int|null $position
 	 * @return int
 	 */

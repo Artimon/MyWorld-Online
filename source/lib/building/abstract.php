@@ -23,6 +23,7 @@ abstract class Building_Abstract implements Building_Interface {
 	public function __toArray(City $city = null) {
 		return array(
 			'key' => $this->key(),
+			'url' => 'tmp/building_dummy.gif',
 			'name' => $this->name(),
 			'buildTypeName' => $this->buildTypeName(),
 			'level' => $this->level(),
@@ -232,11 +233,40 @@ abstract class Building_Abstract implements Building_Interface {
 	 * @return bool
 	 */
 	public function canBuild(City $city) {
+		if ($this->isWorking()) {
+			return false;
+		}
+
 		foreach ($this->requires() as $resource) {
 			if ($resource->amountRequired() > $resource->amountAvailable($city)) {
 				return false;
 			}
 		}
+
+		return true;
+	}
+
+	/**
+	 * @param City $city
+	 * @return bool
+	 */
+	public function upgrade(City $city) {
+		if (!$this->canBuild($city)) {
+			return false;
+		}
+
+		// Should be catched by level 0 implying "is working".
+		if ($this->level() === 0) {
+			return false;
+		}
+
+		$this->level(
+			$this->level() + 1
+		);
+
+		$city->removeResources(
+			$this->requires()
+		);
 
 		return true;
 	}

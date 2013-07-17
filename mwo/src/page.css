@@ -418,6 +418,16 @@ ul.resources {
     float: left;
     margin-right: 5px; }
 
+.resource {
+  line-height: 22px; }
+  .resource img {
+    width: 25px;
+    height: 20px;
+    border: none;
+    text-decoration: none;
+    vertical-align: bottom;
+    cursor: help; }
+
 #products {
   position: fixed;
   top: 0;

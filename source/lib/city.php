@@ -64,6 +64,30 @@ class City extends Lisbeth_Entity {
 	}
 
 	/**
+	 * @param Resource_Interface[] $resources
+	 */
+	public function removeResources($resources) {
+		foreach ($resources as $resource) {
+			$this->decrement(
+				$resource->key(),
+				$resource->amountRequired()
+			);
+		}
+	}
+
+	/**
+	 * @param Resource_Interface[] $resources
+	 */
+	public function addResources($resources) {
+		foreach ($resources as $resource) {
+			$this->increment(
+				$resource->key(),
+				$resource->amountRequired()
+			);
+		}
+	}
+
+	/**
 	 * @param Building_Interface $building
 	 * @param bool $addRequired
 	 * @return array of [key => amount]

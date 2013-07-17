@@ -24,10 +24,10 @@ abstract class Resource_Abstract implements Resource_Interface {
 		Building_Interface $building = null,
 		$addRequired = false
 	) {
-		$required = array();
+		$requires = array();
 		if ($addRequired) {
 			foreach ($this->requires() as $resource) {
-				$required[] = $resource->__toArray($city);
+				$requires[] = $resource->__toArray($city);
 			}
 		}
 
@@ -43,14 +43,17 @@ abstract class Resource_Abstract implements Resource_Interface {
 
 		return array(
 			'key' => $this->key(),
+			'url' => 'tmp/resource_dummy.gif',
 			'name' => $this->name(),
 			'productionTypeName' => $this->productionTypeName(),
 			'productionDuration' => $this->productionDuration(),
+			'productionAmount' => $this->productionAmount(),
 			'canProduce' => $canProduce,
 			'remainingTime' => $remainingTime,
 			'amountRequired' => $this->amountRequired(),
 			'amountAvailable' => $this->amountAvailable($city),
-			'required' => $required
+			'insufficient' => $this->isInsufficient($city),
+			'requires' => $requires
 		);
 	}
 
@@ -85,6 +88,14 @@ abstract class Resource_Abstract implements Resource_Interface {
 		return (int)$city->value(
 			$this->key()
 		);
+	}
+
+	/**
+	 * @param City $city
+	 * @return bool
+	 */
+	public function isInsufficient(City $city) {
+		return ($this->amountRequired() > $this->amountAvailable($city));
 	}
 
 	/**

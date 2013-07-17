@@ -1,4 +1,6 @@
 window.translations = {
 	upgrade: 'Upgrade',
-	cost: 'Cost:'
+	cost: 'Cost:',
+	emptyConstructionSite: 'Empty Construction Site',
+	close: 'Close'
 };

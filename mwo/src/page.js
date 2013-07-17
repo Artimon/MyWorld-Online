@@ -143,6 +143,13 @@ var mwoApp = angular.module('mwoApp', []);
 			return translationKey;
 		};
 	});
+
+	mwoApp.filter('image', function () {
+		return function (image) {
+			return '/myworld-online/mwo/img/' + image;
+//			return '/mwo/images/' + image;
+		};
+	});
 }(jQuery, angular, mwoApp, translations));
 
 
@@ -382,57 +389,74 @@ mwoApp.controller(
 			};
 
 			/**
-			 * @param {object} building
+			 * @param {string} route
 			 * @param {string }key
 			 * @returns {string}
 			 */
-			$scope.buildingBuildUrl = function (building, key) {
-				return router.buildUrl(
-					'building_build',
-					[$scope.cityId, building.position, key]
-				);
+			$scope.actionUrl = function (route, key) {
+				return router.buildUrl(route, [
+					$scope.cityId, $scope.currentBuilding.position, key
+				]);
 			};
 
-			$scope.buildingBuild = function (key) {
-				var url = $scope.buildingBuildUrl(
-					$scope.currentBuilding,
-					key
-				);
+			$scope.build = function (key, canBuild) {
+				if (!canBuild) {
+					return;
+				}
+
+				var url = $scope.actionUrl('building_build', key);
 
 				$http.get(url).success(function (data) {
-					if (data.error) {
-						console.log('Error: ', data.message);
-					}
-					else {
-						$scope.contentBox.close();
-						$scope.buildings = data.buildings;
-						$scope.resources = data.resources;
+					$scope.contentBox.close();
+					$scope.buildings = data.buildings;
+					$scope.resources = data.resources;
 
-						$scope.currentBuilding = $scope.buildings[
-							$scope.currentBuilding.position - 1
-						];
+					$scope.currentBuilding = $scope.buildings[
+						$scope.currentBuilding.position - 1
+					];
 
-						$scope.ticker.upgrade($scope.currentBuilding);
-					}
+					$scope.ticker.upgrade($scope.currentBuilding);
 				});
 			};
 
-			/**
-			 * @param {string} key
-			 * @returns {string}
-			 */
-			$scope.produceUrl = function (key) {
-				return router.buildUrl(
-					'resource_produce',
-					[$scope.cityId, $scope.currentBuilding.position, key]
-				);
+			$scope.upgrade = function ($event) {
+				if (!$scope.currentBuilding.canBuild) {
+					return;
+				}
+
+				var $link = angular.element($event.srcElement),
+					url = $scope.actionUrl(
+						'building_upgrade',
+						$scope.currentBuilding.key
+					);
+
+				response.loading($link);
+
+				$http.get(url).success(function (data) {
+					response.success($link);
+
+					$scope.buildings = data.buildings;
+					$scope.resources = data.resources;
+
+					$scope.currentBuilding = $scope.buildings[
+						$scope.currentBuilding.position - 1
+					];
+
+					$scope.ticker.upgrade($scope.currentBuilding);
+				});
 			};
 
 			$scope.produce = function (ware, $event) {
-				var $link = angular.element($event.srcElement);
+				if (!ware.canProduce) {
+					return;
+				}
+
+				var $link = angular.element($event.srcElement),
+					url = $scope.actionUrl('resource_produce', ware.key);
+
 				response.loading($link);
 
-				$http.get($scope.produceUrl(ware.key)).success(function (json) {
+				$http.get(url).success(function (json) {
 					response.success($link);
 
 					$scope.resources = json.resources;

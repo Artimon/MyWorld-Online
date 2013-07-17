@@ -54,6 +54,12 @@ interface Resource_Interface {
 	public function amountAvailable(City $city);
 
 	/**
+	 * @param City $city
+	 * @return bool
+	 */
+	public function isInsufficient(City $city);
+
+	/**
 	 * @param Lisbeth_Entity $entity
 	 * @param int $amount
 	 * @return Resource_Interface

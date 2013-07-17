@@ -35,14 +35,18 @@ class Building_Mine extends Building_Abstract {
 	 * @return Resource_Interface[]
 	 */
 	protected function requiresUpgrade1() {
-		return array();
+		return array(
+			new Resource_Tools(15)
+		);
 	}
 
 	/**
 	 * @return Resource_Interface[]
 	 */
 	protected function requiresUpgrade2() {
-		return array();
+		return array(
+			new Resource_Tools(40)
+		);
 	}
 
 	/**

@@ -41,7 +41,7 @@ class Controller_Building_Enter extends Controller_Abstract {
 		$template = new Leviathan_Template();
 		$template->assignArray(array(
 			'isConstructionSite' => true,
-			'title' => 'Empty construction site(t)',
+			'title' => 'emptyConstructionSite',
 			'goods' => array(),
 			'buildable' => Buildings::__toArray(
 				$city->buildingsBuildable(),

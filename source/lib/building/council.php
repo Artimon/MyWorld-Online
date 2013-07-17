@@ -32,7 +32,10 @@ class Building_Council extends Building_Abstract {
 	 * @return Resource_Interface[]
 	 */
 	protected function requiresUpgrade1() {
-		return array();
+		return array(
+			new Resource_Boards(50),
+			new Resource_Bricks(30)
+		);
 	}
 
 	/**
