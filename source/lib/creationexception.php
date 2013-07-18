@@ -17,11 +17,15 @@ class CreationException extends Exception {
 	/**
 	 * @return CreationException
 	 */
-	public static function noConstructionSite() {
-		return new self(
-			'@TODO Translate construction site not available.',
-			2
-		);
+	public static function cantBuild() {
+		return new self('cantBuild', 2);
+	}
+
+	/**
+	 * @return CreationException
+	 */
+	public static function cantUpgrade() {
+		return new self('cantUpgrade', 3);
 	}
 
 	/**
@@ -30,7 +34,7 @@ class CreationException extends Exception {
 	public static function invalidPosition() {
 		return new self(
 			'@TODO Translate invalid position.',
-			3
+			4
 		);
 	}
 }

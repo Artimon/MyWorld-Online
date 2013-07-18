@@ -117,14 +117,16 @@ class Buildings {
 	/**
 	 * @TODO Add level condition.
 	 *
+	 * @param int $position Needed to assign to dummy building classes.
 	 * @return Building_Interface[]
 	 */
-	public function buildable() {
+	public function buildable($position) {
+		$countList = array();
 		$buildings = Building::keys();
-		$list = $buildings;
 
-		foreach ($list as &$value) {
-			$value = 0;
+		foreach ($buildings as $key => $building) {
+			$countList[$key] = 0;
+			$building->position($position);
 		}
 
 		foreach ($this->all() as $building) {
@@ -137,8 +139,8 @@ class Buildings {
 				continue;
 			}
 
-			++$list[$key];
-			if ($list[$key] >= $buildings[$key]->maximumNumber()) {
+			++$countList[$key];
+			if ($countList[$key] >= $buildings[$key]->maximumNumber()) {
 				unset($buildings[$key]);
 			}
 		}

@@ -5,13 +5,14 @@ class Controller_Building_Enter extends Controller_Abstract {
 		$this->assertOnline();
 
 		$resolve = new Resolve($this);
+		$position = $resolve->position();
 
 		$city = $resolve->city();
 		$building = $city->currentBuilding();
 
 		$template = ($building && $building->valid())
 			? $this->assignWorkData($city, $building)
-			: $this->assignBuildData($city);
+			: $this->assignBuildData($city, $position);
 
 		$this->json($template);
 	}
@@ -35,16 +36,17 @@ class Controller_Building_Enter extends Controller_Abstract {
 
 	/**
 	 * @param City $city
+	 * @param int $position
 	 * @return Leviathan_Template
 	 */
-	protected function assignBuildData(City $city) {
+	protected function assignBuildData(City $city, $position) {
 		$template = new Leviathan_Template();
 		$template->assignArray(array(
 			'isConstructionSite' => true,
 			'title' => 'emptyConstructionSite',
 			'goods' => array(),
 			'buildable' => Buildings::__toArray(
-				$city->buildingsBuildable(),
+				$city->buildingsBuildable($position),
 				$city
 			)
 		));

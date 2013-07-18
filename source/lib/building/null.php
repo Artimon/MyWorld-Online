@@ -23,14 +23,6 @@ class Building_Null extends Building_Abstract {
 	}
 
 	/**
-	 * @param int|null $level
-	 * @return Resource_Interface[]
-	 */
-//	public function requires($level = null) {
-//		return array();
-//	}
-
-	/**
 	 * @return Resource_Interface[]
 	 */
 	protected function requiresBuild() {

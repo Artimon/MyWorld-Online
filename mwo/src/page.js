@@ -420,7 +420,7 @@ mwoApp.controller(
 			};
 
 			$scope.upgrade = function ($event) {
-				if (!$scope.currentBuilding.canBuild) {
+				if (!$scope.currentBuilding.canUpgrade) {
 					return;
 				}
 

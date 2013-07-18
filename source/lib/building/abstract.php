@@ -21,16 +21,19 @@ abstract class Building_Abstract implements Building_Interface {
 	 * @return array
 	 */
 	public function __toArray(City $city = null) {
+		$position = $this->position();
+
 		return array(
 			'key' => $this->key(),
 			'url' => 'tmp/building_dummy.gif',
 			'name' => $this->name(),
 			'buildTypeName' => $this->buildTypeName(),
 			'level' => $this->level(),
-			'position' => $this->position(),
+			'position' => $position,
 			'isWorking' => $this->isWorking(),
 			'state' => $this->state(),
-			'canBuild' => $this->canBuild($city),
+			'canBuild' => $this->canBuild($city, $position),
+			'canUpgrade' => $this->canUpgrade($city),
 			'remainingTime' => $this->remainingTime(),
 			'requires' => Resources::__toArray($this->requires(), $city)
 		);
@@ -230,55 +233,43 @@ abstract class Building_Abstract implements Building_Interface {
 
 	/**
 	 * @param City $city
-	 * @return bool
-	 */
-	public function canBuild(City $city) {
-		if ($this->isWorking()) {
-			return false;
-		}
-
-		foreach ($this->requires() as $resource) {
-			if ($resource->amountRequired() > $resource->amountAvailable($city)) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	/**
-	 * @param City $city
-	 * @return bool
-	 */
-	public function upgrade(City $city) {
-		if (!$this->canBuild($city)) {
-			return false;
-		}
-
-		// Should be catched by level 0 implying "is working".
-		if ($this->level() === 0) {
-			return false;
-		}
-
-		$this->level(
-			$this->level() + 1
-		);
-
-		$city->removeResources(
-			$this->requires()
-		);
-
-		return true;
-	}
-
-	/**
-	 * @param City $city
 	 */
 	public function __toCity(City $city) {
 		$key = 'building' . $this->position();
 		$value = $this->level() . ':' . $this->key();
 
 		$city->setValue($key, $value);
+	}
+
+	/**
+	 * @param City $city
+	 */
+	protected function createUpgradeTask(City $city) {
+		City_WorkTask::insert(
+			$city,
+			$this,
+			"upgrade:{$this->key()}",
+			TIME + 5, // @TODO Insert duration.
+			1
+		);
+	}
+
+	/**
+	 * @param City $city
+	 * @param int $position
+	 * @return bool
+	 */
+	public function canBuild(City $city, $position) {
+		if ($this->level() > 0 || $this->isWorking()) {
+			return false;
+		}
+
+		$city->assertPosition($position);
+		if ($city->value('building' . $position)) {
+			return false;
+		}
+
+		return $city->hasResources($this->requires());
 	}
 
 	/**
@@ -291,30 +282,47 @@ abstract class Building_Abstract implements Building_Interface {
 	public function build(City $city, $position) {
 		$position = (int)$position;
 
+		if (!$this->canBuild($city, $position)) {
+			throw CreationException::cantBuild();
+		}
+
 		$this->level(0);
 		$this->position($position);
 
-		$city->assertPosition($position);
-		if (!$city->isConstructionSite($position)) {
-			throw CreationException::noConstructionSite();
-		}
-
-		if (!$city->hasResources($this->requires())) {
-			throw CreationException::insufficientResources();
-		}
+		$city->removeResources($this->requires());
 
 		$this->__toCity($city);
+		$this->createUpgradeTask($city);
 
-		City_WorkTask::insert(
-			$city,
-			$this,
-			"upgrade:{$this->key()}",
-			TIME + 5, // @TODO Insert duration.
-			1
-		);
+		return $this;
+	}
 
-		$this->level(0);
-		$this->position($position);
+	/**
+	 * @param City $city
+	 * @return bool
+	 */
+	public function canUpgrade(City $city) {
+		if ($this->level() <= 0 || $this->isWorking()) {
+			return false;
+		}
+
+		return $city->hasResources($this->requires());
+	}
+
+	/**
+	 * @param City $city
+	 * @throws CreationException
+	 * @return bool
+	 */
+	public function upgrade(City $city) {
+		if (!$this->canUpgrade($city)) {
+			throw CreationException::cantUpgrade();
+		}
+
+		$city->removeResources($this->requires());
+
+		$this->__toCity($city);
+		$this->createUpgradeTask($city);
 
 		return $this;
 	}

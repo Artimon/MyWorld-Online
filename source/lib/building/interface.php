@@ -28,12 +28,6 @@ interface Building_Interface {
 	public function level($level = null);
 
 	/**
-	 * @param City $city
-	 * @return bool
-	 */
-	public function upgrade(City $city);
-
-	/**
 	 * @param int|null $position
 	 * @return int
 	 */
@@ -81,9 +75,10 @@ interface Building_Interface {
 
 	/**
 	 * @param City $city
+	 * @param int $position
 	 * @return bool
 	 */
-	public function canBuild(City $city);
+	public function canBuild(City $city, $position);
 
 	/**
 	 * @param City $city
@@ -91,6 +86,18 @@ interface Building_Interface {
 	 * @return Building_Interface
 	 */
 	public function build(City $city, $position);
+
+	/**
+	 * @param City $city
+	 * @return bool
+	 */
+	public function canUpgrade(City $city);
+
+	/**
+	 * @param City $city
+	 * @return bool
+	 */
+	public function upgrade(City $city);
 
 	/**
 	 * Return whether this resource is produced by the building or not.

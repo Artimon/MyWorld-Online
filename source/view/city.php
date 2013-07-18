@@ -81,7 +81,7 @@ $initData = "{$city->id()}, {$resources}, {$buildings}";
 
 						<a class='button small entypo-up-open-big' href='javascript:;'
 							ng-click='upgrade($event)'
-							ng-class='{ disabled: !currentBuilding.canBuild }'></a>
+							ng-class='{ disabled: !currentBuilding.canUpgrade }'></a>
 					</div>
 
 					<!-- Building production list. -->

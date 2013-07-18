@@ -170,29 +170,45 @@ class City extends Lisbeth_Entity {
 	/**
 	 * Get a list of buildable buildings.
 	 *
+	 * @param int $position
 	 * @return Building_Interface[]
 	 */
-	public function buildingsBuildable() {
-		return $this->buildings()->buildable();
+	public function buildingsBuildable($position) {
+		return $this->buildings()->buildable($position);
 	}
 
 	/**
 	 * @param string $key
 	 * @param int $position
-	 * @return Building_Interface
+	 * @return bool
 	 */
 	public function buildingBuild($key, $position) {
 		$building = Building::get($key);
-		$this->buildings()->replace($building, $position);
 
-		return $building->build($this, $position);
+		if ($building->canBuild($this, $position)) {
+			$this->buildings()->replace($building, $position);
+			$building->build($this, $position);
+
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
-	 * @throws Exception
+	 * @param int $position
+	 * @return bool
 	 */
-	public function buildingUpgrade() {
-		throw new Exception('@TODO');
+	public function buildingUpgrade($position) {
+		$building = $this->buildings()->building($position);
+
+		if ($building->canUpgrade($this)) {
+			$building->upgrade($this);
+
+			return true;
+		}
+
+		return false;
 	}
 
 	public function assignWorkTasks() {

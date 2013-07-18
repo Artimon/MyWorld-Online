@@ -32,7 +32,11 @@ class Building_Logger extends Building_Abstract {
 	 * @return Resource_Interface[]
 	 */
 	protected function requiresUpgrade1() {
-		return array();
+		return array(
+			new Resource_Wood(2)
+//			new Resource_Boards(30),
+//			new Resource_Bricks(25)
+		);
 	}
 
 	/**
