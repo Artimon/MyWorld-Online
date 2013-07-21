@@ -46,6 +46,11 @@ class City_WorkTask extends Lisbeth_Entity {
 	 * @return int
 	 */
 	public function completion() {
+		// Necessary if work task already completed / deleted.
+		if (!$this->valid()) {
+			return 0;
+		}
+
 		return (int)$this->value('completion');
 	}
 
@@ -161,6 +166,6 @@ class City_WorkTask extends Lisbeth_Entity {
 		$workTasks = $city->workTasks();
 		$database->query($sql)->addTo($workTasks)->freeResult();
 
-		return $database->hasError();
+		return !$database->hasError();
 	}
 }

@@ -18,10 +18,6 @@ return array(
 		// building_upgrade/{cityId}/{position}/building_key
 		'controller' => 'Controller_Building_Upgrade'
 	),
-	'building_enter' => array(
-		// building_enter/{cityId}/{position}
-		'controller' => 'Controller_Building_Enter'
-	),
 	'building_collect' => array(
 		'controller' => 'Controller_Building_Collect'
 	),

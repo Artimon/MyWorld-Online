@@ -13,8 +13,6 @@ class Controller_Building_Upgrade extends Controller_Abstract {
 
 		$success = $city->buildingUpgrade($position);
 		if ($success) {
-			$city->assignWorkTasks();
-
 			$template->assignArray(array(
 				'error' => false,
 				'message' => 'buildingUpgradeStarted',

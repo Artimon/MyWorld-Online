@@ -23,6 +23,11 @@ abstract class Building_Abstract implements Building_Interface {
 	public function __toArray(City $city = null) {
 		$position = $this->position();
 
+		$goods = array();
+		if ($city) {
+			$goods = $this->goodsArray($city);
+		}
+
 		return array(
 			'key' => $this->key(),
 			'url' => 'tmp/building_dummy.gif',
@@ -31,11 +36,13 @@ abstract class Building_Abstract implements Building_Interface {
 			'level' => $this->level(),
 			'position' => $position,
 			'isWorking' => $this->isWorking(),
+			'isConstructionSite' => $city->isConstructionSite($position),
 			'state' => $this->state(),
 			'canBuild' => $this->canBuild($city, $position),
 			'canUpgrade' => $this->canUpgrade($city),
 			'remainingTime' => $this->remainingTime(),
-			'requires' => Resources::__toArray($this->requires(), $city)
+			'requires' => Resources::__toArray($this->requires(), $city),
+			'goods' => $goods
 		);
 	}
 
@@ -151,7 +158,9 @@ abstract class Building_Abstract implements Building_Interface {
 	 * @return bool
 	 */
 	public function isWorking() {
-		return ($this->workTask() !== null);
+		$workTask = $this->workTask();
+
+		return ($workTask && !$workTask->isCompleted());
 	}
 
 	/**
@@ -159,14 +168,13 @@ abstract class Building_Abstract implements Building_Interface {
 	 * @param bool $addRequired
 	 * @return array
 	 */
-	public function goodsArray(City $city, $addRequired = false) {
-		$result = array();
-
-		foreach ($this->goods() as $ware) {
-			$result[] = $ware->__toArray($city, $this, $addRequired);
-		}
-
-		return $result;
+	public function goodsArray(City $city, $addRequired = true) {
+		return Resources::__toArray(
+			$this->goods(),
+			$city,
+			$this,
+			$addRequired
+		);
 	}
 
 	/**

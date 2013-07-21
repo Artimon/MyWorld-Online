@@ -14,8 +14,6 @@ class Controller_Building_Build extends Controller_Abstract {
 
 		$success = $city->buildingBuild($buildingKey, $position);
 		if ($success) {
-			$city->assignWorkTasks();
-
 			$template->assignArray(array(
 				'error' => false,
 				'message' => 'buildingBuildStarted',

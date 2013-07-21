@@ -6,7 +6,6 @@ class Controller_Building_Collect extends Controller_Abstract {
 
 		$resolve = new Resolve($this);
 		$city = $resolve->city();
-		$city->assignWorkTasks();
 
 		$success = false;
 		$building = $city->currentBuilding();
@@ -21,7 +20,8 @@ class Controller_Building_Collect extends Controller_Abstract {
 		$template = new Leviathan_Template();
 		$template->assignArray(array(
 			'success' => $success,
-			'resources' => $city->resourcesArray($building, true)
+			'resources' => $city->resourcesArray($building, true),
+			'building' => $building->__toArray($city)
 		));
 
 		$this->json($template);

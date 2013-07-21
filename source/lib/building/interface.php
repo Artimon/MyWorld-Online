@@ -2,9 +2,10 @@
 
 interface Building_Interface {
 	/**
+	 * @param City $city if resource requirements shall be added.
 	 * @return array
 	 */
-	public function __toArray();
+	public function __toArray(City $city = null);
 
 	/**
 	 * @param City $city
@@ -64,7 +65,7 @@ interface Building_Interface {
 	 * @param bool $addRequired
 	 * @return array
 	 */
-	public function goodsArray(City $city, $addRequired = false);
+	public function goodsArray(City $city, $addRequired = true);
 
 	/**
 	 * @param int|null $level [1-4]

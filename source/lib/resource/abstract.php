@@ -213,7 +213,11 @@ abstract class Resource_Abstract implements Resource_Interface {
 		$completion	= TIME + $this->productionDuration();
 		$amount		= $this->productionAmount();
 
-		return City_WorkTask::insert($city, $building, $task, $completion, $amount);
+		$success = City_WorkTask::insert($city, $building, $task, $completion, $amount);
+
+		$city->assignWorkTasks();
+
+		return $success;
 	}
 
 	/**

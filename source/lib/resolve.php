@@ -13,6 +13,11 @@ class Resolve {
 	private $controller;
 
 	/**
+	 * @var City
+	 */
+	private $city;
+
+	/**
 	 * @param Controller_Interface $controller
 	 */
 	public function __construct(Controller_Interface $controller) {
@@ -26,19 +31,22 @@ class Resolve {
 	 * @return City
 	 */
 	public function city() {
-		$cityId = $this->cityId();
-		$position = $this->position();
+		if (!$this->city) {
+			$cityId = $this->cityId();
+			$position = $this->position();
 
-		$city = Game::getInstance()
-			->account()
-			->empire()
-			->cities()
-			->city($cityId);
+			$this->city = Game::getInstance()
+				->account()
+				->empire()
+				->cities()
+				->city($cityId);
 
-		$city->assertOnlineOwner();
-		$city->currentBuilding($position);
+			$this->city->assertOnlineOwner();
+			$this->city->assignWorkTasks();
+			$this->city->currentBuilding($position);
+		}
 
-		return $city;
+		return $this->city;
 	}
 
 	/**

@@ -23,6 +23,7 @@ $initData = "{$city->id()}, {$resources}, {$buildings}";
 			<img ng-src='{{building.url|image}}'>
 			<span>{{building.name}}</span>
 			<span>{{building.level}}</span>
+			<span ng-show='building.remainingTime'>{{building.remainingTime|duration}}</span>
 			<span class='icon'>
 				<span ng-class='{
 					ready: "entypo-flag",
@@ -53,10 +54,14 @@ $initData = "{$city->id()}, {$resources}, {$buildings}";
 			<div class='body'>
 
 				<!-- Default building. -->
-				<div class='building' ng-hide='isConstructionSite'>
+				<div class='building' ng-hide='currentBuilding.isConstructionSite'>
 
 					<!-- Upgrade building -->
-					<div class='upgrade left'>
+					<div class='upgrade left' ng-show='currentBuilding.level == 4'>
+						<h4>{{'maximum'|i18n}}</h4>
+						<div class='stars three'></div>
+					</div>
+					<div class='upgrade left' ng-hide='currentBuilding.level == 4'>
 						<h4>{{'upgrade'|i18n}}</h4>
 						<div class='stars' ng-class='{
 							1: "none",
@@ -86,7 +91,7 @@ $initData = "{$city->id()}, {$resources}, {$buildings}";
 
 					<!-- Building production list. -->
 					<table class='left'>
-						<tr ng-repeat='ware in goods'>
+						<tr ng-repeat='ware in currentBuilding.goods'>
 							<td class='resource'>
 								{{ware.productionAmount}}
 								<img ng-src='{{ware.url|image}}' title='{{ware.name}}'>
@@ -114,8 +119,8 @@ $initData = "{$city->id()}, {$resources}, {$buildings}";
 								<div ng-hide='ware.requires'>-</div>
 							</td>
 							<td>
-								<a href='javascript:;'
-									ng-class='{ button: true, disabled: !ware.canProduce }'
+								<a href='javascript:;' class='button'
+									ng-class='{ disabled: !ware.canProduce }'
 									ng-click='produce(ware, $event)'>
 									{{ware.productionTypeName}}
 								</a>
@@ -126,7 +131,7 @@ $initData = "{$city->id()}, {$resources}, {$buildings}";
 				</div>
 
 				<!-- Create building list. -->
-				<table ng-show='isConstructionSite'>
+				<table ng-show='currentBuilding.isConstructionSite'>
 					<tr ng-repeat='building in buildable'>
 						<td>{{building.name}}</td>
 						<td>
