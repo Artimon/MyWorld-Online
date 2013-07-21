@@ -18,7 +18,7 @@ class Controller_Building_Build extends Controller_Abstract {
 				'error' => false,
 				'message' => 'buildingBuildStarted',
 				'resources' => $city->resourcesArray(),
-				'buildings' => $city->buildingsArray()
+				'building' => $city->building($position)->__toArray($city)
 			));
 		}
 		else {

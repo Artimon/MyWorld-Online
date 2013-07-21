@@ -10,6 +10,9 @@ return array(
 	'city' => array(
 		'controller' => 'Controller_City'
 	),
+	'building_buildable' => array(
+		'controller' => 'Controller_Building_Buildable'
+	),
 	'building_build' => array(
 		// building_build/{cityId}/{position}/building_key
 		'controller' => 'Controller_Building_Build'

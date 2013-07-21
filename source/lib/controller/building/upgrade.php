@@ -17,7 +17,7 @@ class Controller_Building_Upgrade extends Controller_Abstract {
 				'error' => false,
 				'message' => 'buildingUpgradeStarted',
 				'resources' => $city->resourcesArray(),
-				'buildings' => $city->buildingsArray()
+				'building' => $city->building($position)->__toArray($city)
 			));
 		}
 		else {

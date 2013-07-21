@@ -302,6 +302,8 @@ abstract class Building_Abstract implements Building_Interface {
 		$this->__toCity($city);
 		$this->createUpgradeTask($city);
 
+		$city->assignWorkTasks();
+
 		return $this;
 	}
 
@@ -331,6 +333,7 @@ abstract class Building_Abstract implements Building_Interface {
 
 		$this->__toCity($city);
 		$this->createUpgradeTask($city);
+		$city->assignWorkTasks();
 
 		return $this;
 	}

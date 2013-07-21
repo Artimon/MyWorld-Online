@@ -278,6 +278,7 @@ mwoApp.controller(
 			$scope.cityId = 0;
 			$scope.resources = [];
 			$scope.buildings = [];
+			$scope.buildable = [];
 
 			$scope.currentBuilding = null;
 			$scope.contentBoxTitle = '';
@@ -399,9 +400,22 @@ mwoApp.controller(
 					});
 				}
 
+				function buildableBuildings() {
+					$('body').showLoader();
+
+					$scope.contentBoxTitle = 'emptyConstructionSite';
+					$scope.contentBox.open();
+
+					var url = $scope.actionUrl('building_buildable', '')
+					$http.get(url).success(function (buildable) {
+						$scope.buildable = buildable;
+
+						$.removeLoader();
+					})
+				}
+
 				function enterBuilding() {
 					$scope.contentBoxTitle = building.name;
-
 					$scope.contentBox.open();
 				}
 
@@ -412,7 +426,7 @@ mwoApp.controller(
 					ready: collectResources,
 					waiting: enterBuilding,
 					upgrading: enterBuilding,
-					clear: enterBuilding,
+					clear: buildableBuildings,
 					working: enterBuilding
 				};
 
@@ -436,15 +450,11 @@ mwoApp.controller(
 				}
 
 				var url = $scope.actionUrl('building_build', key);
-
-				$http.get(url).success(function (data) {
+				$http.get(url).success(function (json) {
 					$scope.contentBox.close();
-					$scope.buildings = data.buildings;
-					$scope.resources = data.resources;
+					$scope.resources = json.resources;
 
-					$scope.currentBuilding = $scope.buildings[
-						$scope.currentBuilding.position - 1
-					];
+					$scope.replaceBuilding(json.building);
 
 					$scope.ticker.construction($scope.currentBuilding);
 				});
@@ -463,15 +473,12 @@ mwoApp.controller(
 
 				response.loading($link);
 
-				$http.get(url).success(function (data) {
+				$http.get(url).success(function (json) {
 					response.success($link);
 
-					$scope.buildings = data.buildings;
-					$scope.resources = data.resources;
+					$scope.resources = json.resources;
 
-					$scope.currentBuilding = $scope.buildings[
-						$scope.currentBuilding.position - 1
-					];
+					$scope.replaceBuilding(json.building);
 
 					$scope.ticker.construction($scope.currentBuilding);
 				});

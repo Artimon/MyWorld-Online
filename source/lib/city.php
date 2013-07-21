@@ -222,19 +222,11 @@ class City extends Lisbeth_Entity {
 	}
 
 	/**
-	 * @param int|null $position
-	 * @return Building_Interface|City
+	 * @param $position
+	 * @return Building_Interface
 	 */
-	public function currentBuilding($position = null) {
-		static $current;
-
-		if ($position) {
-			$current = $this->buildings()->building($position);
-
-			return $this;
-		}
-
-		return $current;
+	public function building($position) {
+		return $this->buildings()->building($position);
 	}
 
 	/**

@@ -7,8 +7,11 @@ class Controller_Building_Collect extends Controller_Abstract {
 		$resolve = new Resolve($this);
 		$city = $resolve->city();
 
+		$building = $city->building(
+			$resolve->position()
+		);
+
 		$success = false;
-		$building = $city->currentBuilding();
 		$workTask = $building->workTask();
 		if ($workTask) {
 			$success = $workTask->convert(

@@ -20,7 +20,9 @@ class Resource_Produce {
 		Resource_Interface $resource
 	) {
 		$city = $resolve->city();
-		$building = $city->currentBuilding();
+		$building = $city->building(
+			$resolve->position()
+		);
 
 		$cityWorkTasks = $city->workTasks();
 		$isWorking = $cityWorkTasks->isWorking($building);

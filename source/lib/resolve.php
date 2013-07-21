@@ -33,7 +33,6 @@ class Resolve {
 	public function city() {
 		if (!$this->city) {
 			$cityId = $this->cityId();
-			$position = $this->position();
 
 			$this->city = Game::getInstance()
 				->account()
@@ -43,7 +42,6 @@ class Resolve {
 
 			$this->city->assertOnlineOwner();
 			$this->city->assignWorkTasks();
-			$this->city->currentBuilding($position);
 		}
 
 		return $this->city;
