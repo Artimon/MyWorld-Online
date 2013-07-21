@@ -10,6 +10,9 @@ return array(
 	'city' => array(
 		'controller' => 'Controller_City'
 	),
+	'building' => array(
+		'controller' => 'Controller_Building'
+	),
 	'building_buildable' => array(
 		'controller' => 'Controller_Building_Buildable'
 	),

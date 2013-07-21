@@ -347,9 +347,15 @@ mwoApp.controller(
 			};
 
 			$scope.ticker.construction = function (building) {
-				$scope.ticker.register(building, building, function (building) {
-					building.level += 1;
-					building.state = 'waiting';
+				/*
+				 * Create url immediately, since it gets crated from
+				 * current building, which may change during build time.
+				 */
+				var url = $scope.actionUrl('building', '');
+				$scope.ticker.register(building, building, function () {
+					$http.get(url).success(function (json) {
+						$scope.replaceBuilding(json);
+					});
 				});
 			};
 
