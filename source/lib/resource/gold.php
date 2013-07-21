@@ -1,7 +1,7 @@
 <?php
 
-class Resource_Money extends Resource_Abstract {
-	const KEY = 'money';
+class Resource_Gold extends Resource_Abstract {
+	const KEY = 'gold';
 
 	/**
 	 * @return string

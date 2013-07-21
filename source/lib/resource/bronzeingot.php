@@ -1,7 +1,7 @@
 <?php
 
-class Resource_GoldOre extends Resource_Abstract {
-	const KEY = 'goldOre';
+class Resource_BronzeIngot extends Resource_Abstract {
+	const KEY = 'bronzeIngot';
 
 	/**
 	 * @return string
@@ -15,15 +15,9 @@ class Resource_GoldOre extends Resource_Abstract {
 	 */
 	public function requires() {
 		return array(
-			new Resource_Bread(3)
+			new Resource_CopperOre(4),
+			new Resource_Coal(6)
 		);
-	}
-
-	/**
-	 * @return int
-	 */
-	public function requiredBuildingLevel() {
-		return 4;
 	}
 
 	/**

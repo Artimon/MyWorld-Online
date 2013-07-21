@@ -16,8 +16,8 @@ class Building_Mine extends Building_Abstract {
 	public function goods() {
 		return array(
 			new Resource_Coal(),
-			new Resource_IronOre(),
-			new Resource_GoldOre()
+			new Resource_CopperOre(),
+			new Resource_IronOre()
 		);
 	}
 

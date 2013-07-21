@@ -15,8 +15,8 @@ class Resource_IronIngot extends Resource_Abstract {
 	 */
 	public function requires() {
 		return array(
-			new Resource_IronOre(4),
-			new Resource_Coal(6)
+			new Resource_IronOre(2),
+			new Resource_Coal(8)
 		);
 	}
 
@@ -24,7 +24,7 @@ class Resource_IronIngot extends Resource_Abstract {
 	 * @return int
 	 */
 	public function productionAmount() {
-		return 1;
+		return 4;
 	}
 
 	/**
