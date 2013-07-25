@@ -61,7 +61,7 @@ echo "
 	<div class='content'>{$body}</div>
 
 	<script type='text/javascript' src='mwo/src/i18n/{$language}.js'></script>
-	<script type='text/javascript' src='ext/jQuery/jquery-1.8.0.min.js'></script>
+	<script type='text/javascript' src='ext/jQuery/jquery-1.10.2.min.js'></script>
 	<script type='text/javascript' src='ext/angular/angular.min.js'></script>
 	<script type='text/javascript' src='mwo/src/adframe.js'></script>
 	<script type='text/javascript' src='mwo/src/page.js'></script>
